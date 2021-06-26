@@ -2,7 +2,10 @@
 
 namespace MClient.UiSystem.Internal.Attributes
 {
-    public abstract class UiElementAttribute : Attribute
+    /// <summary>
+    /// Base class for Ui Auto-Attributes.
+    /// </summary>
+    public abstract class MUiElementAttribute : Attribute
     {
         
     }

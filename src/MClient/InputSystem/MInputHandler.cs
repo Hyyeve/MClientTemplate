@@ -100,7 +100,7 @@ namespace MClient.InputSystem
 
         private static void HandleMouseActions()
         {
-            Vec2 mpg = MousePositionGame;
+            var mpg = MousePositionGame;
             
             switch (Mouse.left)
             {

@@ -177,7 +177,6 @@
     <Compile Include="src\MClient\UiSystem\Internal\Components\MUiContainer.cs" />
     <Compile Include="src\MClient\UiSystem\Internal\MUiHandler.cs" />
     <Compile Include="src\MClient\UiSystem\Internal\MUiState.cs" />
-    <Compile Include="src\MClient\UiSystem\MTestUI.cs" />
     <Compile Include="src\MTemplate\MCustomEvents\MTemplateEvent.cs" />
     <Compile Include="src\MTemplate\MCustomEvents\MTemplateEventWithParams.cs" />
     <Compile Include="src\Properties\AssemblyInfo.cs" />

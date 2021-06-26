@@ -2,8 +2,11 @@
 
 namespace MClient.UiSystem.Internal.Attributes
 {
+    /// <summary>
+    /// Auto-Attribute that marks a field to be bound to a Ui Slider. Used in combination with the AutoUi attribute.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)] 
-    public class MUiSliderAttribute : UiElementAttribute
+    public class MUiSliderAttribute : MUiElementAttribute
     {
         public readonly double Max;
         public readonly double Min;

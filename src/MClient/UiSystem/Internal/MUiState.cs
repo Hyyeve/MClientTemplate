@@ -6,109 +6,136 @@ using MClient.UiSystem.Internal.Components;
 
 namespace MClient.UiSystem.Internal
 {
+    /// <summary>
+    /// This class stores state information about each Ui panel/container
+    /// </summary>
     public class MUiState
     {
-        private MUiContainer Panel;
-        private bool active;
-        public bool Active => active;
+        private readonly MUiContainer _panel;
+        private bool _active;
+        public bool Active => _active;
 
         public Color BaseCol = Color.White;
         public Color BaseAccentCol = Color.White;
         public Color TextCol = Color.Black;
         public Color TextAccentCol = new Color(70,70,70);
 
-        public readonly string id;
+        public readonly string Id;
         public MUiState(string id, MUiContainer panel)
         {
-           Panel = panel;
-           this.id = id;
-           Panel.SetOwningState(this);
-           Panel.UpdateCols();
+           _panel = panel;
+           Id = id;
+           _panel.SetOwningState(this);
+           _panel.UpdateCols();
         }
 
         public MUiState(string id, MUiContainer panel, Type uiClassRef)
         {
-            Panel = panel;
-            this.id = id;
+            _panel = panel;
+            Id = id;
             UpdateColours(uiClassRef);
-            Panel.SetOwningState(this);
-            Panel.UpdateCols();
+            _panel.SetOwningState(this);
+            _panel.UpdateCols();
         }
         
+        /// <summary>
+        /// Disables this panel
+        /// </summary>
         public void DisablePanel()
         {
-            active = false;
+            _active = false;
         }
 
+        /// <summary>
+        /// Enables this panel
+        /// </summary>
         public void EnablePanel()
         {
-            active = true;
+            _active = true;
         }
 
+        /// <summary>
+        /// Internal call. Updates & Draws this panel
+        /// </summary>
         public void UpdatePanel()
         {
-            if (!active) return;
-            Panel.HandleUiUpdate();
+            if (!_active) return;
+            _panel.HandleUiUpdate();
         }
 
+        /// <summary>
+        /// Internal call. Updates this panel
+        /// </summary>
         public void HandleKeyEvent(MEventKeyTyped e)
         {
-            if (!active) return;
-            Panel.HandleKeyTypedEvent(e);
+            if (!_active) return;
+            _panel.HandleKeyTypedEvent(e);
         }
 
+        /// <summary>
+        /// Internal call. Updates this panel
+        /// </summary>
         public void HandleMouseEvent(MEventMouseAction e)
         {
-            if (!active) return;
-            Panel.HandleMouseEvent(e);
+            if (!_active) return;
+            _panel.HandleMouseEvent(e);
         }
 
+        /// <summary>
+        /// Checks whether this panel is overlapping a position
+        /// </summary>
         public bool IsOverlapping(Vec2 pos)
         {
-            return Panel.IsOverlapping(pos);
+            return _panel.IsOverlapping(pos);
         }
 
+        /// <summary>
+        /// Updates the colours for this panel. Mainly an internal call but can be used if needed.
+        /// </summary>
         public void UpdateColours(Type uiClassRef)
         {
             foreach (MUiColorAttribute attribute in uiClassRef.GetCustomAttributes(typeof(MUiColorAttribute), false))
             {
                 switch (attribute.ColorArea)
                 {
-                    case UiColorArea.Base:
+                    case MUiColorArea.Base:
                         BaseCol = attribute.Color;
                         break;
-                    case UiColorArea.BaseAccent:
+                    case MUiColorArea.BaseAccent:
                         BaseAccentCol = attribute.Color;
                         break;
-                    case UiColorArea.Text:
+                    case MUiColorArea.Text:
                         TextCol = attribute.Color;
                         break;
-                    case UiColorArea.TextAccent:
+                    case MUiColorArea.TextAccent:
                         TextAccentCol = attribute.Color;
                         break;
                 } ;
-                Panel.UpdateCols();
+                _panel.UpdateCols();
             }
         }
 
-        public void SetCol(UiColorArea area, Color col)
+        /// <summary>
+        /// Sets a default colour for this panel
+        /// </summary>
+        public void SetCol(MUiColorArea area, Color col)
         {
             switch (area)
             {
-                case UiColorArea.Base:
+                case MUiColorArea.Base:
                     BaseCol = col;
                     break;
-                case UiColorArea.BaseAccent:
+                case MUiColorArea.BaseAccent:
                     BaseAccentCol = col;
                     break;
-                case UiColorArea.Text:
+                case MUiColorArea.Text:
                     TextCol = col;
                     break;
-                case UiColorArea.TextAccent:
+                case MUiColorArea.TextAccent:
                     TextAccentCol = col;
                     break;
             }
-            Panel.UpdateCols();
+            _panel.UpdateCols();
         }
     }
 }

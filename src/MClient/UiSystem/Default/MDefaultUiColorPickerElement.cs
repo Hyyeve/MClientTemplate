@@ -7,15 +7,18 @@ using MClient.UiSystem.Internal.Components.Elements;
 
 namespace MClient.UiSystem.Default
 {
+    /// <summary>
+    /// Default UI Color Picker. Intended for use with the AutoUI system.
+    /// </summary>
     public class MDefaultUiColorPickerElement : MUiColorPickerElement
     {
-        private readonly SpriteMap box = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiElementBox"), 8, 8);
-        private readonly SpriteMap picker = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiPicker"), 16, 16);
+        private readonly SpriteMap _box = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiElementBox"), 8, 8);
+        private readonly SpriteMap _picker = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiPicker"), 16, 16);
         
-        private Color TRCol;
-        private Color MMCol;
-        private Color RECol;
-        private Color CCol;
+        private Color _trCol;
+        private Color _mmCol;
+        private Color _reCol;
+        private Color _cCol;
 
         /// <inheritdoc />
         public MDefaultUiColorPickerElement(Vec2 pos, FieldInfo field) : base(pos, new Vec2(64), field)
@@ -26,65 +29,65 @@ namespace MClient.UiSystem.Default
         /// <inheritdoc />
         public override void Draw()
         {
-            box.color = BaseColor;
+            _box.color = BaseColor;
             
-            Vec2 texSize = new Vec2(box.width, box.height) * UiScale;
+            var texSize = new Vec2(_box.width, _box.height) * UiScale;
             float xRep = Size.x / texSize.x;
             float yRep = Size.y / texSize.y;
-            Vec2 texXSize = new Vec2(texSize.x, 0f);
-            Vec2 texYSize = new Vec2(0f, texSize.y);
-            Vec2 xOff = new Vec2(Size.x - texSize.x, 0f);
-            Vec2 yOff = new Vec2(0f, Size.y - texSize.y);
-            Vec2 xyOff = new Vec2(Size.x - texSize.x, texSize.y);
-            Vec2 yxOff = new Vec2(texSize.x, Size.y - texSize.y);
+            var texXSize = new Vec2(texSize.x, 0f);
+            var texYSize = new Vec2(0f, texSize.y);
+            var xOff = new Vec2(Size.x - texSize.x, 0f);
+            var yOff = new Vec2(0f, Size.y - texSize.y);
+            var xyOff = new Vec2(Size.x - texSize.x, texSize.y);
+            var yxOff = new Vec2(texSize.x, Size.y - texSize.y);
 
-            box.frame = 0;
-            MRenderer.DrawSprite(box, Position, UiScale);
-            box.frame = 1;
-            MRenderer.DrawSprite(box, Position + texXSize, new Vec2((xRep - 2) * UiScale, UiScale));
-            box.frame = 2;
-            MRenderer.DrawSprite(box, Position + xOff, UiScale);
-            box.frame = 3;
-            MRenderer.DrawSprite(box, Position + texYSize, new Vec2(UiScale, (yRep - 2) * UiScale));
-            box.frame = 4;
-            MRenderer.DrawSprite(box, Position + texSize, new Vec2((xRep - 2) * UiScale, (yRep - 2) * UiScale));
-            box.frame = 5;
-            MRenderer.DrawSprite(box, Position + xyOff, new Vec2(UiScale, (yRep - 2) * UiScale));
-            box.frame = 6;
-            MRenderer.DrawSprite(box, Position + yOff, UiScale);
-            box.frame = 7;
-            MRenderer.DrawSprite(box, Position + yxOff, new Vec2((xRep - 2) * UiScale, UiScale));
-            box.frame = 8;
-            MRenderer.DrawSprite(box, Position + Size - texSize, UiScale);
+            _box.frame = 0;
+            MRenderer.DrawSprite(_box, Position, UiScale);
+            _box.frame = 1;
+            MRenderer.DrawSprite(_box, Position + texXSize, new Vec2((xRep - 2) * UiScale, UiScale));
+            _box.frame = 2;
+            MRenderer.DrawSprite(_box, Position + xOff, UiScale);
+            _box.frame = 3;
+            MRenderer.DrawSprite(_box, Position + texYSize, new Vec2(UiScale, (yRep - 2) * UiScale));
+            _box.frame = 4;
+            MRenderer.DrawSprite(_box, Position + texSize, new Vec2((xRep - 2) * UiScale, (yRep - 2) * UiScale));
+            _box.frame = 5;
+            MRenderer.DrawSprite(_box, Position + xyOff, new Vec2(UiScale, (yRep - 2) * UiScale));
+            _box.frame = 6;
+            MRenderer.DrawSprite(_box, Position + yOff, UiScale);
+            _box.frame = 7;
+            MRenderer.DrawSprite(_box, Position + yxOff, new Vec2((xRep - 2) * UiScale, UiScale));
+            _box.frame = 8;
+            MRenderer.DrawSprite(_box, Position + Size - texSize, UiScale);
 
-            TRCol = new Color(MMathUtils.HsVtoRgb(new Vec3(HSV.x, 1f,1f)) / 255f);
-            MMCol = TRCol / 2;
+            _trCol = new Color(MMathUtils.HsVtoRgb(new Vec3(Hsv.x, 1f,1f)) / 255f);
+            _mmCol = _trCol / 2;
             //fix alpha
-            MMCol.a = TRCol.a;
+            _mmCol.a = _trCol.a;
             
-            RECol = new Color(RGB / 255f);
-            CCol = HSV.z > 0.5 ? Color.Black : Color.White;
+            _reCol = new Color(Rgb / 255f);
+            _cCol = Hsv.z > 0.5 ? Color.Black : Color.White;
             
             //Background box
-            MRenderer.DrawRect(SLBoxPos - Vec2.One * UiScale, HBarPos + HBarSize + Vec2.One * UiScale, TextAccentColor);
+            MRenderer.DrawRect(SlBoxPos - Vec2.One * UiScale, HBarPos + HBarSize + Vec2.One * UiScale, TextAccentColor);
             
-            Vec2 SLBoxCentre = SLBoxPos + SLBoxSize / 2f;
+            var slBoxCentre = SlBoxPos + SlBoxSize / 2f;
                 
             //Saturation-Value gradient. Split into 4 tris because my gradient quad method is bad for this
-            MRenderer.DrawGradTri(SLBoxPos, SLBoxCentre, SLBoxPos + new Vec2(0f, SLBoxSize.y),
-                Color.White, MMCol, Color.Black);
+            MRenderer.DrawGradTri(SlBoxPos, slBoxCentre, SlBoxPos + new Vec2(0f, SlBoxSize.y),
+                Color.White, _mmCol, Color.Black);
             MRenderer.DrawGradTri(
-                SLBoxPos, SLBoxCentre, SLBoxPos + new Vec2(SLBoxSize.x,0f),
-                Color.White, MMCol, TRCol);
+                SlBoxPos, slBoxCentre, SlBoxPos + new Vec2(SlBoxSize.x,0f),
+                Color.White, _mmCol, _trCol);
             MRenderer.DrawGradTri(
-                SLBoxPos + SLBoxSize, SLBoxCentre, SLBoxPos + new Vec2(0f, SLBoxSize.y),
-                Color.Black, MMCol, Color.Black);
+                SlBoxPos + SlBoxSize, slBoxCentre, SlBoxPos + new Vec2(0f, SlBoxSize.y),
+                Color.Black, _mmCol, Color.Black);
             MRenderer.DrawGradTri(
-                SLBoxPos + SLBoxSize, SLBoxCentre, SLBoxPos + new Vec2(SLBoxSize.x, 0f),
-                Color.Black, MMCol, TRCol);
+                SlBoxPos + SlBoxSize, slBoxCentre, SlBoxPos + new Vec2(SlBoxSize.x, 0f),
+                Color.Black, _mmCol, _trCol);
             
-            Vec2 centre = new Vec2(HBarSize.x / 2f, 0f);
-            Vec2 sixth = new Vec2(0f, HBarSize.y / 6f);
+            var centre = new Vec2(HBarSize.x / 2f, 0f);
+            var sixth = new Vec2(0f, HBarSize.y / 6f);
             //Hue gradient. Line calls are easier than doing quads (they get converted to sets of triangles internally the same as quads)
             MRenderer.DrawGradLine(HBarPos + centre, HBarPos + sixth + centre, centre.x, Color.Red, Color.Yellow);
             MRenderer.DrawGradLine(HBarPos + sixth + centre, HBarPos + sixth * 2f + centre, centre.x, Color.Yellow, Color.Lime);
@@ -98,10 +101,10 @@ namespace MClient.UiSystem.Default
             float localSliderPos = Maths.Clamp(HSliderPos, HBarPos.y + UiScale, HBarPos.y + HBarSize.y - UiScale);
             MRenderer.DrawLine(new Vec2(HBarPos.x, localSliderPos), new Vec2(HBarPos.x + HBarSize.x, localSliderPos), 1f * UiScale, TextColor);
 
-            picker.color = CCol;
-            Vec2 localPickerPos = Vec2.Clamp(SLPickerPos, SLBoxPos + Vec2.One * UiScale, SLBoxPos + SLBoxSize - Vec2.One * UiScale);
-            MRenderer.DrawPoint(localPickerPos, 2.5f * UiScale, RECol);
-            MRenderer.DrawSprite(picker, localPickerPos - new Vec2(8f) * UiScale, UiScale);
+            _picker.color = _cCol;
+            var localPickerPos = Vec2.Clamp(SlPickerPos, SlBoxPos + Vec2.One * UiScale, SlBoxPos + SlBoxSize - Vec2.One * UiScale);
+            MRenderer.DrawPoint(localPickerPos, 2.5f * UiScale, _reCol);
+            MRenderer.DrawSprite(_picker, localPickerPos - new Vec2(8f) * UiScale, UiScale);
 
 
         }

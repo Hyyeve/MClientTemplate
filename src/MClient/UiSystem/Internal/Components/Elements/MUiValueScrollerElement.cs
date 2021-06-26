@@ -7,24 +7,27 @@ using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {
+    /// <summary>
+    /// Base class for Ui Value Scrollers. Contains all basic functionality.
+    /// </summary>
     public abstract class MUiValueScrollerElement : MUiFieldElement
     {
         protected readonly string Title;
         protected double Value;
         protected string ValueString;
 
-        private bool dragging;
-        private Vec2 mouseZero;
-        private readonly ValueType valueType;
-        private double oldVal;
-        private Vec2 accumulatedOffset = Vec2.Zero;
+        private bool _dragging;
+        private Vec2 _mouseZero;
+        private readonly MValueType _valueType;
+        private double _oldVal;
+        private Vec2 _accumulatedOffset = Vec2.Zero;
 
         /// <inheritdoc />
         protected MUiValueScrollerElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
-            valueType = GetValueType(field);
+            _valueType = GetValueType(field);
             Title = GetName(field);
-            size = size * UiScale;
+            size *= UiScale;
             Value = GetValue();
             size.x = Graphics.GetStringWidth(Title + "  " + $"{Value:0.0}") * UiScale;
             SetSize(size, true);
@@ -46,13 +49,13 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
             ValueString = $"{Value:0.0}";
 
-            if (!dragging) return;
+            if (!_dragging) return;
             
-            Vec2 offset = MInputHandler.MousePositionGame - mouseZero;
-            Value = oldVal + (offset.x + offset.y) / 10;
+            var offset = MInputHandler.MousePositionGame - _mouseZero;
+            Value = _oldVal + (offset.x + offset.y) / 10;
             SetValue(Value);
-            MInputHandler.MousePositionGame = mouseZero;
-            oldVal = Value;
+            MInputHandler.MousePositionGame = _mouseZero;
+            _oldVal = Value;
             Value = GetValue();
 
             ValueString = newValueString;
@@ -64,19 +67,19 @@ namespace MClient.UiSystem.Internal.Components.Elements
             switch (e.Action)
             {
                 case MMouseAction.LeftPressed when IsOverlapping(e.MousePosGame):
-                    mouseZero = e.MousePosGame;
-                    oldVal = Value;
-                    dragging = true;
+                    _mouseZero = e.MousePosGame;
+                    _oldVal = Value;
+                    _dragging = true;
                     MUiHandler.HideMouse();
                     break;
                 case MMouseAction.LeftReleased:
-                    dragging = false;
-                    accumulatedOffset = Vec2.Zero;
+                    _dragging = false;
+                    _accumulatedOffset = Vec2.Zero;
                     MUiHandler.ShowMouse();
                     break;
                 case MMouseAction.Scrolled when IsOverlapping (e.MousePosGame):
-                    if (dragging) break;
-                    SetValue(GetValue() + Math.Sign(e.Scroll) * (valueType == ValueType.Int ? -1f : -0.1f));
+                    if (_dragging) break;
+                    SetValue(GetValue() + Math.Sign(e.Scroll) * (_valueType == MValueType.Int ? -1f : -0.1f));
                     break;
             }
         }
@@ -88,37 +91,37 @@ namespace MClient.UiSystem.Internal.Components.Elements
         /// <inheritdoc />
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
-            if (GetValueType(fieldInfo) == ValueType.Invalid)
+            if (GetValueType(fieldInfo) == MValueType.Invalid)
                 throw new Exception("UiSliderElement field was not a valid number type! "
-                                    + fieldInfo.DeclaringType.Name + "." + fieldInfo.Name);
+                                    + fieldInfo.DeclaringType?.Name + "." + fieldInfo.Name);
             if (!fieldInfo.IsStatic)
-                throw new Exception("UiSliderElement field isn't static!" + fieldInfo.DeclaringType.Name +
+                throw new Exception("UiSliderElement field isn't static!" + fieldInfo.DeclaringType?.Name +
                                     "." + fieldInfo.Name);
         }
 
         private double GetValue()
         {
-            return valueType switch
+            return _valueType switch
             {
-                ValueType.Int => (int) AttatchedField.GetValue(null),
-                ValueType.Float => (float) AttatchedField.GetValue(null),
-                ValueType.Double => (double) AttatchedField.GetValue(null),
-                ValueType.Invalid => double.NaN,
+                MValueType.Int => (int) AttatchedField.GetValue(null),
+                MValueType.Float => (float) AttatchedField.GetValue(null),
+                MValueType.Double => (double) AttatchedField.GetValue(null),
+                MValueType.Invalid => double.NaN,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
         
         private void SetValue(double value)
         {
-            switch (valueType)
+            switch (_valueType)
             {
-                case ValueType.Int:
+                case MValueType.Int:
                     AttatchedField.SetValue(null, (int) Math.Round(value));
                     break;
-                case ValueType.Float:
+                case MValueType.Float:
                     AttatchedField.SetValue(null, (float) value);
                     break;
-                case ValueType.Double:
+                case MValueType.Double:
                     AttatchedField.SetValue(null, (double) value);
                     break;
                 default:
@@ -127,29 +130,29 @@ namespace MClient.UiSystem.Internal.Components.Elements
         }
 
 
-        private ValueType GetValueType(FieldInfo field)
+        private MValueType GetValueType(FieldInfo field)
         {
             if (field.FieldType == typeof(int))
             {
-                return ValueType.Int;
+                return MValueType.Int;
             }
 
             if (field.FieldType == typeof(float))
             {
-                return ValueType.Float;
+                return MValueType.Float;
             }
 
             if (field.FieldType == typeof(double))
             {
-                return ValueType.Double;
+                return MValueType.Double;
             }
 
-            return ValueType.Invalid;
+            return MValueType.Invalid;
         }
 
         private string GetName(FieldInfo field)
         {
-            MUiValueScrollerAttribute att = (MUiValueScrollerAttribute) Attribute.GetCustomAttribute(field, typeof(MUiValueScrollerAttribute));
+            var att = (MUiValueScrollerAttribute) Attribute.GetCustomAttribute(field, typeof(MUiValueScrollerAttribute));
             return att != null ? att.TitleOverride == "" ? field.Name : att.TitleOverride : field.Name;
         }
         

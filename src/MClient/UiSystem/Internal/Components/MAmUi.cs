@@ -3,11 +3,14 @@ using MClient.Core.EventSystem.Events.Input;
 
 namespace MClient.UiSystem.Internal.Components
 {
+    /// <summary>
+    /// Base class for most of my Ui system
+    /// </summary>
     public abstract class MAmUi
     {
-        public event OnChanged OnTransformChanged;
+        public event MOnChanged OnTransformChanged;
         
-        public delegate void OnChanged();
+        public delegate void MOnChanged();
         
         public float LeftEdge => GetPos().x;
         public float RightEdge => GetPos().x + GetSize().x;

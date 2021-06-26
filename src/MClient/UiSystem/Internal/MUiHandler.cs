@@ -16,11 +16,14 @@ using MoreLinq;
 
 namespace MClient.UiSystem.Internal
 {
+    /// <summary>
+    /// Core handler for all Ui
+    /// </summary>
     [MAutoRegisterEvents]
     public static class MUiHandler
     {
-        public static readonly float GlobalUiScale = 0.5f;
-        
+        public const float GlobalUiScale = 0.5f;
+
         private static readonly SpriteMap Mouse = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiCursor"), 16, 16);
         private static readonly Dictionary<string, MUiState> UiPanels = new Dictionary<string, MUiState>();
         private static readonly List<string> UpdateOrder = new List<string>();
@@ -36,14 +39,16 @@ namespace MClient.UiSystem.Internal
             ShowMouse();
         }
 
-
+        /// <summary>
+        /// Adds a panel, given an ID and Ui Container.
+        /// </summary>
         public static void AddPanel(string id, MUiContainer ui)
         {
             UiPanels.Add(id, new MUiState(id, ui));
             UpdateOrder.Add(id);
             ReverseUpdateOrder.Insert(0, id);
         }
-
+        
         private static void AddPanel(string id, MUiContainer ui, Type type)
         {
             UiPanels.Add(id, new MUiState(id, ui, type));
@@ -51,6 +56,9 @@ namespace MClient.UiSystem.Internal
             ReverseUpdateOrder.Insert(0, id);
         }
 
+        /// <summary>
+        /// Removes a panel with the given ID
+        /// </summary>
         public static void RemovePanel(string id)
         {
             UiPanels.Remove(id);
@@ -58,11 +66,17 @@ namespace MClient.UiSystem.Internal
             ReverseUpdateOrder.Remove(id);
         }
         
+        /// <summary>
+        /// Checks if a panel with the given ID is open
+        /// </summary>
         public static bool IsOpen(string id)
         {
             return UiPanels.ContainsKey(id) && UiPanels[id].Active;
         }
 
+        /// <summary>
+        /// Opens the panel with the given ID
+        /// </summary>
         public static void Open(string id)
         {
             if(UiPanels.ContainsKey(id)) UiPanels[id].EnablePanel();
@@ -70,23 +84,35 @@ namespace MClient.UiSystem.Internal
             _handlingUi = true;
         }
 
+        /// <summary>
+        /// Closes the panel with the given ID
+        /// </summary>
         public static void Close(string id)
         {
             if (UiPanels.ContainsKey(id)) UiPanels[id].DisablePanel();
             if (!AnyOpen()) _handlingUi = false;
         }
 
+        /// <summary>
+        /// Checks if any Ui panels are open
+        /// </summary>
         public static bool AnyOpen()
         {
             return UiPanels.Max(ui => ui.Value.Active);
         }
 
+        /// <summary>
+        /// Closes all Ui panels.
+        /// </summary>
         public static void CloseAll()
         {
             UiPanels.ForEach(ui => ui.Value.DisablePanel());
             _handlingUi = false;
         }
 
+        /// <summary>
+        /// Checks if a UiState is the topmost at the given position (visually)
+        /// </summary>
         public static bool IsTop(MUiState state, Vec2 pos)
         {
             foreach (var ui in ReverseUpdateOrder.Select(id => UiPanels[id]))
@@ -97,20 +123,29 @@ namespace MClient.UiSystem.Internal
             return true;
         }
 
+        /// <summary>
+        /// Sets the given UiState to be the topmost (visually)
+        /// </summary>
         public static void SetTop(MUiState state)
         {
-            UpdateOrder.Remove(state.id);
-            ReverseUpdateOrder.Remove(state.id);
-            UpdateOrder.Add(state.id);
-            ReverseUpdateOrder.Insert(0,state.id);
+            UpdateOrder.Remove(state.Id);
+            ReverseUpdateOrder.Remove(state.Id);
+            UpdateOrder.Add(state.Id);
+            ReverseUpdateOrder.Insert(0,state.Id);
         }
 
-        public static void SetCol(string id, UiColorArea area, Color col)
+        /// <summary>
+        /// Sets the base colour for a panel
+        /// </summary>
+        public static void SetCol(string id, MUiColorArea area, Color col)
         {
             if (UiPanels.ContainsKey(id)) UiPanels[id].SetCol(area, col);
         }
 
 
+        /// <summary>
+        /// Internal update call for Ui
+        /// </summary>
         [MEventWorldDrawHud]
         public static void UpdateUi()
         {
@@ -119,6 +154,9 @@ namespace MClient.UiSystem.Internal
             DrawMouse();
         }
 
+        /// <summary>
+        /// Internal update call for Ui
+        /// </summary>
         [MEventKeyTyped]
         public static void SendUiKeyEvent(MEventKeyTyped e)
         {
@@ -127,6 +165,10 @@ namespace MClient.UiSystem.Internal
             tempUpdateOrder.ForEach(id => UiPanels[id].HandleKeyEvent(e));
         }
 
+
+        /// <summary>
+        /// Internal update call for Ui
+        /// </summary>
         [MEventMouseAction]
         public static void SendUiMouseEvent(MEventMouseAction e)
         {
@@ -136,11 +178,17 @@ namespace MClient.UiSystem.Internal
             
         }
 
+        /// <summary>
+        /// Disables the ui mouse
+        /// </summary>
         public static void HideMouse()
         {
             _shouldDrawMouse = false;
         }
 
+        /// <summary>
+        /// Enables the ui mouse
+        /// </summary>
         public static void ShowMouse()
         {
             _shouldDrawMouse = true;
@@ -149,7 +197,7 @@ namespace MClient.UiSystem.Internal
         private static void DrawMouse()
         {
             if (!_shouldDrawMouse) return;
-            Vec2 pos = MInputHandler.MousePositionGame;
+            var pos = MInputHandler.MousePositionGame;
             //TODO: Different mouse icons depending on what's hovered currently
             MRenderer.DrawSprite(Mouse, pos, GlobalUiScale);
         }
@@ -160,7 +208,7 @@ namespace MClient.UiSystem.Internal
                 .GetTypes()
                 .Where(x => x.GetCustomAttributes(typeof(MAutoUiAttribute), false).FirstOrDefault() !=
                             null);
-            foreach (Type t in types)
+            foreach (var t in types)
             {
                 MLogger.Log("Attempting to auto-generate UI panel from class " + t.Name, logSection: MLogger.MLogSection.Ui);
                 bool panel = TryGeneratePanel(t, (MAutoUiAttribute) Attribute.GetCustomAttribute(t, typeof(MAutoUiAttribute)));
@@ -177,7 +225,7 @@ namespace MClient.UiSystem.Internal
         private static bool TryGeneratePanel(Type type, MAutoUiAttribute attribute)
         {
 
-            MDefaultUiContainer container = new MDefaultUiContainer(Vec2.One, Vec2.One);
+            var container = new MDefaultUiContainer(Vec2.One, Vec2.One);
             container.EnableAlwaysAutoResize(attribute.RowWidth);
             
             if (!type.IsClass)
@@ -187,9 +235,9 @@ namespace MClient.UiSystem.Internal
             }
             
 
-            foreach (MemberInfo info in type.GetMembers())
+            foreach (var info in type.GetMembers())
             {
-                Attribute att = Attribute.GetCustomAttribute(info,typeof(UiElementAttribute));
+                var att = Attribute.GetCustomAttribute(info,typeof(MUiElementAttribute));
                 if (att is null) continue;
                 
                 switch (info.MemberType)
@@ -202,7 +250,7 @@ namespace MClient.UiSystem.Internal
                         continue;
                 }
 
-                Type t = att.GetType();
+                var t = att.GetType();
 
                 if (t == typeof(MUiActionButtonAttribute) && info.MemberType == MemberTypes.Method)
                 {

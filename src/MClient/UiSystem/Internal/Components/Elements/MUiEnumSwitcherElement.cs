@@ -9,20 +9,23 @@ using MoreLinq;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {
+    /// <summary>
+    /// Base class for Ui Enum Switchers. Contains all basic functionality.
+    /// </summary>
     public abstract class MUiEnumSwitcherElement : MUiFieldElement
     {
         protected readonly float Padding;
         protected readonly string Title;
         protected string EnumMember;
         protected bool Pressed;
-        private List<String> EnumMembers;
+        private List<string> _enumMembers;
         
-        /// <inheritdoc />
-        public MUiEnumSwitcherElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
+        
+        protected MUiEnumSwitcherElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             Padding = 1f * UiScale;
             Title = GetName(field);
-            size = size * UiScale;
+            size *= UiScale;
             size.x = Graphics.GetStringWidth(Title + LongestEnumMember(field) + " ") * UiScale + Padding * 4f;
             SetSize(size, true);
         }
@@ -30,11 +33,11 @@ namespace MClient.UiSystem.Internal.Components.Elements
         private string LongestEnumMember(FieldInfo field)
         {
             VerifyFieldInfo(field);
-            EnumMembers = Enum.GetNames(field.FieldType).ToList();
-            return EnumMembers.MaxBy(e => e.Length).First();
+            _enumMembers = Enum.GetNames(field.FieldType).ToList();
+            return _enumMembers.MaxBy(e => e.Length).First();
         }
 
-        public MUiEnumSwitcherElement(Vec2 pos, Vec2 size, FieldInfo field, float padding) : base(pos, size, field)
+        protected MUiEnumSwitcherElement(Vec2 pos, Vec2 size, FieldInfo field, float padding) : base(pos, size, field)
         {
             Padding = padding * UiScale;
             Title = GetName(field);
@@ -43,9 +46,9 @@ namespace MClient.UiSystem.Internal.Components.Elements
             SetSize(size, true);
         }
 
-        private string GetName(FieldInfo field)
+        private static string GetName(FieldInfo field)
         {
-            Attribute att = Attribute.GetCustomAttribute(field, typeof(MUiEnumSwitcherAttribute));
+            var att = Attribute.GetCustomAttribute(field, typeof(MUiEnumSwitcherAttribute));
             return att != null
                 ? ((MUiEnumSwitcherAttribute) att).TitleOverride == "" ? field.Name : ((MUiEnumSwitcherAttribute) att).TitleOverride
                 : field.Name;
@@ -76,13 +79,13 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
         private void RotateEnum(int dir)
         {
-            int current = EnumMembers.IndexOf(EnumMember);
+            int current = _enumMembers.IndexOf(EnumMember);
             current += dir;
-            if (current < 0) current = EnumMembers.Count - 1;
-            if (current > EnumMembers.Count-1) current = 0;
-            EnumMember = EnumMembers[current];
+            if (current < 0) current = _enumMembers.Count - 1;
+            if (current > _enumMembers.Count-1) current = 0;
+            EnumMember = _enumMembers[current];
             //dynamics are super funky and fun!
-            object value = Enum.Parse(AttatchedField.FieldType, EnumMember);
+            var value = Enum.Parse(AttatchedField.FieldType, EnumMember);
             AttatchedField.SetValue(null,value);
         }
 
@@ -95,9 +98,9 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             if (!fieldInfo.FieldType.IsEnum)
                 throw new Exception("UiEnumSwitcherElement field was not a enum!"
-                                    + fieldInfo.DeclaringType.Name + "." + fieldInfo.Name);
+                                    + fieldInfo.DeclaringType?.Name + "." + fieldInfo.Name);
             if (!fieldInfo.IsStatic)
-                throw new Exception("UiEnumSwitcherElement field isn't static!" + fieldInfo.DeclaringType.Name +
+                throw new Exception("UiEnumSwitcherElement field isn't static!" + fieldInfo.DeclaringType?.Name +
                                     "." + fieldInfo.Name);
         }
 

@@ -6,6 +6,9 @@ using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {
+    /// <summary>
+    /// Base class for Ui Toggles. Contains all basic functionality.
+    /// </summary>
     public abstract class MUiToggleElement : MUiFieldElement
     {
         
@@ -20,7 +23,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             Padding = 1f * UiScale;
             Title = GetName(field);
-            size = size * UiScale;
+            size *= UiScale;
             size.x = Graphics.GetStringWidth(Title) * UiScale + size.y + Padding;
             SetSize(size, true);
             Toggled = (bool) AttatchedField.GetValue(null);
@@ -31,15 +34,15 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             Padding = toggleBoxPadding * UiScale;
             Title = GetName(field);
-            size = size * UiScale;
+            size *= UiScale;
             size.x = Graphics.GetStringWidth(Title) * UiScale + size.y + Padding;
             SetSize(size, true);
             Toggled = (bool) AttatchedField.GetValue(null);
         }
 
-        private string GetName(FieldInfo field)
+        private static string GetName(FieldInfo field)
         {
-            Attribute att = Attribute.GetCustomAttribute(field,typeof(MUiToggleAttribute));
+            var att = Attribute.GetCustomAttribute(field,typeof(MUiToggleAttribute));
             return att != null ? ((MUiToggleAttribute) att).TitleOverride == "" ? field.Name : ((MUiToggleAttribute) att).TitleOverride : field.Name;
         }
 
@@ -47,9 +50,9 @@ namespace MClient.UiSystem.Internal.Components.Elements
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
             if (fieldInfo.FieldType != typeof(bool)) throw new Exception("UiToggleElement field was not a boolean! " 
-                                                                         + fieldInfo.DeclaringType.Name + "." + fieldInfo.Name);
+                                                                         + fieldInfo.DeclaringType?.Name + "." + fieldInfo.Name);
             if (!fieldInfo.IsStatic)
-                throw new Exception("UiToggleElement field isn't static!" + fieldInfo.DeclaringType.Name +
+                throw new Exception("UiToggleElement field isn't static!" + fieldInfo.DeclaringType?.Name +
                                     "." + fieldInfo.Name);
         }
 

@@ -8,7 +8,7 @@ namespace MClient.MTemplate.MCustomEvents
 
         public static MTemplateEventWithParams Get(object param)
         {
-            MTemplateEventWithParams temp = new MTemplateEventWithParams {Param = param};
+            var temp = new MTemplateEventWithParams {Param = param};
             return temp;
         }
     }

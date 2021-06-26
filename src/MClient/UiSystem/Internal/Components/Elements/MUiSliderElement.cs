@@ -7,6 +7,9 @@ using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {
+    /// <summary>
+    /// Base class for Ui Slider Elements. Contains all basic functionality.
+    /// </summary>
     public abstract class MUiSliderElement : MUiFieldElement
     {
         protected readonly string Title;
@@ -16,15 +19,15 @@ namespace MClient.UiSystem.Internal.Components.Elements
         protected double Percent;
         protected string ValueString;
 
-        private bool dragging;
-        private readonly ValueType valueType;
+        private bool _dragging;
+        private readonly MValueType _valueType;
 
         /// <inheritdoc />
         protected MUiSliderElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             Max = GetMax(field);
             Min = GetMin(field);
-            valueType = GetValueType(field);
+            _valueType = GetValueType(field);
             Title = GetName(field);
             size = size * UiScale;
             size.x = Graphics.GetStringWidth(Title + "  " + $"{Max:0.0}") * UiScale;
@@ -41,26 +44,26 @@ namespace MClient.UiSystem.Internal.Components.Elements
             ValueString = $"{Value:0.0}";
             Percent = (Value - Min) / (Max - Min);
             
-            if (!dragging) return;
+            if (!_dragging) return;
             
-            float MouseX = MInputHandler.MousePositionGame.x;
-            float MinX = Position.x + 1f;
-            float MaxX = Position.x + Size.x - 1f;
+            float mouseX = MInputHandler.MousePositionGame.x;
+            float minX = Position.x + 1f;
+            float maxX = Position.x + Size.x - 1f;
             
-            if (MouseX < MinX)
+            if (mouseX < minX)
             {
                 Percent = 0f;
                 SetValue(Min);
                 return;
             }
-            if (MouseX > MaxX)
+            if (mouseX > maxX)
             {
                 Percent = 1f;
                 SetValue(Max);
                 return;
             }
 
-            float MousePercent = (MouseX - MinX) / (MaxX - MinX);
+            float MousePercent = (mouseX - minX) / (maxX - minX);
             double value = MousePercent * (Max - Min) + Min;
             SetValue(value);
             Value = GetValue();
@@ -71,11 +74,11 @@ namespace MClient.UiSystem.Internal.Components.Elements
         /// <inheritdoc />
         public override void HandleMouseEvent(MEventMouseAction e)
         {
-            dragging = e.Action switch
+            _dragging = e.Action switch
             {
                 MMouseAction.LeftPressed when IsOverlapping(e.MousePosGame) => true,
                 MMouseAction.LeftReleased => false,
-                _ => dragging
+                _ => _dragging
             };
         }
 
@@ -85,37 +88,37 @@ namespace MClient.UiSystem.Internal.Components.Elements
         /// <inheritdoc />
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
-            if (GetValueType(fieldInfo) == ValueType.Invalid)
+            if (GetValueType(fieldInfo) == MValueType.Invalid)
                 throw new Exception("UiSliderElement field was not a valid number type! "
-                                    + fieldInfo.DeclaringType.Name + "." + fieldInfo.Name);
+                                    + fieldInfo.DeclaringType?.Name + "." + fieldInfo.Name);
             if (!fieldInfo.IsStatic)
-                throw new Exception("UiSliderElement field isn't static!" + fieldInfo.DeclaringType.Name +
+                throw new Exception("UiSliderElement field isn't static!" + fieldInfo.DeclaringType?.Name +
                                     "." + fieldInfo.Name);
         }
 
         private double GetValue()
         {
-            return valueType switch
+            return _valueType switch
             {
-                ValueType.Int => (int) AttatchedField.GetValue(null),
-                ValueType.Float => (float) AttatchedField.GetValue(null),
-                ValueType.Double => (double) AttatchedField.GetValue(null),
-                ValueType.Invalid => double.NaN,
+                MValueType.Int => (int) AttatchedField.GetValue(null),
+                MValueType.Float => (float) AttatchedField.GetValue(null),
+                MValueType.Double => (double) AttatchedField.GetValue(null),
+                MValueType.Invalid => double.NaN,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
         
         private void SetValue(double value)
         {
-            switch (valueType)
+            switch (_valueType)
             {
-                case ValueType.Int:
+                case MValueType.Int:
                     AttatchedField.SetValue(null, (int) Math.Round(value));
                     break;
-                case ValueType.Float:
+                case MValueType.Float:
                     AttatchedField.SetValue(null, (float) value);
                     break;
-                case ValueType.Double:
+                case MValueType.Double:
                     AttatchedField.SetValue(null, (double) value);
                     break;
                 default:
@@ -124,46 +127,46 @@ namespace MClient.UiSystem.Internal.Components.Elements
         }
 
 
-        private ValueType GetValueType(FieldInfo field)
+        private MValueType GetValueType(FieldInfo field)
         {
             if (field.FieldType == typeof(int))
             {
-                return ValueType.Int;
+                return MValueType.Int;
             }
 
             if (field.FieldType == typeof(float))
             {
-                return ValueType.Float;
+                return MValueType.Float;
             }
 
             if (field.FieldType == typeof(double))
             {
-                return ValueType.Double;
+                return MValueType.Double;
             }
 
-            return ValueType.Invalid;
+            return MValueType.Invalid;
         }
 
-        private string GetName(FieldInfo field)
+        private static string GetName(FieldInfo field)
         {
-            MUiSliderAttribute att = (MUiSliderAttribute) Attribute.GetCustomAttribute(field,typeof(MUiSliderAttribute));
+            var att = (MUiSliderAttribute) Attribute.GetCustomAttribute(field,typeof(MUiSliderAttribute));
             return att != null ? att.TitleOverride == "" ? field.Name : att.TitleOverride : field.Name;
         }
 
-        private double GetMin(FieldInfo field)
+        private static double GetMin(FieldInfo field)
         {
-            MUiSliderAttribute att = (MUiSliderAttribute) Attribute.GetCustomAttribute(field,typeof(MUiSliderAttribute));
-            return att is null ? 0f : att.Min;
+            var att = (MUiSliderAttribute) Attribute.GetCustomAttribute(field,typeof(MUiSliderAttribute));
+            return att?.Min ?? 0f;
         }
 
-        private double GetMax(FieldInfo field)
+        private static double GetMax(FieldInfo field)
         {
-            MUiSliderAttribute att = (MUiSliderAttribute) Attribute.GetCustomAttribute(field,typeof(MUiSliderAttribute));
-            return att is null ? 1f : att.Max;
+            var att = (MUiSliderAttribute) Attribute.GetCustomAttribute(field,typeof(MUiSliderAttribute));
+            return att?.Max ?? 1f;
         }
     }
 
-    internal enum ValueType
+    internal enum MValueType
     {
         Int,Float,Double, Invalid
     }

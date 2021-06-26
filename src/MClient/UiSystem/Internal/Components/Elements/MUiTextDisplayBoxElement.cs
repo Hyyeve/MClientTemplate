@@ -9,6 +9,9 @@ using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {
+    /// <summary>
+    /// Base class for Ui Text Display Boxes. Contains all basic functionality.
+    /// </summary>
     public abstract class MUiTextDisplayBoxElement : MUiFieldElement
     {
         protected readonly float Padding;
@@ -20,30 +23,30 @@ namespace MClient.UiSystem.Internal.Components.Elements
         
         protected readonly List<string> DrawList = new List<string>();
 
-        private float textStartOffset;
+        private float _textStartOffset;
 
         /// <inheritdoc />
-        public MUiTextDisplayBoxElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
+        protected MUiTextDisplayBoxElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             Padding = 1f * UiScale;
-            MUiTextDisplayBoxAttribute attribute = (MUiTextDisplayBoxAttribute) GetAttribute(field);
+            var attribute = (MUiTextDisplayBoxAttribute) GetAttribute(field);
             Title = attribute.TitleOverride == "" ? field.Name : attribute.TitleOverride;
             Size = attribute.Size;
             Size.x = MMathUtils.Max(Size.x, Graphics.GetStringWidth(Title) * UiScale + Padding * 8f);
             LinePrefix = attribute.LinePrefix;
         }
 
-        public MUiTextDisplayBoxElement(Vec2 pos, Vec2 size, FieldInfo field, float padding) : base(pos, size, field)
+        protected MUiTextDisplayBoxElement(Vec2 pos, Vec2 size, FieldInfo field, float padding) : base(pos, size, field)
         {
             Padding = padding * UiScale;
-            MUiTextDisplayBoxAttribute attribute = (MUiTextDisplayBoxAttribute) GetAttribute(field);
+            var attribute = (MUiTextDisplayBoxAttribute) GetAttribute(field);
             Title = attribute.TitleOverride == "" ? field.Name : attribute.TitleOverride;
             Size = attribute.Size;
             Size.x = MMathUtils.Max(Size.x, Graphics.GetStringWidth(Title) * UiScale + Padding * 8f);
             LinePrefix = attribute.LinePrefix;
         }
 
-        private Attribute GetAttribute(FieldInfo field)
+        private static Attribute GetAttribute(MemberInfo field)
         {
             return Attribute.GetCustomAttribute(field, typeof(MUiTextDisplayBoxAttribute));
         }
@@ -59,13 +62,13 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             if (fieldInfo.FieldType != typeof(List<string>))
                 throw new Exception("UiTextDisplayBox field was not a List<string>! " 
-                                    + fieldInfo.DeclaringType.Name + "." + fieldInfo.Name);
+                                    + fieldInfo.DeclaringType?.Name + "." + fieldInfo.Name);
             if (!fieldInfo.IsStatic)
-                throw new Exception("UiTextDisplayBox field isn't static!" + fieldInfo.DeclaringType.Name +
+                throw new Exception("UiTextDisplayBox field isn't static!" + fieldInfo.DeclaringType?.Name +
                                     "." + fieldInfo.Name);
         }
 
-        private List<string> GetVal()
+        private IEnumerable<string> GetVal()
         {
             return (List<string>) AttatchedField.GetValue(null);
         }
@@ -76,7 +79,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             if (!NeedsArranging) return;
             TitlePos = Position + Vec2.One * Padding * 4f;
             TextStartPos = TitlePos + Vec2.Unity * Graphics.GetStringHeight(Title) * UiScale + Padding * 4f * Vec2.Unity;
-            textStartOffset = Graphics.GetStringHeight(Title) * UiScale + Padding * 4f;
+            _textStartOffset = Graphics.GetStringHeight(Title) * UiScale + Padding * 4f;
             NeedsArranging = false;
         }
 
@@ -85,7 +88,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             DrawList.Clear();
 
-            float y = textStartOffset + Padding * 24f;
+            float y = _textStartOffset + Padding * 24f;
             foreach (string s in GetVal())
             {
                 if (CheckStringLength(s))

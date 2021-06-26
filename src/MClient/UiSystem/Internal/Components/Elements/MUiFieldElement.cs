@@ -6,9 +6,12 @@ using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {
+    /// <summary>
+    /// Base class for all Ui Elements that attach to fields. Contains some basic functionality.
+    /// </summary>
     public abstract class MUiFieldElement : MAmUi
     {
-        private MUiState State;
+        private MUiState _state;
 
         protected Vec2 Position;
         protected Vec2 Size;
@@ -18,10 +21,10 @@ namespace MClient.UiSystem.Internal.Components.Elements
         protected Color TextColor;
         protected Color TextAccentColor;
 
-        protected float UiScale => MUiHandler.GlobalUiScale;
+        protected static float UiScale => MUiHandler.GlobalUiScale;
         protected bool NeedsArranging;
         
-        protected FieldInfo AttatchedField;
+        protected readonly FieldInfo AttatchedField;
 
         protected MUiFieldElement(Vec2 pos, Vec2 size, FieldInfo field)
         {
@@ -33,10 +36,10 @@ namespace MClient.UiSystem.Internal.Components.Elements
             UpdateCols();
         }
 
-        private Color GetCol(UiColorArea area)
+        private Color GetCol(MUiColorArea area)
         {
-            MUiColorAttribute[] attribtes = (MUiColorAttribute[])AttatchedField.GetCustomAttributes(typeof(MUiColorAttribute), false);
-            foreach (MUiColorAttribute att in attribtes)
+            MUiColorAttribute[] attributes = (MUiColorAttribute[])AttatchedField.GetCustomAttributes(typeof(MUiColorAttribute), false);
+            foreach (var att in attributes)
             {
                 if (att.ColorArea == area)
                 {
@@ -44,24 +47,24 @@ namespace MClient.UiSystem.Internal.Components.Elements
                 }
             }
 
-            if (State is null) return Color.White;
+            if (_state is null) return Color.White;
 
             return area switch
             {
-                UiColorArea.Base => State.BaseCol,
-                UiColorArea.BaseAccent => State.BaseAccentCol,
-                UiColorArea.Text => State.TextCol,
-                UiColorArea.TextAccent => State.TextAccentCol,
+                MUiColorArea.Base => _state.BaseCol,
+                MUiColorArea.BaseAccent => _state.BaseAccentCol,
+                MUiColorArea.Text => _state.TextCol,
+                MUiColorArea.TextAccent => _state.TextAccentCol,
                 _ => throw new ArgumentOutOfRangeException(nameof(area), area, null)
             };
         }
 
         public override void UpdateCols()
         {
-            BaseColor = GetCol(UiColorArea.Base);
-            BaseAccentColor = GetCol(UiColorArea.BaseAccent);
-            TextColor = GetCol(UiColorArea.Text);
-            TextAccentColor = GetCol(UiColorArea.TextAccent);
+            BaseColor = GetCol(MUiColorArea.Base);
+            BaseAccentColor = GetCol(MUiColorArea.BaseAccent);
+            TextColor = GetCol(MUiColorArea.Text);
+            TextAccentColor = GetCol(MUiColorArea.TextAccent);
         }
         
         public override void HandleUiUpdate()
@@ -113,13 +116,13 @@ namespace MClient.UiSystem.Internal.Components.Elements
         /// <inheritdoc />
         public override void SetOwningState(MUiState state)
         {
-            State = state;
+            _state = state;
         }
 
         /// <inheritdoc />
         public override MUiState GetOwningState()
         {
-            return State;
+            return _state;
         }
         
     }
