@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.UiSystem.Internal.Attributes;
 using MoreLinq;
 
@@ -57,18 +57,18 @@ namespace MClient.UiSystem.Internal.Components.Elements
             if(!IsOverlapping(e.MousePosGame)) return;
             switch (e.Action)
             {
-                case MouseAction.LeftPressed:
+                case MMouseAction.LeftPressed:
                     Pressed = true;
                     RotateEnum(1);
                     break;
-                case MouseAction.LeftReleased:
+                case MMouseAction.LeftReleased:
                     Pressed = false;
                     break;
-                case MouseAction.RightPressed:
+                case MMouseAction.RightPressed:
                     Pressed = true;
                     RotateEnum(-1);
                     break;
-                case MouseAction.RightReleased:
+                case MMouseAction.RightReleased:
                     Pressed = false;
                     break;
             }

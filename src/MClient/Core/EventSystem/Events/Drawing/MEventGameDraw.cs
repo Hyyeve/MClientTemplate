@@ -1,20 +1,19 @@
-﻿using DuckGame;
+﻿using System;
+using DuckGame;
 
-namespace MClient.EventSystem.Events.Drawing
+namespace MClient.Core.EventSystem.Events.Drawing
 {
+    /// <summary>
+    /// MEvent used internally for draw calls. Not recommended for custom use.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
     public class MEventGameDraw : MEvent
     {
-        public Layer layer;
-
-        public MEventGameDraw()
-        {
-
-        }
-
+        public Layer Layer;
+        
         public static MEventGameDraw Get(Layer layer)
         {
-            MEventGameDraw temp = new MEventGameDraw();
-            temp.layer = layer;
+            var temp = new MEventGameDraw {Layer = layer};
             return temp;
         }
     }

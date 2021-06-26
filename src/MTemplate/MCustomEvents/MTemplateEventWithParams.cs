@@ -1,4 +1,4 @@
-﻿using MClient.EventSystem.Events;
+﻿using MClient.Core.EventSystem.Events;
 
 namespace MClient.MTemplate.MCustomEvents
 {

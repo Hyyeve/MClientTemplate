@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
 using MClient.UiSystem.Internal.Attributes;
 
@@ -65,7 +65,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         /// <inheritdoc />
         public override void HandleMouseEvent(MEventMouseAction e)
         {
-            if (e.Action != MouseAction.LeftPressed) return;
+            if (e.Action != MMouseAction.LeftPressed) return;
             if (!IsOverlapping(e.MousePosGame)) return;
             FlipToggle();
         }

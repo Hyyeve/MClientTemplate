@@ -1,6 +1,6 @@
 ﻿using System;
 using DuckGame;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.UiSystem.Internal.Attributes;
 using MClient.UiSystem.Internal.Components;
 

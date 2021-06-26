@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
 using MClient.UiSystem.Internal.Attributes;
 
@@ -63,18 +63,18 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             switch (e.Action)
             {
-                case MouseAction.LeftPressed when IsOverlapping(e.MousePosGame):
+                case MMouseAction.LeftPressed when IsOverlapping(e.MousePosGame):
                     mouseZero = e.MousePosGame;
                     oldVal = Value;
                     dragging = true;
                     MUiHandler.HideMouse();
                     break;
-                case MouseAction.LeftReleased:
+                case MMouseAction.LeftReleased:
                     dragging = false;
                     accumulatedOffset = Vec2.Zero;
                     MUiHandler.ShowMouse();
                     break;
-                case MouseAction.Scrolled when IsOverlapping (e.MousePosGame):
+                case MMouseAction.Scrolled when IsOverlapping (e.MousePosGame):
                     if (dragging) break;
                     SetValue(GetValue() + Math.Sign(e.Scroll) * (valueType == ValueType.Int ? -1f : -0.1f));
                     break;

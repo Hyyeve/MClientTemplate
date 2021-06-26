@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DuckGame;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
-using MClient.EventSystem;
-using MClient.EventSystem.Events.Input;
 using MClient.InputSystem;
 using MClient.Render;
 using MClient.UiSystem.Internal.Attributes;
@@ -321,7 +320,7 @@ namespace MClient.UiSystem.Internal.Components
             
             switch (e.Action)
             {
-                case MouseAction.LeftPressed:
+                case MMouseAction.LeftPressed:
                     MUiHandler.SetTop(GetOwningState());
                     if (IsOverlappingCloseButton(e.MousePosGame))
                     {
@@ -333,11 +332,11 @@ namespace MClient.UiSystem.Internal.Components
                     dragOffset = Position - e.MousePosGame;
                     dragging = true;
                     return;
-                case MouseAction.LeftReleased:
-                case MouseAction.MiddlePressed:
-                case MouseAction.MiddleReleased:
-                case MouseAction.RightPressed:
-                case MouseAction.RightReleased:
+                case MMouseAction.LeftReleased:
+                case MMouseAction.MiddlePressed:
+                case MMouseAction.MiddleReleased:
+                case MMouseAction.RightPressed:
+                case MMouseAction.RightReleased:
                     dragging = false;
                     return;
             }

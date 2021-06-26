@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
 using MClient.UiSystem.Internal.Attributes;
 using MClient.Utils;
@@ -153,7 +153,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             switch (e.Action)
             {
-                case MouseAction.LeftPressed:
+                case MMouseAction.LeftPressed:
                     if (IsOverlappingPickerBox(e.MousePosGame))
                     {
                         draggingSLPicker = true;
@@ -164,7 +164,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
                         draggingHBar = true;
                     }
                     break;
-                case MouseAction.LeftReleased:
+                case MMouseAction.LeftReleased:
                     draggingHBar = false;
                     draggingSLPicker = false;
                     break;

@@ -1,16 +1,24 @@
-﻿using MClient.EventSystem.Events;
+﻿using System;
 using RenderTarget2D = DuckGame.RenderTarget2D;
 
-namespace MClientCore.MClient.EventSystem.Events.Drawing
+namespace MClient.Core.EventSystem.Events.Drawing
 {
+    /// <summary>
+    /// MEvent that is called after all drawing is finished.
+    /// WARNING: Renderers are not active at this point,
+    /// and attempting to do rendering with this event will throw a exception.
+    /// </summary>
+    /// <remarks>
+    /// The Screen render target is not currently used in this event and will always be null.
+    /// </remarks>
+    [AttributeUsage(AttributeTargets.Method)]
     public class MEventPostDraw : MEvent
     {
         public RenderTarget2D Screen;
-
+        
         public static MEventPostDraw Get(RenderTarget2D screen)
         {
-            MEventPostDraw temp = new MEventPostDraw();
-            temp.Screen = screen;
+            var temp = new MEventPostDraw {Screen = screen};
             return temp;
         }
     }

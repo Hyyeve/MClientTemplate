@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using DuckGame;
-using MClient.EventSystem;
-using MClient.EventSystem.Events.Drawing;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem;
+using MClient.Core.EventSystem.Events.Drawing;
+using MClient.Core.EventSystem.Events.Helper;
 using MClient.Render.RenderTasks;
 using MClient.Utils;
 using MClientCore.MClient.Core;
@@ -26,7 +26,7 @@ namespace MClient.Render
 
         public static bool DoMsaa => _doMssa;
 
-        [MInitEvent]
+        [MEventInit]
         public static void InitEvent()
         {
             Init();
@@ -49,14 +49,14 @@ namespace MClient.Render
         [MEventGameDraw]
         public static void Draw(MEventGameDraw e)
         {
-            UpdateState(e.layer);
+            UpdateState(e.Layer);
 
-            MRenderEventHelper.CallWorldDrawLayerEvent(e.layer);
+            MRenderEventHelper.CallWorldDrawLayerEvent(e.Layer);
 
             RunTasks();
             ResetState();
 
-            MRenderEventHelper.CallScreenDrawLayerEvent(e.layer);
+            MRenderEventHelper.CallScreenDrawLayerEvent(e.Layer);
 
         }
 

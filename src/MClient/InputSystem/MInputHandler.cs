@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
 using DuckGame;
+using MClient.Core.EventSystem;
+using MClient.Core.EventSystem.Events.Game;
+using MClient.Core.EventSystem.Events.Helper;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
-using MClient.EventSystem;
-using MClient.EventSystem.Events.Game;
-using MClient.EventSystem.Events.Helper;
-using MClient.EventSystem.Events.Input;
 using MClient.Utils;
 
 
 namespace MClient.InputSystem
 {
-    [MAutoRegisterMEvents]
+    [MAutoRegisterEvents]
     public static class MInputHandler
     {
         public static bool KeyPressed(Keys key) => Keyboard.Pressed(key);
@@ -95,36 +95,36 @@ namespace MClient.InputSystem
             switch (Mouse.left)
             {
                 case InputState.Pressed:
-                    MEventHandler.Call(MEventMouseAction.Get(MouseAction.LeftPressed, mpg));
+                    MEventHandler.Call(MEventMouseAction.Get(MMouseAction.LeftPressed, mpg));
                     break;
                 case InputState.Released:
-                    MEventHandler.Call(MEventMouseAction.Get(MouseAction.LeftReleased, mpg));
+                    MEventHandler.Call(MEventMouseAction.Get(MMouseAction.LeftReleased, mpg));
                     break;
             }
 
             switch (Mouse.right)
             {
                 case InputState.Pressed:
-                    MEventHandler.Call(MEventMouseAction.Get(MouseAction.RightPressed, mpg));
+                    MEventHandler.Call(MEventMouseAction.Get(MMouseAction.RightPressed, mpg));
                     break;
                 case InputState.Released:
-                    MEventHandler.Call(MEventMouseAction.Get(MouseAction.RightReleased, mpg));
+                    MEventHandler.Call(MEventMouseAction.Get(MMouseAction.RightReleased, mpg));
                     break;
             }
 
             switch (Mouse.middle)
             {
                 case InputState.Pressed:
-                    MEventHandler.Call(MEventMouseAction.Get(MouseAction.MiddlePressed, mpg));
+                    MEventHandler.Call(MEventMouseAction.Get(MMouseAction.MiddlePressed, mpg));
                     break;
                 case InputState.Released:
-                    MEventHandler.Call(MEventMouseAction.Get(MouseAction.MiddleReleased, mpg));
+                    MEventHandler.Call(MEventMouseAction.Get(MMouseAction.MiddleReleased, mpg));
                     break;
             }
 
             if (Mouse.scroll != 0)
             {
-                MEventHandler.Call(MEventMouseAction.Get(MouseAction.Scrolled, mpg, Mouse.scroll));
+                MEventHandler.Call(MEventMouseAction.Get(MMouseAction.Scrolled, mpg, Mouse.scroll));
             }
         }
 

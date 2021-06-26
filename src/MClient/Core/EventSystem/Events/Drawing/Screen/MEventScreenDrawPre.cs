@@ -1,5 +1,11 @@
-﻿namespace MClient.EventSystem.Events.Drawing.Screen
+﻿using System;
+
+namespace MClient.Core.EventSystem.Events.Drawing.Screen
 {
+    /// <summary>
+    /// MEvent that is called after the PreDrawLayer is "drawn", with the renderer set to use Screen positions.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
     public class MEventScreenDrawPre : MEvent
     {
     }

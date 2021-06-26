@@ -111,9 +111,10 @@
     <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventGameExit.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventPostGameUpdate.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventPreGameUpdate.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MAutoRegisterMEventsAttribute.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MInitEvent.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MPostInitEvent.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MAutoRegisterEventsAttribute.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MEventEarlyInit.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MEventInit.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MEventLateInit.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventKeyPressed.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventKeyTyped.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventMouseAction.cs" />
@@ -126,8 +127,6 @@
     <Compile Include="src\MClient\Core\PatchSystem\AutoPatcher\MAutoPatchAttribute.cs" />
     <Compile Include="src\MClient\Core\PatchSystem\AutoPatcher\MAutoPatchHandler.cs" />
     <Compile Include="src\MClient\Core\PatchSystem\MPatchHandler.cs" />
-    <Compile Include="src\MClient\Core\SettingsSystem\MSerializeSettingAttribute.cs" />
-    <Compile Include="src\MClient\Core\SettingsSystem\MSettingHandler.cs" />
     <Compile Include="src\MClient\Core\Utils\MColor.cs" />
     <Compile Include="src\MClient\Core\Utils\MDelayUtil.cs" />
     <Compile Include="src\MClient\Core\Utils\MMathUtils.cs" />
@@ -146,6 +145,8 @@
     <Compile Include="src\MClient\RenderSystem\MRenderEventHelper.cs" />
     <Compile Include="src\MClient\RenderSystem\RenderTasks\MPointRenderTask.cs" />
     <Compile Include="src\MClient\RenderSystem\RenderTasks\MRenderTask.cs" />
+    <Compile Include="src\MClient\SettingsSystem\MSerializeSettingAttribute.cs" />
+    <Compile Include="src\MClient\SettingsSystem\MSettingHandler.cs" />
     <Compile Include="src\MClient\UiSystem\Default\MDefaultUiActionButtonElement.cs" />
     <Compile Include="src\MClient\UiSystem\Default\MDefaultUiColorPickerElement.cs" />
     <Compile Include="src\MClient\UiSystem\Default\MDefaultUiContainer.cs" />

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Drawing.Screen;
-using MClient.EventSystem.Events.Drawing.World;
-using MClient.EventSystem.Events.Helper;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Drawing.World;
+using MClient.Core.EventSystem.Events.Helper;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
 using MClient.PatchSystem.Internal;
 using MClient.Render;
@@ -20,7 +19,7 @@ using MoreLinq;
 
 namespace MClient.UiSystem.Internal
 {
-    [MAutoRegisterMEvents]
+    [MAutoRegisterEvents]
     public static class MUiHandler
     {
         public static readonly float GlobalUiScale = 0.5f;
@@ -32,7 +31,7 @@ namespace MClient.UiSystem.Internal
         private static bool _handlingUi;
         private static bool _shouldDrawMouse;
 
-        [MInitEvent]
+        [MEventInit]
         public static void Init()
         {
             LoadAutoPanels();

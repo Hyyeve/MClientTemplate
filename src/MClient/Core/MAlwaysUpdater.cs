@@ -1,15 +1,15 @@
 ﻿using System;
 using DuckGame;
-using MClient.EventSystem;
-using MClient.EventSystem.Events.Game;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem;
+using MClient.Core.EventSystem.Events.Game;
+using MClient.Core.EventSystem.Events.Helper;
 
 namespace MClientCore.MClient.Core
 {
 
     internal static class MAlwaysUpdater
     {
-        [MInitEvent]
+        [MEventInit]
         public static void Init()
         {
             MEventHandler.Register(typeof(MAlwaysUpdater));

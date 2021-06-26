@@ -2,19 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MClient.EventSystem.Events;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem.Events;
+using MClient.Core.EventSystem.Events.Helper;
 using MClientCore.MClient.Core;
 
-namespace MClient.EventSystem
+namespace MClient.Core.EventSystem
 {
+    /// <summary>
+    /// This class handles all calling of events.
+    /// </summary>
+    /// <remarks>
+    /// Event methods must either take the event as their only parameter or have no parameters.
+    /// </remarks>
     public static class MEventHandler
     {
-        private static readonly Dictionary<Object, Dictionary<Type, MethodInfo>> Registered = new Dictionary<Object, Dictionary<Type, MethodInfo>>();
+        
+        //Dictionaries for storing registered types & methods, as well as ones that need to be de-registered.
+        private static readonly Dictionary<object, Dictionary<Type, MethodInfo>> Registered = new Dictionary<object, Dictionary<Type, MethodInfo>>();
         private static readonly Dictionary<Type, object> ToRemove = new Dictionary<Type, object>();
         private static bool _inCallLoop = false;
         
-        public static void Register(Type type, Object instance = null)
+        /// <summary>
+        /// Registers all event methods within a class.
+        /// </summary>
+        /// <param name="type">The <c>Type</c> to register</param>
+        /// <param name="instance">The instance of that type to register. If null, only static event methods will be registered.</param>
+        public static void Register(Type type, object instance = null)
         {
             Dictionary<Type, MethodInfo> toAdd = null;
             
@@ -31,11 +44,11 @@ namespace MClient.EventSystem
                 return;
             }
 
-            toAdd ??= new Dictionary<Type, MethodInfo>();
+            toAdd = new Dictionary<Type, MethodInfo>();
 
             MethodInfo[] memberInfo = type.GetMethods();
 
-            foreach (MethodInfo methodInfo in memberInfo)
+            foreach (var methodInfo in memberInfo)
             {
                 var clientEvent = (MEvent) Attribute.GetCustomAttribute(methodInfo, typeof(MEvent));
                 if (clientEvent == null) continue;
@@ -47,7 +60,12 @@ namespace MClient.EventSystem
             MLogger.Log("Finished registering " + type.Name, logSection: ".EVNT");
         }
 
-        public static void DeRegister(Type type, Object instance = null)
+        /// <summary>
+        /// De-Registers all event methods within a class.
+        /// </summary>
+        /// <param name="type">The <c>Type</c> to de-register</param>
+        /// <param name="instance">The instance of that type to de-register. If null, only static event methods will be de-registered.</param>
+        public static void DeRegister(Type type, object instance = null)
         {
             if (_inCallLoop)
             {
@@ -67,16 +85,17 @@ namespace MClient.EventSystem
             }
         }
 
+        /// <summary>
+        /// Calls an event for all corresponding registered event methods.
+        /// </summary>
+        /// <param name="clientEvent">The event to call</param>
         public static void Call(MEvent clientEvent)
         {
-            foreach (KeyValuePair<Type, object> pair in ToRemove)
-            {
-                DeRegister(pair.Key, pair.Value);
-            }
+            CleanRegisteredClasses();
             
             _inCallLoop = true;
             
-            foreach (Object obj in Registered.Keys)
+            foreach (var obj in Registered.Keys)
             {
                 Registered.TryGetValue(obj, out var eventDictionary);
                 
@@ -103,49 +122,80 @@ namespace MClient.EventSystem
             _inCallLoop = false;
         }
 
+        /// <summary>
+        /// Handles auto-event attributes - Auto-Registering and Init Events. Not intended for custom use!
+        /// </summary>
         public static void InitialiseAll()
         {
             _inCallLoop = true;
             
-            var methods = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .SelectMany(x => x.GetMethods())
-                .Where(x => x.GetCustomAttributes(typeof(MInitEvent), false).FirstOrDefault() !=
-                            null);
+            AutoRegisterAttributeClasses(typeof(MAutoRegisterEventsAttribute), "Auto-Registering class: ");
 
-            var types = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(x => x.GetCustomAttributes(typeof(MAutoRegisterMEventsAttribute), false).FirstOrDefault() !=
-                            null);
-            foreach (Type t in types)
-            {
-                MLogger.Log("Auto-Registering class " + t.Name, logSection: ".EVNT");
-                Register(t);
-            }
-            
-            foreach (MethodInfo method in methods)
-            {
-                MLogger.Log("Invoking init method on " + method.DeclaringType?.Name, logSection: ".EVNT");
-                method.Invoke(null, new object[] { });
-            }
+            InvokeAttributeMethods(typeof(MEventEarlyInit), "Invoking InitEvent on: ");
 
-            methods = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .SelectMany(x => x.GetMethods())
-                .Where(x => x.GetCustomAttributes(typeof(MPostInitEvent), false).FirstOrDefault() !=
-                            null);
-            foreach (MethodInfo method in methods)
-            {
-                MLogger.Log("Invoking post init method on " + method.DeclaringType?.Name, logSection: ".EVNT");
-                method.Invoke(null, new object[] { });
-            }
-            
+            InvokeAttributeMethods(typeof(MEventInit), "Invoking InitEvent on: ");
+
+            InvokeAttributeMethods(typeof(MEventLateInit), "Invoking LateInitEvent on: ");
             
             _inCallLoop = false;
 
+            CleanRegisteredClasses();
+        }
+
+        /// <summary>
+        /// De-Registers all classes that are currently waiting to be de-registered. Not intended for custom use!
+        /// </summary>
+        /// <remarks>
+        /// This is used so that classes attempting to de-register themselves during event calls does not cause a crash.
+        /// Instead, when that happens, the de-registering info is stored, and then the classes are actually
+        /// de-registered once the event call is finished.
+        /// </remarks>
+        public static void CleanRegisteredClasses()
+        {
             foreach (KeyValuePair<Type, object> pair in ToRemove)
             {
                 DeRegister(pair.Key, pair.Value);
+            }
+        }
+        
+        /// <summary>
+        /// Invokes all methods with a given attribute.
+        /// </summary>
+        /// <param name="attributeType">The type of attribute to search for</param>
+        /// <param name="logMessage">The log message for each method called. The name of the method is appended onto the end.</param>
+        /// <remarks>
+        /// This is used internally for the Init Events, however it can also be used for custom auto-events.
+        /// </remarks>
+
+        public static void InvokeAttributeMethods(Type attributeType, string logMessage)
+        {
+            var methods = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .SelectMany(x => x.GetMethods())
+                .Where(x => x.GetCustomAttributes(attributeType, false).FirstOrDefault() !=
+                            null);
+            foreach (var method in methods)
+            {
+                MLogger.Log(logMessage + method.DeclaringType?.Name, logSection: ".EVNT");
+                method.Invoke(null, new object[] { });
+            }
+        }
+
+        /// <summary>
+        /// Registers all classes with a given attribute.
+        /// </summary>
+        /// <param name="attributeType">The type of attribute to search for</param>
+        /// <param name="logMessage">The log message for each method called. The name of the class is appended onto the end.</param>
+        /// <remarks>
+        /// This is used internally for the AutoRegister event, however it can also be used for custom auto-registering.
+        /// </remarks>
+        public static void AutoRegisterAttributeClasses(Type attributeType, string logMessage)
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetCustomAttributes(attributeType, false).FirstOrDefault() != null);
+            foreach (var t in types)
+            {
+                MLogger.Log(logMessage + t.Name, logSection: ".EVNT");
+                Register(t);
             }
         }
     }

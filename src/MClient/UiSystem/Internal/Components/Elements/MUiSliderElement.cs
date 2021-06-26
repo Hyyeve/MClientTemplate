@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
 using MClient.UiSystem.Internal.Attributes;
 
@@ -73,8 +73,8 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             dragging = e.Action switch
             {
-                MouseAction.LeftPressed when IsOverlapping(e.MousePosGame) => true,
-                MouseAction.LeftReleased => false,
+                MMouseAction.LeftPressed when IsOverlapping(e.MousePosGame) => true,
+                MMouseAction.LeftReleased => false,
                 _ => dragging
             };
         }

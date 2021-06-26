@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using DuckGame;
-using MClient.EventSystem;
-using MClient.EventSystem.Events;
-using MClient.EventSystem.Events.Drawing.Screen;
-using MClient.EventSystem.Events.Drawing.World;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem;
+using MClient.Core.EventSystem.Events;
+using MClient.Core.EventSystem.Events.Drawing.Screen;
+using MClient.Core.EventSystem.Events.Drawing.World;
+using MClient.Core.EventSystem.Events.Helper;
 
 namespace MClient.Render
 {
@@ -13,7 +13,7 @@ namespace MClient.Render
         private static Dictionary<Layer, MEvent> _layerToScreenDrawEvent;
         private static Dictionary<Layer, MEvent> _layerToWorldDrawEvent;
 
-        [MInitEvent]
+        [MEventInit]
         public static void SetupDictionaries()
         {
             _layerToScreenDrawEvent = new Dictionary<Layer, MEvent>();

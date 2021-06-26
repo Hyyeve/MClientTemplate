@@ -5,7 +5,7 @@ using System.Reflection;
 using DuckGame;
 using MClientCore.MClient.Core;
 
-namespace MClient.ImprovedDependencyLoader
+namespace MClient.Core.DLLSystem
 {
     public static class MDependencyResolver
     {
@@ -23,17 +23,17 @@ namespace MClient.ImprovedDependencyLoader
         /// </summary>
         private static Assembly Resolve(object sender, ResolveEventArgs args)
         {
-
-            //Name arguments
+            
             string assemblyFullName = args.Name;
             string assemblyShortName = assemblyFullName.Substring(0, assemblyFullName.IndexOf(",", StringComparison.Ordinal));
             
-            //Bool for logging
             bool external;
             
-            //Checks if the dependency is part of this mod.
-            //We don't need to do this - we could ignore events from outside the assembly,
-            //but I decided to make the mod play nice and try and help out other mods if it can.
+            /*
+            Checks if the dependency is part of this mod.
+            We don't need to do this - we could ignore events from outside the assembly,
+            but I decided to make the mod play nice and try and help out other mods if it can.
+            */
             if (Assembly.GetCallingAssembly() != Assembly.GetExecutingAssembly())
             {
                 MLogger.Log("Attempting to resolve external dependency", logSection: ".ASMB");
@@ -48,12 +48,12 @@ namespace MClient.ImprovedDependencyLoader
             //Checks if the assembly is already loaded in the program, and just returns it if it is.
             try
             {
-                Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == assemblyFullName);
+                var assembly = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == assemblyFullName);
 
                 if (!(assembly is null))
                 {
                     //Hooray we found it!
-                    MLogger.Log("Found assembly " + assemblyShortName + " already loaded!", logSection: ".ASMBLY");
+                    MLogger.Log("Found assembly " + assemblyShortName + " already loaded!", logSection: ".ASMB");
                     return assembly;
                 }
             }

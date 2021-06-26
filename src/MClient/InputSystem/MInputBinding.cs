@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem;
-using MClient.EventSystem.Events.Input;
+using MClient.Core.EventSystem;
+using MClient.Core.EventSystem.Events.Input;
 
 namespace MClient.InputSystem
 {

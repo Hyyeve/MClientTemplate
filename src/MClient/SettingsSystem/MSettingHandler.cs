@@ -4,18 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Game;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem.Events.Game;
+using MClient.Core.EventSystem.Events.Helper;
 using MClientCore.MClient.Core;
 
 namespace MClient.SettingsSystem
 {
-    [MAutoRegisterMEvents]
+    [MAutoRegisterEvents]
     public static class MSettingHandler
     {
 
         private static string _savePath;
         
+        [MEventEarlyInit]
         public static void Initialise()
         {
             _savePath = MModClass.Config.directory + "/config.quack";

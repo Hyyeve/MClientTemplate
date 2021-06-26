@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DuckGame;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem.Events.Helper;
 using MClient.InputSystem;
 using MClient.UiSystem.Internal;
 using MClient.UiSystem.Internal.Attributes;
@@ -38,7 +38,7 @@ namespace MClient.UiSystem
             MUiHandler.SetCol("Test UI", UiColorArea.Base, testcol);
         }
 
-        [MPostInitEvent]
+        [MEventLateInit]
         [MInputBinding(new[] {Keys.LeftControl, Keys.RightControl}, MBindPressReq.AllPressed, MBindOrderReq.InOrder)]
         public static void stuff()
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
-using MClient.EventSystem.Events.Helper;
+using MClient.Core.EventSystem.Events.Helper;
 
 namespace MClient.InputSystem
 {
@@ -11,7 +11,7 @@ namespace MClient.InputSystem
     {
         private static readonly List<MInputBinding> Bindings = new List<MInputBinding>();
 
-        [MInitEvent]
+        [MEventInit]
         public static void Init()
         {
             List<MethodInfo> methods = Assembly.GetExecutingAssembly().GetTypes().SelectMany(x => x.GetMethods()).Where(x =>

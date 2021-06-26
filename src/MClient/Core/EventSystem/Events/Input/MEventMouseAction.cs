@@ -1,34 +1,40 @@
-﻿using DuckGame;
+﻿using System;
+using DuckGame;
 
-namespace MClient.EventSystem.Events.Input
+namespace MClient.Core.EventSystem.Events.Input
 {
+    /// <summary>
+    /// MEvent that is called for all types of mouse input.
+    /// </summary>
+    /// <remarks>
+    /// This event is called for both clicking and scrolling.
+    /// Make sure to check what kind it is before accessing its variables!
+    /// </remarks>
+    [AttributeUsage(AttributeTargets.Method)]
     public class MEventMouseAction : MEvent
     {
-        public MouseAction Action;
+        public MMouseAction Action;
         public float Scroll;
         public Vec2 MousePosGame;
 
-        public static MEventMouseAction Get(MouseAction action, Vec2 mousepos, float scroll = 0f)
+        public static MEventMouseAction Get(MMouseAction action, Vec2 mousePos, float scroll = 0f)
         {
-            MEventMouseAction temp = new MEventMouseAction();
-            temp.Action = action;
-            temp.Scroll = scroll;
-            temp.MousePosGame = mousepos;
+            var temp = new MEventMouseAction {Action = action, Scroll = scroll, MousePosGame = mousePos};
             return temp;
         }
 
         public bool IsClickAction()
         {
-            return (Action == MouseAction.LeftPressed || Action == MouseAction.MiddlePressed || Action == MouseAction.RightPressed);
+            return (Action == MMouseAction.LeftPressed || Action == MMouseAction.MiddlePressed || Action == MMouseAction.RightPressed);
         }
 
         public bool IsReleaseAction()
         {
-            return (Action == MouseAction.LeftReleased || Action == MouseAction.MiddleReleased || Action == MouseAction.RightReleased);
+            return (Action == MMouseAction.LeftReleased || Action == MMouseAction.MiddleReleased || Action == MMouseAction.RightReleased);
         }
     }
 
-    public enum MouseAction
+    public enum MMouseAction
     {
         LeftPressed,LeftReleased,RightPressed,RightReleased,MiddlePressed,MiddleReleased,Scrolled
     }

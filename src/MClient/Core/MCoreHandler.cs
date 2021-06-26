@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 using DuckGame;
-using MClient.EventSystem;
-using MClient.EventSystem.Events.Drawing;
-using MClient.EventSystem.Events.Game;
-using MClient.ImprovedDependencyLoader;
+using MClient.Core.DLLSystem;
+using MClient.Core.EventSystem;
+using MClient.Core.EventSystem.Events.Drawing;
+using MClient.Core.EventSystem.Events.Game;
 using MClient.PatchSystem.Internal;
-using MClient.SettingsSystem;
-using MClientCore.MClient.EventSystem.Events.Drawing;
 using MClientCore.MClient.PatchSystem.AutoPatcher;
 
 namespace MClientCore.MClient.Core
@@ -16,7 +14,6 @@ namespace MClientCore.MClient.Core
         public static void OnPreInit()
         {
             MDependencyResolver.ResolveDependencies();
-            MSettingHandler.Initialise();
         }
 
         public static void OnPostInit()
