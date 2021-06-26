@@ -7,9 +7,13 @@ using MClient.Core.EventSystem.Events.Game;
 using MClient.Core.PatchSystem;
 using MClient.Core.PatchSystem.AutoPatcher;
 
-namespace MClientCore.MClient.Core
+namespace MClient.Core
 {
-    internal static class MCoreHandler
+    
+    /// <summary>
+    /// Core class of the mod that handles various internal calls and patches
+    /// </summary>
+    public static class MCoreHandler
     {
         public static void OnPreInit()
         {
@@ -24,6 +28,9 @@ namespace MClientCore.MClient.Core
         }
     }
 
+    /// <summary>
+    /// Core class of the mod that holds various patch methods
+    /// </summary>
     public static class MPatches
     {
         private static void GameDraw(Layer layer)

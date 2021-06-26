@@ -4,10 +4,13 @@ using MClient.Core.EventSystem;
 using MClient.Core.EventSystem.Events.Game;
 using MClient.Core.EventSystem.Events.Helper;
 
-namespace MClientCore.MClient.Core
+namespace MClient.Core
 {
 
-    internal static class MAlwaysUpdater
+    /// <summary>
+    /// Core class that handles some special functionality.
+    /// </summary>
+    public static class MAlwaysUpdater
     {
         [MEventInit]
         public static void Init()

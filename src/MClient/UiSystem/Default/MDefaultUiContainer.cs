@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using DuckGame;
+using MClient.Core;
 using MClient.InputSystem;
 using MClient.Render;
 using MClient.UiSystem.Internal;
 using MClient.UiSystem.Internal.Components;
-using MClientCore.MClient.Core;
 
 namespace MClient.UiSystem.Default
 {

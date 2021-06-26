@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
-using MClientCore.MClient.Core;
 
 namespace MClient.Core.DLLSystem
 {
@@ -36,12 +35,12 @@ namespace MClient.Core.DLLSystem
             */
             if (Assembly.GetCallingAssembly() != Assembly.GetExecutingAssembly())
             {
-                MLogger.Log("Attempting to resolve external dependency", logSection: ".ASMB");
+                MLogger.Log("Attempting to resolve external dependency", logSection: MLogger.MLogSection.Asmb);
                 external = true;
             }
             else
             {
-                MLogger.Log("Attempting to resolve " + assemblyShortName, logSection: ".ASMB");
+                MLogger.Log("Attempting to resolve " + assemblyShortName, logSection: MLogger.MLogSection.Asmb);
                 external = false;
             }
 
@@ -53,7 +52,7 @@ namespace MClient.Core.DLLSystem
                 if (!(assembly is null))
                 {
                     //Hooray we found it!
-                    MLogger.Log("Found assembly " + assemblyShortName + " already loaded!", logSection: ".ASMB");
+                    MLogger.Log("Found assembly " + assemblyShortName + " already loaded!", logSection: MLogger.MLogSection.Asmb);
                     return assembly;
                 }
             }
@@ -75,7 +74,7 @@ namespace MClient.Core.DLLSystem
                 }
                 
                 //It IS part of our mod and we're probably about to crash D:
-                MLogger.Log("Unable to resolve assembly " + assemblyShortName, MLogger.LogType.Warning, ".ASMB");
+                MLogger.Log("Unable to resolve assembly " + assemblyShortName, MLogger.MLogType.Warning, MLogger.MLogSection.Asmb);
                 return null;
             }
  
@@ -98,11 +97,11 @@ namespace MClient.Core.DLLSystem
                 catch (Exception f)
                 {
                     //Attempt #2 didn't work. Weird.
-                    MLogger.Log("Failed to load assembly " + assemblyShortName, MLogger.LogType.Warning, ".ASMB");
+                    MLogger.Log("Failed to load assembly " + assemblyShortName, MLogger.MLogType.Warning, MLogger.MLogSection.Asmb);
                 }
             }
             
-            MLogger.Log("Loaded assembly " + assemblyShortName + " from disk!", logSection: ".ASMB");
+            MLogger.Log("Loaded assembly " + assemblyShortName + " from disk!", logSection: MLogger.MLogSection.Asmb);
 
             return loadedAssembly;
         }

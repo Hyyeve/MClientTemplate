@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DuckGame;
+using MClient.Core;
 using MClient.Core.EventSystem.Events.Game;
 using MClient.Core.EventSystem.Events.Helper;
-using MClientCore.MClient.Core;
 
 namespace MClient.SettingsSystem
 {
@@ -35,13 +35,13 @@ namespace MClient.SettingsSystem
         {
             if (!File.Exists(_savePath))
             {
-                MLogger.Log("No save data to load!", logSection: ".SAVE");
+                MLogger.Log("No save data to load!", logSection: MLogger.MLogSection.Save);
                 return;
             }
             
             List<string> saveData = File.ReadAllLines(_savePath).ToList();
 
-            MLogger.Log("Loading save data..", logSection: ".SAVE");
+            MLogger.Log("Loading save data..", logSection: MLogger.MLogSection.Save);
             
             foreach (string data in saveData)
             {
@@ -95,11 +95,12 @@ namespace MClient.SettingsSystem
                 }
                 catch
                 {
-                    MLogger.Log("Failed to load setting " + splitData[1], MLogger.LogType.Warning, ".SAVE");
+                    MLogger.Log("Failed to load setting " + splitData[1], MLogger.MLogType.Warning,
+                        MLogger.MLogSection.Save);
                 }
             }
 
-            MLogger.Log("Save data loaded!", logSection: ".SAVE");
+            MLogger.Log("Save data loaded!", logSection: MLogger.MLogSection.Save);
             
         }
 
@@ -107,7 +108,7 @@ namespace MClient.SettingsSystem
         {
             List<string> saveData = new List<string>();
 
-            MLogger.Log("Saving all data...", logSection: ".SAVE");
+            MLogger.Log("Saving all data...", logSection: MLogger.MLogSection.Save);
 
             foreach (FieldInfo field in GetAllSettings())
             {
@@ -162,7 +163,7 @@ namespace MClient.SettingsSystem
             
             File.WriteAllLines(_savePath, saveData);
 
-            MLogger.Log("Saved!", logSection: ".SAVE");
+            MLogger.Log("Saved!", logSection: MLogger.MLogSection.Save);
         }
 
         private static List<FieldInfo> GetAllSettings()

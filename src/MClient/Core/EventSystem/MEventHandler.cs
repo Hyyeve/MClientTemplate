@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using MClient.Core.EventSystem.Events;
 using MClient.Core.EventSystem.Events.Helper;
-using MClientCore.MClient.Core;
 
 namespace MClient.Core.EventSystem
 {
@@ -40,7 +39,8 @@ namespace MClient.Core.EventSystem
 
             if (registeredAlready)
             {
-                MLogger.Log(type.Name + " was registered already, skipping!", MLogger.LogType.Warning, ".EVNT");
+                MLogger.Log(type.Name + " was registered already, skipping!", MLogger.MLogType.Warning,
+                    MLogger.MLogSection.Evnt);
                 return;
             }
 
@@ -53,11 +53,12 @@ namespace MClient.Core.EventSystem
                 var clientEvent = (MEvent) Attribute.GetCustomAttribute(methodInfo, typeof(MEvent));
                 if (clientEvent == null) continue;
                 toAdd.Add(clientEvent.GetType(), methodInfo);
-                MLogger.Log("Registering method " + type.Name + "." + methodInfo.Name, logSection: ".EVNT");
+                MLogger.Log("Registering method " + type.Name + "." + methodInfo.Name, logSection: MLogger.MLogSection
+                    .Evnt);
             }
             
             Registered.Add(instance ?? type, toAdd);
-            MLogger.Log("Finished registering " + type.Name, logSection: ".EVNT");
+            MLogger.Log("Finished registering " + type.Name, logSection: MLogger.MLogSection.Evnt);
         }
 
         /// <summary>
@@ -76,12 +77,12 @@ namespace MClient.Core.EventSystem
             if (instance != null && Registered.ContainsKey(instance))
             {
                 Registered.Remove(instance);
-                MLogger.Log("DeRegistered instance of " + type.Name, logSection: ".EVNT");
+                MLogger.Log("DeRegistered instance of " + type.Name, logSection: MLogger.MLogSection.Evnt);
             }
             else if (Registered.ContainsKey(type))
             {
                 Registered.Remove(type);
-                MLogger.Log("DeRegistered " + type.Name, logSection: ".EVNT");
+                MLogger.Log("DeRegistered " + type.Name, logSection: MLogger.MLogSection.Evnt);
             }
         }
 
@@ -101,7 +102,8 @@ namespace MClient.Core.EventSystem
                 
                 if (eventDictionary == null)
                 {
-                    MLogger.Log("Something went horribly wrong - Event dictionary was null for registered key!", MLogger.LogType.Error, ".EVNT");
+                    MLogger.Log("Something went horribly wrong - Event dictionary was null for registered key!", MLogger.MLogType.Error,
+                        MLogger.MLogSection.Evnt);
                     continue;
                 }
 
@@ -115,7 +117,8 @@ namespace MClient.Core.EventSystem
                 }
                 catch
                 {
-                     MLogger.Log("Exception thrown when invoking method: " + methodInfo.Name, MLogger.LogType.Warning, ".EVNT");
+                     MLogger.Log("Exception thrown when invoking method: " + methodInfo.Name, MLogger.MLogType.Warning,
+                         MLogger.MLogSection.Evnt);
                 }
             }
             
@@ -176,7 +179,7 @@ namespace MClient.Core.EventSystem
                             null);
             foreach (var method in methods)
             {
-                MLogger.Log(logMessage + method.DeclaringType?.Name, logSection: ".EVNT");
+                MLogger.Log(logMessage + method.DeclaringType?.Name, logSection: MLogger.MLogSection.Evnt);
                 method.Invoke(null, new object[] { });
             }
         }
@@ -194,7 +197,7 @@ namespace MClient.Core.EventSystem
             var types = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.GetCustomAttributes(attributeType, false).FirstOrDefault() != null);
             foreach (var t in types)
             {
-                MLogger.Log(logMessage + t.Name, logSection: ".EVNT");
+                MLogger.Log(logMessage + t.Name, logSection: MLogger.MLogSection.Evnt);
                 Register(t);
             }
         }

@@ -3,25 +3,29 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using MClientCore.MClient.Exposer;
 
 //-------------------------------------------DISCLAIMER-------------------------------------------------------------------------
 //This class was taken from a freely distributed helper library and modified to work for this mod. Most of this code is not mine.
 
-namespace MClient.Utils.Exposer
+namespace MClient.ExposerSystem
 {
-    public class ExposedClass : DynamicObject
+    
+    /// <summary>
+    /// A DynamicObject class that allows you to expose any classes private methods and variables easily.
+    /// </summary>
+    /// <remarks>MExposedClass is for static methods and variables. Use MExposedObject for instances</remarks>
+    public class MExposedClass : DynamicObject
     {
-        private Type m_type;
-        private Dictionary<string, Dictionary<int, List<MethodInfo>>> m_staticMethods;
-        private Dictionary<string, Dictionary<int, List<MethodInfo>>> m_genStaticMethods;
+        private readonly Type _mType;
+        private readonly Dictionary<string, Dictionary<int, List<MethodInfo>>> _mStaticMethods;
+        private readonly Dictionary<string, Dictionary<int, List<MethodInfo>>> _mGenStaticMethods;
 
-        private ExposedClass(Type type)
+        private MExposedClass(Type type)
         {
-            m_type = type;
+            _mType = type;
 
-            m_staticMethods =
-                m_type
+            _mStaticMethods =
+                _mType
                     .GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                     .Where(m => !m.IsGenericMethod)
                     .GroupBy(m => m.Name)
@@ -29,8 +33,8 @@ namespace MClient.Utils.Exposer
                         p => p.Key,
                         p => p.GroupBy(r => r.GetParameters().Length).ToDictionary(r => r.Key, r => r.ToList()));
 
-            m_genStaticMethods =
-                m_type
+            _mGenStaticMethods =
+                _mType
                     .GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                     .Where(m => m.IsGenericMethod)
                     .GroupBy(m => m.Name)
@@ -42,16 +46,16 @@ namespace MClient.Utils.Exposer
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             // Get type args of the call
-            Type[] typeArgs = ExposedObjectHelper.GetTypeArgs(binder);
+            Type[] typeArgs = MExposedObjectHelper.GetTypeArgs(binder);
             if (typeArgs != null && typeArgs.Length == 0) typeArgs = null;
 
             //
             // Try to call a non-generic instance method
             //
             if (typeArgs == null
-                    && m_staticMethods.ContainsKey(binder.Name)
-                    && m_staticMethods[binder.Name].ContainsKey(args.Length)
-                    && ExposedObjectHelper.InvokeBestMethod(args, null, m_staticMethods[binder.Name][args.Length], out result))
+                    && _mStaticMethods.ContainsKey(binder.Name)
+                    && _mStaticMethods[binder.Name].ContainsKey(args.Length)
+                    && MExposedObjectHelper.InvokeBestMethod(args, null, _mStaticMethods[binder.Name][args.Length], out result))
             {
                 return true;
             }
@@ -59,20 +63,12 @@ namespace MClient.Utils.Exposer
             //
             // Try to call a generic instance method
             //
-            if (m_staticMethods.ContainsKey(binder.Name)
-                    && m_staticMethods[binder.Name].ContainsKey(args.Length))
+            if (_mStaticMethods.ContainsKey(binder.Name)
+                    && _mStaticMethods[binder.Name].ContainsKey(args.Length))
             {
-                List<MethodInfo> methods = new List<MethodInfo>();
+                List<MethodInfo> methods = (from method in _mGenStaticMethods[binder.Name][args.Length] where method.GetGenericArguments().Length == typeArgs.Length select method.MakeGenericMethod(typeArgs)).ToList();
 
-                foreach (var method in m_genStaticMethods[binder.Name][args.Length])
-                {
-                    if (method.GetGenericArguments().Length == typeArgs.Length)
-                    {
-                        methods.Add(method.MakeGenericMethod(typeArgs));
-                    }
-                }
-
-                if (ExposedObjectHelper.InvokeBestMethod(args, null, methods, out result))
+                if (MExposedObjectHelper.InvokeBestMethod(args, null, methods, out result))
                 {
                     return true;
                 }
@@ -83,7 +79,7 @@ namespace MClient.Utils.Exposer
         }
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            var propertyInfo = m_type.GetProperty(
+            var propertyInfo = _mType.GetProperty(
                 binder.Name,
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
@@ -93,22 +89,19 @@ namespace MClient.Utils.Exposer
                 return true;
             }
 
-            var fieldInfo = m_type.GetField(
+            var fieldInfo = _mType.GetField(
                 binder.Name,
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
-            if (fieldInfo != null)
-            {
-                fieldInfo.SetValue(null, value);
-                return true;
-            }
+            if (fieldInfo == null) return false;
+            fieldInfo.SetValue(null, value);
+            return true;
 
-            return false;
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            var propertyInfo = m_type.GetProperty(
+            var propertyInfo = _mType.GetProperty(
                 binder.Name,
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
@@ -118,7 +111,7 @@ namespace MClient.Utils.Exposer
                 return true;
             }
 
-            var fieldInfo = m_type.GetField(
+            var fieldInfo = _mType.GetField(
                 binder.Name,
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
@@ -134,7 +127,7 @@ namespace MClient.Utils.Exposer
 
         public static dynamic From(Type type)
         {
-            return new ExposedClass(type);
+            return new MExposedClass(type);
         }
     }
 }

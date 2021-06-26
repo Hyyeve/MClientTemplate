@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using DuckGame;
+using MClient.Core;
 using MClient.Core.EventSystem;
 using MClient.Core.EventSystem.Events.Drawing;
 using MClient.Core.EventSystem.Events.Helper;
 using MClient.Core.Utils;
 using MClient.Render.RenderTasks;
 using MClient.Utils;
-using MClientCore.MClient.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Color = DuckGame.Color;
@@ -178,7 +178,7 @@ namespace MClient.Render
 
             if (vertices == null)
             {
-                MLogger.Log("Draw Array was passed a null list, skipping!", MLogger.LogType.Warning, ".RNDR");
+                MLogger.Log("Draw Array was passed a null list, skipping!", MLogger.MLogType.Warning, MLogger.MLogSection.Rndr);
                 return;
             }
             
@@ -187,7 +187,8 @@ namespace MClient.Render
             {
                 if (vertices[index] == null)
                 {
-                    MLogger.Log("Draw Array encountered a null vertex, skipping!", MLogger.LogType.Warning, ".RNDR");
+                    MLogger.Log("Draw Array encountered a null vertex, skipping!", MLogger.MLogType.Warning,
+                        MLogger.MLogSection.Rndr);
                 }
                 else
                 {
@@ -205,7 +206,8 @@ namespace MClient.Render
 
             if (vertices == null)
             {
-                MLogger.Log("Draw Array was passed a null list, skipping!", MLogger.LogType.Warning, ".RNDR");
+                MLogger.Log("Draw Array was passed a null list, skipping!", MLogger.MLogType.Warning,
+                    MLogger.MLogSection.Rndr);
                 return;
             }
             

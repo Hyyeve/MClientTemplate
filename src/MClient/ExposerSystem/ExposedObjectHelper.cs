@@ -4,14 +4,17 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 
-namespace MClientCore.MClient.Exposer
+namespace MClient.ExposerSystem
 {
     //-------------------------------------------DISCLAIMER-------------------------------------------------------------------------
     //This class was taken from a freely distributed helper library and modified to work for this mod. Most of this code is not mine.
     
-    internal static class ExposedObjectHelper
+    /// <summary>
+    /// Helper class for the ExposedObject classes. Not intended for custom use.
+    /// </summary>
+    public static class MExposedObjectHelper
     {
-        private static Type s_csharpInvokePropertyType =
+        private static readonly Type SCsharpInvokePropertyType =
             typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
                 .Assembly
                 .GetType("Microsoft.CSharp.RuntimeBinder.ICSharpInvokeOrInvokeMemberBinder");
@@ -33,28 +36,19 @@ namespace MClientCore.MClient.Exposer
                 Type[] bestParams = null;
                 Type[] actualParams = args.Select(p => p == null ? typeof(object) : p.GetType()).ToArray();
 
-                bool IsAssignableFrom(Type[] a, Type[] b)
+                static bool IsAssignableFrom(Type[] a, IReadOnlyList<Type> b)
                 {
-                    for (int i = 0; i < a.Length; i++)
-                    {
-                        if (!a[i].IsAssignableFrom(b[i])) return false;
-                    }
-
-                    return true;
+                    return !a.Where((t, i) => !t.IsAssignableFrom(b[i])).Any();
                 }
 
 
                 foreach (var method in instanceMethods.Where(m => m.GetParameters().Length == args.Length))
                 {
                     Type[] mParams = method.GetParameters().Select(x => x.ParameterType).ToArray();
-                    if (IsAssignableFrom(mParams, actualParams))
-                    {
-                        if (best == null || IsAssignableFrom(bestParams, mParams))
-                        {
-                            best = method;
-                            bestParams = mParams;
-                        }
-                    }
+                    if (!IsAssignableFrom(mParams, actualParams)) continue;
+                    if (best != null && !IsAssignableFrom(bestParams, mParams)) continue;
+                    best = method;
+                    bestParams = mParams;
                 }
 
                 if (best != null && TryInvoke(best, target, args, out result))
@@ -84,12 +78,9 @@ namespace MClientCore.MClient.Exposer
 
         internal static Type[] GetTypeArgs(InvokeMemberBinder binder)
         {
-            if (s_csharpInvokePropertyType.IsInstanceOfType(binder))
-            {
-                PropertyInfo typeArgsProperty = s_csharpInvokePropertyType.GetProperty("TypeArguments");
-                return ((IEnumerable<Type>)typeArgsProperty.GetValue(binder, null)).ToArray();
-            }
-            return null;
+            if (!SCsharpInvokePropertyType.IsInstanceOfType(binder)) return null;
+            var typeArgsProperty = SCsharpInvokePropertyType.GetProperty("TypeArguments");
+            return ((IEnumerable<Type>)typeArgsProperty.GetValue(binder, null)).ToArray();
         }
 
     }

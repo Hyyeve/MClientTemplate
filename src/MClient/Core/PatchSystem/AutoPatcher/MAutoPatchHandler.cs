@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Harmony;
-using MClientCore.MClient.Core;
 
 namespace MClient.Core.PatchSystem.AutoPatcher
 {
@@ -21,7 +20,7 @@ namespace MClient.Core.PatchSystem.AutoPatcher
 
             var harmony = HarmonyLoader.Loader.harmonyInstance;
             
-            MLogger.Log("AutoPatcher started", logSection: ".PTCH");
+            MLogger.Log("AutoPatcher started", logSection: MLogger.MLogSection.Ptch);
 
             foreach (var origInfo in GetAllAutoPatches())
             {
@@ -33,7 +32,8 @@ namespace MClient.Core.PatchSystem.AutoPatcher
 
                     if (mPatch is null)
                     {
-                        MLogger.Log("Failed to find specified method: " + attribute.Method + ". on type of: " + attribute.Type.Name, MLogger.LogType.Warning, ".PTCH");
+                        MLogger.Log("Failed to find specified method: " + attribute.Method + ". on type of: " + attribute.Type.Name, MLogger.MLogType.Warning,
+                            MLogger.MLogSection.Ptch);
                     }
                     else
                     {
@@ -51,12 +51,13 @@ namespace MClient.Core.PatchSystem.AutoPatcher
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
-                        MLogger.Log("Patched method " + origInfo.DeclaringType?.Name + "." + origInfo.Name + " Onto " + attribute.Type.Name + "." + attribute.Method, logSection:".PTCH");
+                        MLogger.Log("Patched method " + origInfo.DeclaringType?.Name + "." + origInfo.Name + " Onto " + attribute.Type.Name + "." + attribute.Method, logSection:
+                            MLogger.MLogSection.Ptch);
                     }
                 }
             }
 
-            MLogger.Log("AutoPatcher finished", logSection:".PTCH");
+            MLogger.Log("AutoPatcher finished", logSection: MLogger.MLogSection.Ptch);
         }
 
         private static IEnumerable<MethodInfo> GetAllAutoPatches()

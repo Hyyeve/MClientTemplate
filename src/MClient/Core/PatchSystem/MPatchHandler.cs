@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using DuckGame;
 using Harmony;
-using MClientCore.MClient.Core;
 
 namespace MClient.Core.PatchSystem
 {
@@ -15,7 +14,7 @@ namespace MClient.Core.PatchSystem
         /// </summary>
         public static void Patch()
         {
-            MLogger.Log("Patcher started", logSection: ".PTCH");
+            MLogger.Log("Patcher started", logSection: MLogger.MLogSection.Ptch);
 
             var harmony = HarmonyLoader.Loader.harmonyInstance;
 
@@ -31,7 +30,7 @@ namespace MClient.Core.PatchSystem
             patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "PostGameDraw");
             harmony.Patch(originalMethod, null, new HarmonyMethod(patchMethod));
 
-            MLogger.Log("Patched Draw Events", logSection: ".PTCH");
+            MLogger.Log("Patched Draw Events", logSection: MLogger.MLogSection.Ptch);
 
             originalMethod = AccessTools.DeclaredMethod(typeof(MonoMain), "Update");
             patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "PostFixUpdate");
@@ -41,7 +40,7 @@ namespace MClient.Core.PatchSystem
             patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "PreFixUpdate");
             harmony.Patch(originalMethod, new HarmonyMethod(patchMethod));
 
-            MLogger.Log("Patched Game Update Events", logSection: ".PTCH");
+            MLogger.Log("Patched Game Update Events", logSection: MLogger.MLogSection.Ptch);
 
             originalMethod = AccessTools.DeclaredMethod(typeof(MonoMain), "OnExiting");
             patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "PreFixExit");
@@ -51,9 +50,9 @@ namespace MClient.Core.PatchSystem
             patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "PreFixExit");
             harmony.Patch(originalMethod, new HarmonyMethod(patchMethod));
 
-            MLogger.Log("Patched Game Exit Events", logSection: ".PTCH");
+            MLogger.Log("Patched Game Exit Events", logSection: MLogger.MLogSection.Ptch);
 
-            MLogger.Log("Patcher finished", logSection: ".PTCH");
+            MLogger.Log("Patcher finished", logSection: MLogger.MLogSection.Ptch);
             
         }
     }

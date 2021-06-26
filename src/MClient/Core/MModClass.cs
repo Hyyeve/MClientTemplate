@@ -2,11 +2,20 @@
 using System.Reflection;
 using DuckGame;
 
-namespace MClientCore.MClient.Core
+namespace MClient.Core
 {
+    
+    /// <summary>
+    /// The very core class, the actual mod class. Handles some internal functionality and basic calls to load the rest of the mod.
+    /// </summary>
     public class MModClass : ClientMod
     {
 
+        /// <summary>
+        /// The duck-game generated mod config. This holds useful information and settings about the mod.
+        /// </summary>
+        public static ModConfiguration Config;
+        
         public static string ReplaceData
         {
             get
@@ -22,28 +31,35 @@ namespace MClientCore.MClient.Core
             set => DisabledField.SetValue(Config, value, new object[0]);
         }
 
-        public static ModConfiguration Config;
-
         private static readonly PropertyInfo SteamIdField =
             typeof(ModConfiguration).GetProperty("workshopID", BindingFlags.Instance | BindingFlags.NonPublic);
 
         private static readonly PropertyInfo DisabledField =
             typeof(ModConfiguration).GetProperty("disabled", BindingFlags.Instance | BindingFlags.NonPublic);
 
+        /// <summary>
+        /// Called by Duck Game while this mod is being loaded.
+        /// </summary>
         protected override void OnPreInitialize()
         {
             Config = configuration;
             MLogger.Initialise();
-            MLogger.Log("Init started..", logSection: ".CORE");
+            MLogger.Log("Init started..", logSection: MLogger.MLogSection.Core);
             MCoreHandler.OnPreInit();
         }
         
+        /// <summary>
+        /// Called by Duck Game after all mods have been loaded.
+        /// </summary>
         protected override void OnPostInitialize()
         {
             MCoreHandler.OnPostInit();
-            MLogger.Log("Initialised!", logSection: ".CORE");
+            MLogger.Log("Initialised!", logSection: MLogger.MLogSection.Core);
         }
 
+        /// <summary>
+        /// OwO
+        /// </summary>
         private void BecomeClientMod()
         {
             int num = 5;
