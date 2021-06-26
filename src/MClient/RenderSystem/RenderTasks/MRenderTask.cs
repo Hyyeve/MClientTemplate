@@ -1,4 +1,5 @@
-﻿using MClient.Utils;
+﻿using MClient.Core.Utils;
+using MClient.Utils;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MClient.Render.RenderTasks

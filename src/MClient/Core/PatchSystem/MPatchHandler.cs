@@ -3,18 +3,24 @@ using DuckGame;
 using Harmony;
 using MClientCore.MClient.Core;
 
-namespace MClient.PatchSystem.Internal
+namespace MClient.Core.PatchSystem
 {
+    /// <summary>
+    /// The handler that does all patching for default events.
+    /// </summary>
     public static class MPatchHandler
     {
+        /// <summary>
+        /// The method that does all patching for default events.
+        /// </summary>
         public static void Patch()
         {
             MLogger.Log("Patcher started", logSection: ".PTCH");
 
-            HarmonyInstance harmony = HarmonyLoader.Loader.harmonyInstance;
+            var harmony = HarmonyLoader.Loader.harmonyInstance;
 
             MethodBase originalMethod = AccessTools.DeclaredMethod(typeof(Level), "PostDrawLayer");
-            MethodInfo patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "GameDraw");
+            var patchMethod = AccessTools.DeclaredMethod(typeof(MPatches), "GameDraw");
             harmony.Patch(originalMethod, null, new HarmonyMethod(patchMethod));
 
             originalMethod = AccessTools.DeclaredMethod(typeof(MonoMain), "RunDraw");

@@ -3,89 +3,124 @@ using DuckGame;
 
 namespace MClient.Core.Utils
 {
-    public class MPositionConversionUtil
+    /// <summary>
+    /// A collection of functions to convert between various coordinate systems.
+    /// </summary>
+    public static class MPositionConversionUtil
     {
+        /// <summary>
+        /// Converts UV coordinates to Screen coordinates.
+        /// </summary>
+        /// <param name="uv">The UV coordinates to convert</param>
+        /// <returns>The screen coordinates that the given UV coordinates represent</returns>
+        /// <remarks>
+        /// This function may not always behave as expected, as it uses DuckGame.Resolution for the screen size,
+        /// which is known to behave strangely with non 16/9 aspect ratios.
+        /// </remarks>
         public static Vec2 UvCoordsToScreenPos(Vec2 uv)
         {
             return uv * Resolution.size;
         }
 
+        /// <summary>
+        /// Converts Screen coordinates to UV coordinates.
+        /// </summary>
+        /// <param name="pos">The screen coordinates to convert</param>
+        /// <returns>The UV coordinates that the given screen coordinates represent</returns>
+        /// <remarks>
+        /// This function may not always behave as expected, as it uses DuckGame.Resolution for the screen size,
+        /// which is known to behave strangely with non 16/9 aspect ratios.
+        /// </remarks>
         public static Vec2 ScreenPosToUvCoords(Vec2 pos)
         {
             return pos / Resolution.size;
         }
 
+        /// <summary>
+        /// Converts UV coordinates to Screen coordinates, with 0,0 being the centre of the screen.
+        /// </summary>
+        /// <param name="uv">The UV coordinates to convert</param>
+        /// <returns>The screen coordinates that the given UV coordinates represent</returns>
+        /// <remarks>
+        /// This function may not always behave as expected, as it uses DuckGame.Resolution for the screen size,
+        /// which is known to behave strangely with non 16/9 aspect ratios.
+        /// </remarks>
         public static Vec2 CentredUvCoordsToScreenPos(Vec2 uv)
         {
             return uv * Resolution.size.y + 0.5f * Resolution.size;
         }
 
+        /// <summary>
+        /// Converts Screen coordinates to UV coordinates, with the centre of the screen being 0,0
+        /// </summary>
+        /// <param name="pos">The screen coordinates to convert</param>
+        /// <returns>The UV coordinates that the given screen coordinates represent</returns>
+        /// <remarks>
+        /// This function may not always behave as expected, as it uses DuckGame.Resolution for the screen size,
+        /// which is known to behave strangely with non 16/9 aspect ratios.
+        /// </remarks>
         public static Vec2 ScreenPosToCentredUvCoords(Vec2 pos)
         {
             return (pos - 0.5f * Resolution.size) / Resolution.size.y;
         }
-
+        
         /// <summary>
-        /// UV Coords To Screen Position
+        /// Converts a Game/World space position to a screen space position.
         /// </summary>
-        /// <param name="pos">UV coords to convert to screen position</param>
-        public static Vec2 UVTSP(Vec2 uv)
-        {
-            return UvCoordsToScreenPos(uv);
-        }
-
-        /// <summary>
-        /// Screen Position To UV Coords.
-        /// </summary>
-        /// <param name="pos">Screen position to convert to UV coords.</param>
-        public static Vec2 SPTUV(Vec2 pos)
-        {
-            return ScreenPosToUvCoords(pos);
-        }
-
-        /// <summary>
-        /// Centred UV Coords To Screen Position
-        /// </summary>
-        /// <param name="pos">Centred UV coords to convert to screen position</param>
-        public static Vec2 CUPTSP(Vec2 uv)
-        {
-            return CentredUvCoordsToScreenPos(uv);
-        }
-
-        /// <summary>
-        /// Screen Position To Centred UV Coords.
-        /// </summary>
-        /// <param name="pos">Screen position to convert to UV coords.</param>
-        public static Vec2 SPTCUV(Vec2 pos)
-        {
-            return ScreenPosToCentredUvCoords(pos);
-        }
-
+        /// <param name="pos">The position to convert</param>
+        /// <returns>The screen position equivalent to the given position</returns>
+        /// <remarks>This method uses the HUD layer to convert between positions</remarks>
         public static Vec2 GameToScreenPos(Vec2 pos)
         {
             return Layer.HUD.camera.transformWorldVector(pos);
         }
 
+        /// <summary>
+        /// Converts a screen space position to a Game/World space position.
+        /// </summary>
+        /// <param name="pos">The position to convert</param>
+        /// <returns>The Game/World position equivalent to the given position</returns>
+        /// <remarks>This method uses the HUD layer to convert between positions</remarks>
         public static Vec2 ScreenToGamePos(Vec2 pos)
         {
             return Layer.HUD.camera.transformScreenVector(pos);
         }
 
+        /// <summary>
+        /// Converts a Game/World space position to a screen space position, using the given layer
+        /// </summary>
+        /// <param name="pos">The position to convert</param>
+        /// <param name="gameLayer">The layer to use for the conversion</param>
+        /// <returns>The screen position equivalent to the given position</returns>
         public static Vec2 GameToScreenPos(Vec2 pos, Layer gameLayer)
         {
             return gameLayer.camera.transformWorldVector(pos);
         }
 
+        /// <summary>
+        /// Converts a screen space position to a Game/World space position, using the given layer
+        /// </summary>
+        /// <param name="pos">The position to convert</param>
+        /// <param name="gameLayer">The layer to use for the conversion</param>
+        /// <returns>The Game/World position equivalent to the given position</returns>
         public static Vec2 ScreenToGamePos(Vec2 pos, Layer gameLayer)
         {
             return gameLayer.camera.transformScreenVector(pos);
         }
 
+        /// <summary>
+        /// Clamps the given rectangles position such that it is entirely on-screen.
+        /// </summary>
+        /// <param name="pos">The position of the rectangle</param>
+        /// <param name="size">The size of the rectangle</param>
+        /// <param name="area">The area that the origin of the rectangle is located at</param>
+        /// <param name="gamePos">Whether to assume the positions given are in Game/World space or not</param>
+        /// <returns>A position such that the rectangle is entirely on-screen</returns>
         public static Vec2 ClampToScreen(Vec2 pos, Vec2 size, MQuadrantArea area, bool gamePos = true)
         {
             Vec2 offsetX;
             Vec2 offsetY;
-            Vec2 screen = Resolution.size;
+            var screen = Resolution.size;
             if (gamePos) screen = ScreenToGamePos(screen);
             switch (area)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using MClient.Core.Utils;
 using MClient.Utils;
 
 namespace MClient.Render
@@ -11,7 +12,7 @@ namespace MClient.Render
         private bool isForward = true;
         private bool inProgress;
         protected double progress;
-        static readonly double InertiaCost = MMathUtils.Cbrt(0.5) / 0.5;
+        static readonly double InertiaCost = MMathUtils.CubeRoot(0.5) / 0.5;
 
         public MAnimation(Transition trans, int dur, bool isForwards = true, bool startRunning = false)
         {
@@ -127,7 +128,7 @@ namespace MClient.Render
                     double trans = -Math.Sin(10.0 * progress) / (10.0 * progress) + 1;
                     return trans > 0 ? trans : 0;
                 case Transition.Inertia:
-                    return MMathUtils.Cbrt(progress - 0.5) / InertiaCost + 0.5;
+                    return MMathUtils.CubeRoot(progress - 0.5) / InertiaCost + 0.5;
                 case Transition.Instant:
                     return Math.Round(progress);
             }

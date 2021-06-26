@@ -4,8 +4,8 @@ using MClient.Core.DLLSystem;
 using MClient.Core.EventSystem;
 using MClient.Core.EventSystem.Events.Drawing;
 using MClient.Core.EventSystem.Events.Game;
-using MClient.PatchSystem.Internal;
-using MClientCore.MClient.PatchSystem.AutoPatcher;
+using MClient.Core.PatchSystem;
+using MClient.Core.PatchSystem.AutoPatcher;
 
 namespace MClientCore.MClient.Core
 {

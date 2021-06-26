@@ -127,7 +127,6 @@
     <Compile Include="src\MClient\Core\PatchSystem\AutoPatcher\MAutoPatchAttribute.cs" />
     <Compile Include="src\MClient\Core\PatchSystem\AutoPatcher\MAutoPatchHandler.cs" />
     <Compile Include="src\MClient\Core\PatchSystem\MPatchHandler.cs" />
-    <Compile Include="src\MClient\Core\Utils\MColor.cs" />
     <Compile Include="src\MClient\Core\Utils\MDelayUtil.cs" />
     <Compile Include="src\MClient\Core\Utils\MMathUtils.cs" />
     <Compile Include="src\MClient\Core\Utils\MPositionConversionUtil.cs" />

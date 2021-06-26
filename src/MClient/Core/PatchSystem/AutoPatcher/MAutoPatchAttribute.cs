@@ -1,24 +1,33 @@
 ﻿using System;
 
-namespace MClient.PatchSystem.AutoPatcher
+namespace MClient.Core.PatchSystem.AutoPatcher
 {
+    /// <summary>
+    /// This is a Auto-Attribute that allows you to automatically and easily patch methods with Harmony
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)] 
     public class MAutoPatchAttribute : Attribute
     {
-        public readonly Type type;
-        public readonly string method;
-        public readonly PatchType patchType;
+        public readonly Type Type;
+        public readonly string Method;
+        public readonly MPatchType PatchType;
         
-        public MAutoPatchAttribute(Type type, string method, PatchType patchType)
+        /// <summary>
+        /// This is a Auto-Attribute that allows you to automatically and easily patch methods with Harmony
+        /// </summary>
+        /// <param name="type">The <c>type</c> of the class that contains the method to patch</param>
+        /// <param name="method">The name of the method to patch</param>
+        /// <param name="patchType">The type of patch to do</param>
+        public MAutoPatchAttribute(Type type, string method, MPatchType patchType)
         {
-            this.method = method;
-            this.patchType = patchType;
-            this.type = type;
+            Method = method;
+            PatchType = patchType;
+            Type = type;
         }
         
     }
 
-    public enum PatchType
+    public enum MPatchType
     {
         Prefix,Postfix,Transpiler
     }

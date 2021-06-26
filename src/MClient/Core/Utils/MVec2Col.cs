@@ -1,7 +1,10 @@
 ﻿using DuckGame;
 
-namespace MClient.Utils
+namespace MClient.Core.Utils
 {
+    /// <summary>
+    /// Helper class used in the render system. Wraps a position and colour.
+    /// </summary>
     public class MVec2Col
     {
         public Vec2 Vec;

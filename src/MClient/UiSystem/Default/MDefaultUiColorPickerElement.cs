@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using DuckGame;
+using MClient.Core.Utils;
 using MClient.InputSystem;
-using MClient.PatchSystem.Internal;
 using MClient.Render;
 using MClient.UiSystem.Internal.Components.Elements;
 using MClient.Utils;
@@ -60,7 +60,7 @@ namespace MClient.UiSystem.Default
             box.frame = 8;
             MRenderer.DrawSprite(box, Position + Size - texSize, UiScale);
 
-            TRCol = new Color(MMathUtils.HSVtoRGB(new Vec3(HSV.x, 1f,1f)) / 255f);
+            TRCol = new Color(MMathUtils.HsVtoRgb(new Vec3(HSV.x, 1f,1f)) / 255f);
             MMCol = TRCol / 2;
             //fix alpha
             MMCol.a = TRCol.a;

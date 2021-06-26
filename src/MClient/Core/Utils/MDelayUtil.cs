@@ -1,27 +1,44 @@
 ﻿using System.Diagnostics;
 
-namespace MClient.Utils
+namespace MClient.Core.Utils
 {
+    /// <summary>
+    /// Utility for easily checking whether a certain amount of time has passed
+    /// </summary>
     public class MDelayUtil
     {
-        private readonly Stopwatch timer = new Stopwatch();
+        private readonly Stopwatch _timer = new Stopwatch();
+        
+        /// <summary>
+        /// Resets this DelayUtil
+        /// </summary>
         public void Reset()
         {
-            timer.Restart();
+            _timer.Restart();
         }
         
+        /// <summary>
+        /// Checks if the given amount of time has elapsed.
+        /// </summary>
+        /// <param name="mills">The amount of time</param>
+        /// <returns>True, if the given amount of time has passed since this method last returned true.</returns>
         public bool TimePassed(float mills)
         {
-            if (!timer.IsRunning) timer.Start();
-            if (timer.ElapsedMilliseconds < mills) return false;
+            if (!_timer.IsRunning) _timer.Start();
+            if (_timer.ElapsedMilliseconds < mills) return false;
             Reset();
             return true;
         }
 
+        /// <summary>
+        /// Checks if the given amount of time has elapsed
+        /// </summary>
+        /// <param name="mills">The amount of time</param>
+        /// <returns>True, if the given amount of time has passed since this DelayUtil was last reset.</returns>
         public bool AbsoluteTimePassed(float mills)
         {
-            if (!timer.IsRunning) timer.Start();
-            return !(timer.ElapsedMilliseconds < mills);
+            if (!_timer.IsRunning) _timer.Start();
+            return !(_timer.ElapsedMilliseconds < mills);
         }
     }
 }

@@ -4,6 +4,7 @@ using DuckGame;
 using MClient.Core.EventSystem;
 using MClient.Core.EventSystem.Events.Drawing;
 using MClient.Core.EventSystem.Events.Helper;
+using MClient.Core.Utils;
 using MClient.Render.RenderTasks;
 using MClient.Utils;
 using MClientCore.MClient.Core;
@@ -131,7 +132,7 @@ namespace MClient.Render
         public static void DrawGradLine(Vec2 start, Vec2 end, float thickness, Color colStart, Color colEnd, BlendState blendState)
         {
             Vec2 p1P2 = end - start;
-            Vec2 perp = MMathUtils.CalcPerpCw(p1P2).normalized * thickness;
+            Vec2 perp = MMathUtils.CalcPerpendicularCw(p1P2).normalized * thickness;
             Vec2 a = start + perp;
             Vec2 b = start - perp;
             Vec2 c = end + perp;

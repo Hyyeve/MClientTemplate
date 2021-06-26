@@ -2,6 +2,7 @@
 using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
+using MClient.Core.Utils;
 using MClient.InputSystem;
 using MClient.UiSystem.Internal.Attributes;
 using MClient.Utils;
@@ -62,7 +63,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             if (!MMathUtils.Compare3(rgb, MMathUtils.Floor3(RGB)))
             {
                 RGB = rgb;
-                HSV = MMathUtils.RGBToHSV(rgb);
+                HSV = MMathUtils.RgbToHsv(rgb);
                 UpdatePickerPositions();
                 return;
             }
@@ -94,7 +95,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
                     HSV.x = percent;
                 }
 
-                RGB = MMathUtils.HSVtoRGB(HSV);
+                RGB = MMathUtils.HsVtoRgb(HSV);
                 
                 SetVal(RGB);
             }
