@@ -8,12 +8,10 @@ using MClient.Core.EventSystem.Events.Drawing.World;
 using MClient.Core.EventSystem.Events.Helper;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
-using MClient.Render;
+using MClient.RenderSystem;
 using MClient.UiSystem.Default;
 using MClient.UiSystem.Internal.Attributes;
 using MClient.UiSystem.Internal.Components;
-using MClient.UiSystem.Internal.Components.Elements;
-using MClient.Utils;
 using MoreLinq;
 
 namespace MClient.UiSystem.Internal

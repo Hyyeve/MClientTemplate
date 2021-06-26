@@ -2,7 +2,6 @@
 using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
-using MClient.InputSystem;
 using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements

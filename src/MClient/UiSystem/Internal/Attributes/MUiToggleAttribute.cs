@@ -1,5 +1,4 @@
 ﻿using System;
-using DuckGame;
 
 namespace MClient.UiSystem.Internal.Attributes
 {

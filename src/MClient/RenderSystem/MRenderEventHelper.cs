@@ -6,8 +6,11 @@ using MClient.Core.EventSystem.Events.Drawing.Screen;
 using MClient.Core.EventSystem.Events.Drawing.World;
 using MClient.Core.EventSystem.Events.Helper;
 
-namespace MClient.Render
+namespace MClient.RenderSystem
 {
+    /// <summary>
+    /// Internal class that helps with calling render events.
+    /// </summary>
     public static class MRenderEventHelper
     {
         private static Dictionary<Layer, MEvent> _layerToScreenDrawEvent;

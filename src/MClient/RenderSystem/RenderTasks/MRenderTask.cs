@@ -1,24 +1,26 @@
 ﻿using MClient.Core.Utils;
-using MClient.Utils;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MClient.Render.RenderTasks
+namespace MClient.RenderSystem.RenderTasks
 {
+    /// <summary>
+    /// The base class for RenderTasks
+    /// </summary>
     public class MRenderTask
     {
 
-        private readonly PrimitiveType type;
-        private readonly MVec2Col[] points;
+        private readonly PrimitiveType _type;
+        private readonly MVec2Col[] _points;
 
         public MRenderTask(PrimitiveType type, MVec2Col[] points)
         {
-            this.type = type;
-            this.points = points;
+            _type = type;
+            _points = points;
         }
 
         public void Run() 
         {
-            MRenderer.DrawArray(points, type);
+            MRenderer.DrawArray(_points, _type);
         }
 
     }

@@ -1,6 +1,5 @@
 ﻿using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
-using MClient.InputSystem;
 
 namespace MClient.UiSystem.Internal.Components
 {

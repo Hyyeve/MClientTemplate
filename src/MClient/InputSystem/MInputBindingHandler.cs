@@ -7,6 +7,9 @@ using MClient.Core.EventSystem.Events.Helper;
 
 namespace MClient.InputSystem
 {
+    /// <summary>
+    /// Handler that stores and activates/deactivates input bindings, as well as creating the automatic ones from attributes.
+    /// </summary>
     public static class MInputBindingHandler
     {
         private static readonly List<MInputBinding> Bindings = new List<MInputBinding>();
@@ -16,20 +19,31 @@ namespace MClient.InputSystem
         {
             List<MethodInfo> methods = Assembly.GetExecutingAssembly().GetTypes().SelectMany(x => x.GetMethods()).Where(x =>
                 x.GetCustomAttributes(typeof(MInputBindingAttribute), false).FirstOrDefault() != null).ToList();
-            foreach (MethodInfo method in methods)
+            foreach (var method in methods)
             {
-                MInputBindingAttribute att = (MInputBindingAttribute) Attribute.GetCustomAttribute(method,typeof(MInputBindingAttribute));
-                CreateBind(att.bind, att.PressReq, att.OrderReq,method);
+                var att = (MInputBindingAttribute) Attribute.GetCustomAttribute(method,typeof(MInputBindingAttribute));
+                CreateBind(att.Bind, att.PressReq, att.OrderReq,method);
             }
         }
         
+        /// <summary>
+        /// Creates and activates a method binding
+        /// </summary>
+        /// <param name="bind">The set of keypresses to bind the method call to</param>
+        /// <param name="pressReq">The requirements for how the keys are pressed</param>
+        /// <param name="orderReq">The requirements for what order the keys are pressed</param>
+        /// <param name="method">The method to bind</param>
         public static void CreateBind(Keys[] bind, MBindPressReq pressReq, MBindOrderReq orderReq, MethodInfo method)
         {
-            MInputBinding binding = new MInputBinding(bind, pressReq, orderReq, method);
+            var binding = new MInputBinding(bind, pressReq, orderReq, method);
             Bindings.Add(binding);
             binding.Activate();
         }
 
+        /// <summary>
+        /// Deactivates and removes a binding
+        /// </summary>
+        /// <param name="index">The index of the binding to remove</param>
         public static void DestroyBind(int index)
         {
             if (index <= 0 || index >= Bindings.Count) return;
@@ -37,6 +51,10 @@ namespace MClient.InputSystem
             Bindings.RemoveAt(index);
         }
 
+        /// <summary>
+        /// Deactivates and removes all bindings attached to the given method
+        /// </summary>
+        /// <param name="actionMethod">The method</param>
         public static void Destroy(MethodInfo actionMethod)
         {
             List<MInputBinding> temp = Bindings.Where(bind => bind.Method == actionMethod).ToList();
@@ -44,6 +62,10 @@ namespace MClient.InputSystem
             temp.ForEach(bind => Bindings.Remove(bind));
         }
 
+        /// <summary>
+        /// Deactivates and removes a specific binding
+        /// </summary>
+        /// <param name="binding">The binding</param>
         public static void Destroy(MInputBinding binding)
         {
             binding.Deactivate();

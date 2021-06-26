@@ -6,7 +6,6 @@ using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
 using MClient.UiSystem.Internal.Attributes;
-using MClient.Utils;
 
 namespace MClient.UiSystem.Internal.Components.Elements
 {

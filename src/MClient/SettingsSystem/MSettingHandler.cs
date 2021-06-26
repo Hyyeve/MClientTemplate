@@ -10,10 +10,16 @@ using MClient.Core.EventSystem.Events.Helper;
 
 namespace MClient.SettingsSystem
 {
+    
+    /// <summary>
+    /// Settings handler class that saves and loads data automatically.
+    /// </summary>
     [MAutoRegisterEvents]
     public static class MSettingHandler
     {
-
+        /// <summary>
+        /// The save path. Currently all data is saved to a single file - I intend to improve this in future.
+        /// </summary>
         private static string _savePath;
         
         [MEventEarlyInit]
@@ -46,11 +52,16 @@ namespace MClient.SettingsSystem
             foreach (string data in saveData)
             {
                 string[] splitData = data.Split(':');
-                Type type = Type.GetType(splitData[0]);
-                FieldInfo field = type.GetField(splitData[1]);
+                var type = Type.GetType(splitData[0]);
+                if (type is null) continue;
+                var field = type.GetField(splitData[1]);
                 
                 try
                 {
+
+                    //------------------------------------------------------------------------------------------
+                    //THIS IS WHERE DATA IS PARSED FOR LOADING. EDIT THIS TO ADD SUPPORT FOR MORE TYPES OF VALUE
+                    
                     if (field.FieldType == typeof(string))
                     {
                         field.SetValue(null, splitData[2]);
@@ -92,6 +103,8 @@ namespace MClient.SettingsSystem
                         float y = float.Parse(splitSplitData[1]);
                         field.SetValue(null, new Vec2(x, y));
                     }
+
+                    //------------------------------------------------------------------------------------------
                 }
                 catch
                 {
@@ -110,10 +123,13 @@ namespace MClient.SettingsSystem
 
             MLogger.Log("Saving all data...", logSection: MLogger.MLogSection.Save);
 
-            foreach (FieldInfo field in GetAllSettings())
+            foreach (var field in GetAllSettings())
             {
 
                 string data = field.DeclaringType + ":" + field.Name + ":";
+
+                //------------------------------------------------------------------------------------------
+                //THIS IS WHERE DATA IS PARSED FOR SAVING. EDIT THIS TO ADD SUPPORT FOR MORE TYPES OF VALUE
                 
                 if (field.FieldType == typeof(string))
                 {
@@ -146,7 +162,7 @@ namespace MClient.SettingsSystem
 
                 if (field.FieldType == typeof(Color))
                 {
-                    Color col = (Color)field.GetValue(null);
+                    var col = (Color)field.GetValue(null);
                     data += col.a + "." + col.b + "." + col.g + "." + col.r;
                     saveData.Add(data);
                     continue;
@@ -154,11 +170,13 @@ namespace MClient.SettingsSystem
 
                 if (field.FieldType == typeof(Vec2))
                 {
-                    Vec2 vec = (Vec2) field.GetValue(null);
+                    var vec = (Vec2) field.GetValue(null);
                     data += vec.x + "." + vec.y;
                     saveData.Add(data);
                     continue;
                 }
+
+                //------------------------------------------------------------------------------------------
             }
             
             File.WriteAllLines(_savePath, saveData);
@@ -166,10 +184,10 @@ namespace MClient.SettingsSystem
             MLogger.Log("Saved!", logSection: MLogger.MLogSection.Save);
         }
 
-        private static List<FieldInfo> GetAllSettings()
+        private static IEnumerable<FieldInfo> GetAllSettings()
         {
             return Assembly.GetExecutingAssembly().GetTypes().SelectMany(x => x.GetFields()).Where(x =>
-                x.GetCustomAttributes(typeof(MSerializeSettingAttribute), false).FirstOrDefault() != null).ToList();
+                x.GetCustomAttributes(typeof(MSerializeSettingAttribute), false).FirstOrDefault() != null);
         }
     }
 }

@@ -5,7 +5,6 @@ using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
 using MClient.InputSystem;
-using MClient.Render;
 using MClient.UiSystem.Internal.Attributes;
 using MoreLinq;
 

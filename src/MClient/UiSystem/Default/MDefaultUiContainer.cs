@@ -2,8 +2,7 @@
 using DuckGame;
 using MClient.Core;
 using MClient.InputSystem;
-using MClient.Render;
-using MClient.UiSystem.Internal;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Components;
 
 namespace MClient.UiSystem.Default

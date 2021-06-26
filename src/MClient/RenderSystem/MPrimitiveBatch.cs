@@ -8,20 +8,22 @@ using Matrix = DuckGame.Matrix;
 //-------------------------------------------DISCLAIMER-------------------------------------------------------------------------
 //This class was taken from a freely distributed helper library and modified to work for this mod. Most of this code is not mine.
 
-namespace MClient.Render
+namespace MClient.RenderSystem
 {
+    /// <summary>
+    /// This class is the core of the custom rendering, and is what actually handles drawing the polygons.
+    /// </summary>
     public sealed class MPrimitiveBatch : IDisposable
     {
-        private VertexPositionColor[] vertices = new VertexPositionColor[1000];
-        public int bufferSize;
-        private int positionInBuffer;
-        private BasicEffect basicEffect;
-        private GraphicsDevice device;
-        private PrimitiveType primitiveType;
-        private int numVertsPerPrimitive;
-        private bool hasBegun;
-        private bool isDisposed;
-        private Layer currentLayer;
+        private readonly VertexPositionColor[] _vertices = new VertexPositionColor[1000];
+        private int _positionInBuffer;
+        private readonly BasicEffect _basicEffect;
+        private readonly GraphicsDevice _device;
+        private PrimitiveType _primitiveType;
+        private int _numVertsPerPrimitive;
+        private bool _hasBegun;
+        private bool _isDisposed;
+        private Layer _currentLayer;
 
         private static readonly RasterizerState RasterState = new RasterizerState()
         {
@@ -29,42 +31,26 @@ namespace MClient.Render
             ScissorTestEnable = true
         };
 
-        public MPrimitiveBatch(GraphicsDevice graphicsDevice, int bufferSize, BlendState blendState)
+        public MPrimitiveBatch(GraphicsDevice graphicsDevice, int bufferSize = 500)
         {
-            if (graphicsDevice == null)
-                throw new ArgumentNullException(graphicsDevice.ToString());
-            device = graphicsDevice;
-            basicEffect = new BasicEffect(graphicsDevice);
-            basicEffect.VertexColorEnabled = true;
-            basicEffect.LightingEnabled = false;
-            this.bufferSize = bufferSize;
+            if (graphicsDevice == null) return;
+            _device = graphicsDevice;
+            _basicEffect = new BasicEffect(graphicsDevice) {VertexColorEnabled = true, LightingEnabled = false};
         }
 
-        public MPrimitiveBatch(GraphicsDevice graphicsDevice, int bufferSize) : this(graphicsDevice, bufferSize, BlendState.Additive
-        )
-        {
-        }
-
-        public MPrimitiveBatch(GraphicsDevice graphicsDevice, BlendState blendState) : this(graphicsDevice, 500, blendState)
-        {
-        }
-
-        public MPrimitiveBatch(GraphicsDevice graphicsDevice) : this(graphicsDevice, 500) { }
-
-        
         public void UpdateState(Layer current)
         {
-            this.currentLayer = current;
+            _currentLayer = current;
             Graphics.screen.End();
-            Matrix cam = current.camera?.getMatrix() ?? Matrix.Identity;
+            var cam = current.camera?.getMatrix() ?? Matrix.Identity;
             Graphics.screen.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterState, null, cam);
-            basicEffect.View = Level.activeLevel.camera.getMatrix();
-            basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0f, Graphics.viewport.Width, Graphics.viewport.Height, 0f, 0.0f, -1f);
+            _basicEffect.View = Level.activeLevel.camera.getMatrix();
+            _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0f, Graphics.viewport.Width, Graphics.viewport.Height, 0f, 0.0f, -1f);
         }
 
         public void ResetState()
         {
-            basicEffect.View = Matrix.Identity;
+            _basicEffect.View = Matrix.Identity;
         }
         
 
@@ -76,33 +62,32 @@ namespace MClient.Render
 
         private void Dispose(bool disposing)
         {
-            if (!disposing || isDisposed)
+            if (!disposing || _isDisposed)
                 return;
-            if (basicEffect != null)
-                basicEffect.Dispose();
-            isDisposed = true;
+            _basicEffect?.Dispose();
+            _isDisposed = true;
         }
 
         public void Begin(PrimitiveType primitiveType, BlendState blendState)
         {
-            if (hasBegun)
+            if (_hasBegun)
                 throw new InvalidOperationException("End must be called before Begin can be called again.");
-            this.primitiveType = primitiveType;
-            device.BlendState = blendState;
-            numVertsPerPrimitive = NumVertsPerPrimitive(primitiveType);
-            basicEffect.CurrentTechnique.Passes[0].Apply();
-            hasBegun = true;
+            _primitiveType = primitiveType;
+            _device.BlendState = blendState;
+            _numVertsPerPrimitive = NumVertsPerPrimitive(primitiveType);
+            _basicEffect.CurrentTechnique.Passes[0].Apply();
+            _hasBegun = true;
         }
 
         public void AddVertex(Vector2 vertex, Color color)
         {
-            if (!hasBegun)
+            if (!_hasBegun)
                 throw new InvalidOperationException("Begin must be called before AddVertex can be called.");
-            if (positionInBuffer % numVertsPerPrimitive == 0 && positionInBuffer + numVertsPerPrimitive >= vertices.Length)
+            if (_positionInBuffer % _numVertsPerPrimitive == 0 && _positionInBuffer + _numVertsPerPrimitive >= _vertices.Length)
                 Flush();
-            vertices[positionInBuffer].Position = new Vector3(vertex, 0.0f);
-            vertices[positionInBuffer].Color = color;
-            ++positionInBuffer;
+            _vertices[_positionInBuffer].Position = new Vector3(vertex, 0.0f);
+            _vertices[_positionInBuffer].Color = color;
+            ++_positionInBuffer;
         }
 
         public void AddVertex(int x, int y, Color color)
@@ -117,40 +102,40 @@ namespace MClient.Render
 
         public void End()
         {
-            if (!hasBegun)
+            if (!_hasBegun)
                 throw new InvalidOperationException("Begin must be called before End can be called.");
             Flush();
-            hasBegun = false;
-            if (currentLayer is null) return;
-            UpdateState(currentLayer);
+            _hasBegun = false;
+            if (_currentLayer is null) return;
+            UpdateState(_currentLayer);
         }
 
         private void Flush()
         {
-            if (!hasBegun)
+            if (!_hasBegun)
                 throw new InvalidOperationException("Begin must be called before Flush can be called.");
-            if (positionInBuffer == 0)
+            if (_positionInBuffer == 0)
                 return;
             int primitiveCount = 0;
-            switch (primitiveType)
+            switch (_primitiveType)
             {
                 case PrimitiveType.TriangleList:
-                    primitiveCount = positionInBuffer / 3;
+                    primitiveCount = _positionInBuffer / 3;
                     break;
                 case PrimitiveType.TriangleStrip:
-                    primitiveCount = positionInBuffer - 2;
+                    primitiveCount = _positionInBuffer - 2;
                     break;
                 case PrimitiveType.LineList:
-                    primitiveCount = positionInBuffer / 2;
+                    primitiveCount = _positionInBuffer / 2;
                     break;
                 case PrimitiveType.LineStrip:
-                    primitiveCount = positionInBuffer - 1;
+                    primitiveCount = _positionInBuffer - 1;
                     break;
             }
             
-            device.DrawUserPrimitives<VertexPositionColor>(primitiveType, vertices, 0, primitiveCount);
+            _device.DrawUserPrimitives<VertexPositionColor>(_primitiveType, _vertices, 0, primitiveCount);
             
-            positionInBuffer = 0;
+            _positionInBuffer = 0;
         }
         
 
@@ -172,12 +157,12 @@ namespace MClient.Render
 
         public GraphicsDevice GetDevice()
         {
-            return device;
+            return _device;
         }
 
         public Effect GetEffect()
         {
-            return basicEffect;
+            return _basicEffect;
         }
     }
 }

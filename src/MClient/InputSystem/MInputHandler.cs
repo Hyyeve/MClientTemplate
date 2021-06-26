@@ -6,11 +6,14 @@ using MClient.Core.EventSystem.Events.Game;
 using MClient.Core.EventSystem.Events.Helper;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
-using MClient.Utils;
 
 
 namespace MClient.InputSystem
 {
+    
+    /// <summary>
+    /// Easy-to-use class for accessing various inputs
+    /// </summary>
     [MAutoRegisterEvents]
     public static class MInputHandler
     {
@@ -46,7 +49,14 @@ namespace MClient.InputSystem
 
         public static float MouseScroll => Mouse.scroll;
 
+        /// <summary>
+        /// The delay before a held-down key sends repeated key typed events
+        /// </summary>
         public const float KeyRepeatDelay = 300;
+
+        /// <summary>
+        /// The delay between repeated key typed events when a key is held down
+        /// </summary>
         public const float KeyRepeatSpeed = 50;
         
         

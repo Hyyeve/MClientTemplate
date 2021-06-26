@@ -8,12 +8,15 @@ using MClient.Core.EventSystem.Events.Input;
 
 namespace MClient.InputSystem
 {
+    /// <summary>
+    /// A class for handling binding method calls to sets of inputs. Mostly intended to be used internally - the MInputBindingAttribute wraps this system.
+    /// </summary>
     public class MInputBinding
     {
         public readonly Keys[] Keys;
-        private List<Keys> current;
-        private int currentIndex;
-        private bool hasInvoked;
+        private readonly List<Keys> _current;
+        private int _currentIndex;
+        private bool _hasInvoked;
         public readonly MBindOrderReq OrderReq;
         public readonly MBindPressReq PressReq;
         public readonly MethodInfo Method;
@@ -25,23 +28,32 @@ namespace MClient.InputSystem
             PressReq = pressReq;
             OrderReq = orderReq;
             Method = action;
-            current = new List<Keys>();
-            currentIndex = 0;
+            _current = new List<Keys>();
+            _currentIndex = 0;
         }
 
+        /// <summary>
+        /// "Enables" this binding, by registering it with the event handler
+        /// </summary>
         public void Activate()
         {
             MEventHandler.Register(typeof(MInputBinding), this);
         }
 
+        /// <summary>
+        /// "Disables" this binding, by de-registering it from the event handler
+        /// </summary>
         public void Deactivate()
         {
             MEventHandler.DeRegister(typeof(MInputBinding), this);
         }
         
+        /// <summary>
+        /// Updates the state of the binding, given a key press.
+        /// </summary>
+        /// <param name="key">The key that has been pressed</param>
         public void UpdateBind(Keys key)
         {
-
             if (!Keys.Contains(key))
             {
                 Reset();
@@ -58,9 +70,9 @@ namespace MClient.InputSystem
                         {
                             if (Keys.All(Keyboard.Down))
                             {
-                                if (hasInvoked) return;
+                                if (_hasInvoked) return;
                                 Invoke();
-                                hasInvoked = true;
+                                _hasInvoked = true;
                             }
                             else
                             {
@@ -71,18 +83,18 @@ namespace MClient.InputSystem
                         }
                         case MBindPressReq.EachPressed:
                         {
-                            if (!current.Contains(key) && (current.Count == 0 || !current.All(Keyboard.Down)))
+                            if (!_current.Contains(key) && (_current.Count == 0 || !_current.All(Keyboard.Down)))
                             {
-                                current.Add(key);
-                                if (current.Count == Keys.Length)
+                                _current.Add(key);
+                                if (_current.Count == Keys.Length)
                                 {
-                                    if (hasInvoked)
+                                    if (_hasInvoked)
                                     {
                                         Reset();
                                         return;
                                     };
                                     Invoke();
-                                    hasInvoked = true;
+                                    _hasInvoked = true;
                                 }
                             }
                             else
@@ -91,6 +103,8 @@ namespace MClient.InputSystem
                             }
                             break;
                         }
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
 
                     break;
@@ -101,15 +115,15 @@ namespace MClient.InputSystem
                     {
                         case MBindPressReq.AllPressed:
                         {
-                            if (Keys[currentIndex] == key && current.All(Keyboard.Down))
+                            if (Keys[_currentIndex] == key && _current.All(Keyboard.Down))
                             {
-                                currentIndex++;
-                                current.Add(key);
-                                if (currentIndex >= Keys.Length)
+                                _currentIndex++;
+                                _current.Add(key);
+                                if (_currentIndex >= Keys.Length)
                                 {
-                                    if (hasInvoked) return;
+                                    if (_hasInvoked) return;
                                     Invoke();
-                                    hasInvoked = true;
+                                    _hasInvoked = true;
                                 }
                             }
                             else
@@ -121,19 +135,19 @@ namespace MClient.InputSystem
                         }
                         case MBindPressReq.EachPressed:
                         {
-                            if (currentIndex < Keys.Length && Keys[currentIndex] == key && (current.Count == 0 || !current.All(Keyboard.Down)))
+                            if (_currentIndex < Keys.Length && Keys[_currentIndex] == key && (_current.Count == 0 || !_current.All(Keyboard.Down)))
                             {
-                                currentIndex++;
-                                current.Add(key);
-                                if (currentIndex >= Keys.Length)
+                                _currentIndex++;
+                                _current.Add(key);
+                                if (_currentIndex >= Keys.Length)
                                 {
-                                    if (hasInvoked)
+                                    if (_hasInvoked)
                                     {
                                         Reset();
                                         return;
                                     }
                                     Invoke();
-                                    hasInvoked = true;
+                                    _hasInvoked = true;
                                 }
                             }
                             else
@@ -142,19 +156,23 @@ namespace MClient.InputSystem
                             }
                             break;
                         }
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                     break;
                 }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
         private void Reset()
         {
-            hasInvoked = false;
-            currentIndex = 0;
-            current.Clear();
+            _hasInvoked = false;
+            _currentIndex = 0;
+            _current.Clear();
         }
-
+        
         [MEventKeyPressed]
         public void OnKeyPressed(MEventKeyPressed e)
         {

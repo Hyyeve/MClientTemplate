@@ -1,12 +1,9 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using DuckGame;
 using MClient.Core;
 using MClient.Core.Utils;
-using MClient.InputSystem;
-using MClient.Render;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Components.Elements;
-using MClient.Utils;
 
 namespace MClient.UiSystem.Default
 {
