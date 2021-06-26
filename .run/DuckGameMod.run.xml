@@ -1,0 +1,14 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DuckGameMod" type="RunExe" factoryName=".NET Executable" singleton="false">
+    <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../../../Program Files (x86)/Steam/steamapps/common/Duck Game/DuckGame.exe" />
+    <option name="PROGRAM_PARAMETERS" value="-moddebug -nointro" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../../../../Program Files (x86)/Steam/steamapps/common/Duck Game" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <method v="2">
+      <option name="Build Solution" enabled="true" />
+    </method>
+  </configuration>
+</component>

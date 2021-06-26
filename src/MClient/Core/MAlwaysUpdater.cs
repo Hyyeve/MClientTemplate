@@ -1,0 +1,42 @@
+﻿using System;
+using DuckGame;
+using MClient.EventSystem;
+using MClient.EventSystem.Events.Game;
+using MClient.EventSystem.Events.Helper;
+
+namespace MClientCore.MClient.Core
+{
+
+    internal static class MAlwaysUpdater
+    {
+        [MInitEvent]
+        public static void Init()
+        {
+            MEventHandler.Register(typeof(MAlwaysUpdater));
+        }
+        
+        [MEventPostGameUpdate]
+        private static void DoLobbyStuff()
+        {
+            if (!ModLoader.modsEnabled || !(Level.current is TeamSelect2) || Steam.lobby == null || Steam.lobby.id == 0UL)
+            {
+                _updateLobby = true;
+                return;
+            }
+            string text;
+            if (!(Level.current is TeamSelect2) || !_updateLobby ||
+                string.IsNullOrEmpty(text = Steam.lobby.GetLobbyData("mods"))) return;
+            int num = text.IndexOf(MModClass.ReplaceData, StringComparison.Ordinal);
+            if (num < 0)
+            {
+                _updateLobby = false;
+                return;
+            }
+            text = text.Remove(num, MModClass.ReplaceData.Length).Trim('|').Replace("||", "|");
+            Steam.lobby.SetLobbyData("mods", text);
+            _updateLobby = false;
+        }
+        
+        private static bool _updateLobby;
+    }
+}

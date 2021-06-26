@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{891D0981-DB0E-4845-996B-E7F608DED682}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MClient</RootNamespace>
+    <AssemblyName>MClient</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <Optimize>false</Optimize>
+    <OutputPath>.\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <BaseIntermediateOutputPath>build\obj</BaseIntermediateOutputPath>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>.\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DGSteam, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Duck Game\DGSteam.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DuckGame, Version=1.1.7833.19655, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Duck Game\DuckGame.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HarmonyLoader, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>content\dlls\HarmonyLoader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MoreLinq, Version=3.3.2.0, Culture=neutral, PublicKeyToken=384d532d7e88985d">
+      <HintPath>content\dlls\MoreLinq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\MClient\Core\DLLSystem\MDependencyResolver.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventGameDraw.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventPostDraw.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventPreDraw.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawBackground.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawBlocks.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawConsole.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawForeground.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawGame.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawGlow.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawHud.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawLighting.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawParallax.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawPre.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\Screen\MEventScreenDrawVirtual.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawBackground.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawBlocks.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawConsole.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawForeground.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawGame.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawGlow.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawHud.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawLighting.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawParallax.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawPre.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\World\MEventWorldDrawVirtual.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventGameExit.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventPostGameUpdate.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventPreGameUpdate.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MAutoRegisterMEventsAttribute.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MInitEvent.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MPostInitEvent.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventKeyPressed.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventKeyTyped.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventMouseAction.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\MEvent.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\MEventHandler.cs" />
+    <Compile Include="src\MClient\Core\MAlwaysUpdater.cs" />
+    <Compile Include="src\MClient\Core\MCoreHandler.cs" />
+    <Compile Include="src\MClient\Core\MLogger.cs" />
+    <Compile Include="src\MClient\Core\MModClass.cs" />
+    <Compile Include="src\MClient\Core\PatchSystem\AutoPatcher\MAutoPatchAttribute.cs" />
+    <Compile Include="src\MClient\Core\PatchSystem\AutoPatcher\MAutoPatchHandler.cs" />
+    <Compile Include="src\MClient\Core\PatchSystem\MPatchHandler.cs" />
+    <Compile Include="src\MClient\Core\SettingsSystem\MSerializeSettingAttribute.cs" />
+    <Compile Include="src\MClient\Core\SettingsSystem\MSettingHandler.cs" />
+    <Compile Include="src\MClient\Core\Utils\MColor.cs" />
+    <Compile Include="src\MClient\Core\Utils\MDelayUtil.cs" />
+    <Compile Include="src\MClient\Core\Utils\MMathUtils.cs" />
+    <Compile Include="src\MClient\Core\Utils\MPositionConversionUtil.cs" />
+    <Compile Include="src\MClient\Core\Utils\MVec2Col.cs" />
+    <Compile Include="src\MClient\ExposerSystem\ExposedClass.cs" />
+    <Compile Include="src\MClient\ExposerSystem\ExposedObject.cs" />
+    <Compile Include="src\MClient\ExposerSystem\ExposedObjectHelper.cs" />
+    <Compile Include="src\MClient\InputSystem\MInputBinding.cs" />
+    <Compile Include="src\MClient\InputSystem\MInputBindingAttribute.cs" />
+    <Compile Include="src\MClient\InputSystem\MInputBindingHandler.cs" />
+    <Compile Include="src\MClient\InputSystem\MInputHandler.cs" />
+    <Compile Include="src\MClient\RenderSystem\MAnimation.cs" />
+    <Compile Include="src\MClient\RenderSystem\MPrimitiveBatch.cs" />
+    <Compile Include="src\MClient\RenderSystem\MRenderer.cs" />
+    <Compile Include="src\MClient\RenderSystem\MRenderEventHelper.cs" />
+    <Compile Include="src\MClient\RenderSystem\RenderTasks\MPointRenderTask.cs" />
+    <Compile Include="src\MClient\RenderSystem\RenderTasks\MRenderTask.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiActionButtonElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiColorPickerElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiContainer.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiEnumSwitcherElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiSliderElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiTextDisplayBoxElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiToggleElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Default\MDefaultUiValueScrollerElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MAutoUiAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiActionButtonAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiColorAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiColorPickerAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiEnumSwitcherAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiSliderAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiTextDisplayBoxAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiToggleAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\MUiValueScrollerAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Attributes\UiElementAttribute.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiActionButtonElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiColorPickerElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiEnumSwitcherElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiFieldElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiMethodElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiSliderElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiTextDisplayBoxElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiToggleElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\Elements\MUiValueScrollerElement.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\MAmUi.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\Components\MUiContainer.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\MUiHandler.cs" />
+    <Compile Include="src\MClient\UiSystem\Internal\MUiState.cs" />
+    <Compile Include="src\MClient\UiSystem\MTestUI.cs" />
+    <Compile Include="src\MTemplate\MCustomEvents\MTemplateEvent.cs" />
+    <Compile Include="src\MTemplate\MCustomEvents\MTemplateEventWithParams.cs" />
+    <Compile Include="src\Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\MTemplate\MCustom" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
