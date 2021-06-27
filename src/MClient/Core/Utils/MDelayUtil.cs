@@ -18,9 +18,9 @@ namespace MClient.Core.Utils
         }
         
         /// <summary>
-        /// Checks if the given amount of time has elapsed.
+        /// Checks if the given amount of time has elapsed since this method last returned true.
         /// </summary>
-        /// <param name="mills">The amount of time</param>
+        /// <param name="mills">The amount of time, in milliseconds</param>
         /// <returns>True, if the given amount of time has passed since this method last returned true.</returns>
         public bool TimePassed(float mills)
         {
@@ -31,9 +31,9 @@ namespace MClient.Core.Utils
         }
 
         /// <summary>
-        /// Checks if the given amount of time has elapsed
+        /// Checks if the given amount of time has elapsed since this DelayUtil was last reset.
         /// </summary>
-        /// <param name="mills">The amount of time</param>
+        /// <param name="mills">The amount of time, in milliseconds</param>
         /// <returns>True, if the given amount of time has passed since this DelayUtil was last reset.</returns>
         public bool AbsoluteTimePassed(float mills)
         {

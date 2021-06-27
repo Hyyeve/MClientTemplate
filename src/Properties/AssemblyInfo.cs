@@ -11,5 +11,4 @@ using System.Security.Permissions;
 [assembly: AssemblyTitle("MClientTemplate")]
 [assembly: AssemblyCompany("|PURPLE|Drake")]
 [assembly: AssemblyDescription("TemplateClientMod")]
-[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 [module: UnverifiableCode]

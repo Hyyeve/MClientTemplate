@@ -22,7 +22,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         private bool _dragging;
         private readonly MValueType _valueType;
 
-        /// <inheritdoc />
+ 
         protected MUiSliderElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             Max = GetMax(field);
@@ -35,7 +35,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Value = GetValue();
         }
 
-        /// <inheritdoc />
+    
         protected override void Arrange() { }
 
         protected override void Update()
@@ -71,7 +71,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Percent = MousePercent;
         }
         
-        /// <inheritdoc />
+  
         public override void HandleMouseEvent(MEventMouseAction e)
         {
             _dragging = e.Action switch
@@ -82,10 +82,10 @@ namespace MClient.UiSystem.Internal.Components.Elements
             };
         }
 
-        /// <inheritdoc />
+
         public override void HandleKeyTypedEvent(MEventKeyTyped e) { }
 
-        /// <inheritdoc />
+      
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
             if (GetValueType(fieldInfo) == MValueType.Invalid)

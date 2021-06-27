@@ -18,7 +18,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         protected readonly string Title;
         protected bool Toggled;
         
-        /// <inheritdoc />
+  
         protected MUiToggleElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             Padding = 1f * UiScale;
@@ -29,7 +29,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Toggled = (bool) AttatchedField.GetValue(null);
         }
 
-        /// <inheritdoc />
+
         protected MUiToggleElement(Vec2 pos, Vec2 size, FieldInfo field, float toggleBoxPadding) : base(pos, size, field)
         {
             Padding = toggleBoxPadding * UiScale;
@@ -46,7 +46,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             return att != null ? ((MUiToggleAttribute) att).TitleOverride == "" ? field.Name : ((MUiToggleAttribute) att).TitleOverride : field.Name;
         }
 
-        /// <inheritdoc />
+
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
             if (fieldInfo.FieldType != typeof(bool)) throw new Exception("UiToggleElement field was not a boolean! " 
@@ -64,7 +64,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             NeedsArranging = false;
         }
 
-        /// <inheritdoc />
+
         public override void HandleMouseEvent(MEventMouseAction e)
         {
             if (e.Action != MMouseAction.LeftPressed) return;
@@ -84,7 +84,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Toggled = !toggled;
         }
 
-        /// <inheritdoc />
+
         public override void HandleKeyTypedEvent(MEventKeyTyped e) {}
 
     }

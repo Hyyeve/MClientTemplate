@@ -115,9 +115,6 @@
     <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MEventEarlyInit.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MEventInit.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Helper\MEventLateInit.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventKeyPressed.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventKeyTyped.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Input\MEventMouseAction.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\MEvent.cs" />
     <Compile Include="src\MClient\Core\EventSystem\MEventHandler.cs" />
     <Compile Include="src\MClient\Core\MAlwaysUpdater.cs" />
@@ -131,9 +128,12 @@
     <Compile Include="src\MClient\Core\Utils\MMathUtils.cs" />
     <Compile Include="src\MClient\Core\Utils\MPositionConversionUtil.cs" />
     <Compile Include="src\MClient\Core\Utils\MVec2Col.cs" />
-    <Compile Include="src\MClient\ExposerSystem\ExposedClass.cs" />
-    <Compile Include="src\MClient\ExposerSystem\ExposedObject.cs" />
-    <Compile Include="src\MClient\ExposerSystem\ExposedObjectHelper.cs" />
+    <Compile Include="src\MClient\ExposerSystem\MExposedClass.cs" />
+    <Compile Include="src\MClient\ExposerSystem\MExposedObject.cs" />
+    <Compile Include="src\MClient\ExposerSystem\MExposedObjectHelper.cs" />
+    <Compile Include="src\MClient\InputSystem\InputEvents\MEventKeyPressed.cs" />
+    <Compile Include="src\MClient\InputSystem\InputEvents\MEventKeyTyped.cs" />
+    <Compile Include="src\MClient\InputSystem\InputEvents\MEventMouseAction.cs" />
     <Compile Include="src\MClient\InputSystem\MInputBinding.cs" />
     <Compile Include="src\MClient\InputSystem\MInputBindingAttribute.cs" />
     <Compile Include="src\MClient\InputSystem\MInputBindingHandler.cs" />
@@ -177,12 +177,13 @@
     <Compile Include="src\MClient\UiSystem\Internal\Components\MUiContainer.cs" />
     <Compile Include="src\MClient\UiSystem\Internal\MUiHandler.cs" />
     <Compile Include="src\MClient\UiSystem\Internal\MUiState.cs" />
-    <Compile Include="src\MTemplate\MCustomEvents\MTemplateEvent.cs" />
-    <Compile Include="src\MTemplate\MCustomEvents\MTemplateEventWithParams.cs" />
+    <Compile Include="src\MTemplate\EventSystemDemo\MEventSystemDemo.cs" />
+    <Compile Include="src\MTemplate\EventSystemDemo\MEventTemplate.cs" />
+    <Compile Include="src\MTemplate\EventSystemDemo\MEventTemplateWithParams.cs" />
+    <Compile Include="src\MTemplate\ExposerSystemDemo\MExposerSystemDemo.cs" />
+    <Compile Include="src\MTemplate\InputSystemDemo\InputSystemDemo.cs" />
+    <Compile Include="src\MTemplate\PatchSystemDemo\MPatchSystemDemo.cs" />
     <Compile Include="src\Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\MTemplate\MCustom" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

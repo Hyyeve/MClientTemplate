@@ -66,6 +66,9 @@ namespace MClient.InputSystem
         private static readonly MDelayUtil DelayTimer = new MDelayUtil();
         private static readonly MDelayUtil RepeatTimer = new MDelayUtil();
 
+        /// <summary>
+        /// Internal event call. Not intended for custom use!
+        /// </summary>
         [MEventPreGameUpdate]
         public static void CallInputEvents()
         {

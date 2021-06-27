@@ -9,7 +9,7 @@ using MClient.Core.EventSystem.Events.Input;
 namespace MClient.InputSystem
 {
     /// <summary>
-    /// A class for handling binding method calls to sets of inputs. Mostly intended to be used internally - the MInputBindingAttribute wraps this system.
+    /// A class for handling binding method calls to sets of inputs. Mostly intended to be used internally - the <see cref="MInputBindingAttribute"/> wraps this system.
     /// </summary>
     public class MInputBinding
     {
@@ -49,7 +49,7 @@ namespace MClient.InputSystem
         }
         
         /// <summary>
-        /// Updates the state of the binding, given a key press.
+        /// Updates the state of the binding, given a key press. Primarily an internal call, but can be used for custom purposes.
         /// </summary>
         /// <param name="key">The key that has been pressed</param>
         public void UpdateBind(Keys key)
@@ -173,6 +173,9 @@ namespace MClient.InputSystem
             _current.Clear();
         }
         
+        /// <summary>
+        /// Internal event call
+        /// </summary>
         [MEventKeyPressed]
         public void OnKeyPressed(MEventKeyPressed e)
         {

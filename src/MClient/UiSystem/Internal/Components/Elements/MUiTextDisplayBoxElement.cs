@@ -25,7 +25,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
         private float _textStartOffset;
 
-        /// <inheritdoc />
+    
         protected MUiTextDisplayBoxElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             Padding = 1f * UiScale;
@@ -51,13 +51,13 @@ namespace MClient.UiSystem.Internal.Components.Elements
             return Attribute.GetCustomAttribute(field, typeof(MUiTextDisplayBoxAttribute));
         }
 
-        /// <inheritdoc />
+
         public override void HandleMouseEvent(MEventMouseAction e) { }
 
-        /// <inheritdoc />
+
         public override void HandleKeyTypedEvent(MEventKeyTyped e) { }
 
-        /// <inheritdoc />
+      
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
             if (fieldInfo.FieldType != typeof(List<string>))
@@ -73,7 +73,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             return (List<string>) AttatchedField.GetValue(null);
         }
 
-        /// <inheritdoc />
+      
         protected override void Arrange()
         {
             if (!NeedsArranging) return;
@@ -83,7 +83,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             NeedsArranging = false;
         }
 
-        /// <inheritdoc />
+  
         protected override void Update()
         {
             DrawList.Clear();

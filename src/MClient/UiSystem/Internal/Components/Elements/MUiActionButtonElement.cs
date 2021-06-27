@@ -61,12 +61,9 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             AttatchedMethod.Invoke(null, null);
         }
-
-        /// <inheritdoc />
+        
         public override void HandleKeyTypedEvent(MEventKeyTyped e) { }
         
-
-        /// <inheritdoc />
         protected override void VerifyMethodInfo(MethodInfo methodInfo)
         {
             if (methodInfo.GetParameters().Length > 0)

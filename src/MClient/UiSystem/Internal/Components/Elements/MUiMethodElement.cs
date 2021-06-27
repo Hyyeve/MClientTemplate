@@ -78,19 +78,17 @@ namespace MClient.UiSystem.Internal.Components.Elements
         protected abstract void Arrange();
         protected abstract void Update();
 
-        /// <inheritdoc />
         public override Vec2 GetPos()
         {
             return Position;
         }
 
-        /// <inheritdoc />
+
         public override Vec2 GetSize()
         {
             return Size;
         }
 
-        /// <inheritdoc />
         public override void SetPos(Vec2 pos)
         {
             Position = MPositionConversionUtil.ClampToScreen(pos, GetSize(), MQuadrantArea.TopLeft);
@@ -98,7 +96,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             base.SetPos(pos);
         }
 
-        /// <inheritdoc />
+
         public override void SetSize(Vec2 size, bool scaled)
         {
             Size = size * (scaled ? 1f : UiScale);
@@ -106,20 +104,20 @@ namespace MClient.UiSystem.Internal.Components.Elements
             base.SetSize(size, scaled);
         }
 
-        /// <inheritdoc />
+     
         public override bool IsOverlapping(Vec2 pos)
         {
             return pos.x > Position.x && pos.x < Position.x + Size.x && pos.y > Position.y &&
                    pos.y < Position.y + Size.y;
         }
 
-        /// <inheritdoc />
+
         public override void SetOwningState(MUiState state)
         {
             _state = state;
         }
 
-        /// <inheritdoc />
+
         public override MUiState GetOwningState()
         {
             return _state;

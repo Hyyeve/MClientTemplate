@@ -54,7 +54,6 @@ namespace MClient.UiSystem.Internal.Components.Elements
                 : field.Name;
         }
         
-        /// <inheritdoc />
         public override void HandleMouseEvent(MEventMouseAction e)
         {
             if(!IsOverlapping(e.MousePosGame)) return;
@@ -88,12 +87,10 @@ namespace MClient.UiSystem.Internal.Components.Elements
             var value = Enum.Parse(AttatchedField.FieldType, EnumMember);
             AttatchedField.SetValue(null,value);
         }
-
-        /// <inheritdoc />
+        
         public override void HandleKeyTypedEvent(MEventKeyTyped e) { }
         
-
-        /// <inheritdoc />
+        
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
             if (!fieldInfo.FieldType.IsEnum)
@@ -104,13 +101,11 @@ namespace MClient.UiSystem.Internal.Components.Elements
                                     "." + fieldInfo.Name);
         }
 
-        /// <inheritdoc />
         protected override void Arrange()
         {
             
         }
-
-        /// <inheritdoc />
+        
         protected override void Update()
         {
             EnumMember = GetCurrentMember();

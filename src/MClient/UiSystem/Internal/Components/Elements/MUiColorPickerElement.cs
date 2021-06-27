@@ -146,7 +146,6 @@ namespace MClient.UiSystem.Internal.Components.Elements
                    pos.y < HBarPos.y + HBarSize.y;
         }
         
-        /// <inheritdoc />
         public override void HandleMouseEvent(MEventMouseAction e)
         {
             switch (e.Action)
@@ -168,8 +167,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
                     break;
             }
         }
-
-        /// <inheritdoc />
+        
         public override void HandleKeyTypedEvent(MEventKeyTyped e) { }
 
         /// <inheritdoc />

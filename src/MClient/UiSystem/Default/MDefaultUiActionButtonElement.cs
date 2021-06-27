@@ -13,13 +13,10 @@ namespace MClient.UiSystem.Default
     {
         private readonly SpriteMap _box = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiElementBox"), 8, 8);
         
-        /// <inheritdoc />
         public MDefaultUiActionButtonElement(Vec2 pos, MethodInfo method) : base(pos, new Vec2(16f), method)
         {
         }
         
-
-        /// <inheritdoc />
         public override void Draw()
         {
             _box.color = BaseColor;

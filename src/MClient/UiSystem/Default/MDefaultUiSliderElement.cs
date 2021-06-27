@@ -16,13 +16,11 @@ namespace MClient.UiSystem.Default
         private readonly SpriteMap _box = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiElementBox"), 8, 8);
         private readonly SpriteMap _bar = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiSliderBar"), 16, 16);
         
-        /// <inheritdoc />
         public MDefaultUiSliderElement(Vec2 pos, FieldInfo field) : base(pos, new Vec2(16f), field)
         {
 
         }
-
-        /// <inheritdoc />
+        
         public override void Draw()
         {
             _box.color = BaseColor;

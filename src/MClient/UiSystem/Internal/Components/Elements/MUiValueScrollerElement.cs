@@ -22,7 +22,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
         private double _oldVal;
         private Vec2 _accumulatedOffset = Vec2.Zero;
 
-        /// <inheritdoc />
+
         protected MUiValueScrollerElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
             _valueType = GetValueType(field);
@@ -35,7 +35,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
 
 
-        /// <inheritdoc />
+  
         protected override void Arrange() { }
 
         protected override void Update()
@@ -60,8 +60,8 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
             ValueString = newValueString;
         }
+
         
-        /// <inheritdoc />
         public override void HandleMouseEvent(MEventMouseAction e)
         {
             switch (e.Action)
@@ -84,11 +84,11 @@ namespace MClient.UiSystem.Internal.Components.Elements
             }
         }
 
-        /// <inheritdoc />
+
         public override void HandleKeyTypedEvent(MEventKeyTyped e) { }
         
 
-        /// <inheritdoc />
+
         protected override void VerifyFieldInfo(FieldInfo fieldInfo)
         {
             if (GetValueType(fieldInfo) == MValueType.Invalid)

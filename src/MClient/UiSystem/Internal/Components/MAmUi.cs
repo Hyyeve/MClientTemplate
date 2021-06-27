@@ -19,9 +19,6 @@ namespace MClient.UiSystem.Internal.Components
         public float Width => GetSize().x;
         public float Height => GetSize().y;
         
-        /// <summary>
-        /// This method ALSO HANDLES DRAWING - Do NOT call with a normal Update event.
-        /// </summary>
         public abstract void HandleUiUpdate();
 
         public abstract void HandleMouseEvent(MEventMouseAction e);

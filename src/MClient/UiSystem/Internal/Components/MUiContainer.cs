@@ -368,7 +368,7 @@ namespace MClient.UiSystem.Internal.Components
         /// </summary>
         public override void HandleMouseEvent(MEventMouseAction e)
         {
-            if (!MUiHandler.IsTop(_state, MInputHandler.MousePositionGame) && !e.IsReleaseAction()) return;
+            if (!MUiHandler.IsTop(_state, MInputHandler.MousePositionGame) && !e.IsReleaseAction) return;
             
             Elements.ForEach(ele => ele.HandleMouseEvent(e));
             

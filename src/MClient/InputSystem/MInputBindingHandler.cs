@@ -25,6 +25,11 @@ namespace MClient.InputSystem
                 CreateBind(att.Bind, att.PressReq, att.OrderReq,method);
             }
         }
+
+        public static MInputBinding GetBind(Type bindClass, string methodName)
+        {
+            return Bindings.FindAll(b => b.Method.Name == methodName).Find(b => b.Method.DeclaringType == bindClass);
+        }
         
         /// <summary>
         /// Creates and activates a method binding
@@ -33,11 +38,12 @@ namespace MClient.InputSystem
         /// <param name="pressReq">The requirements for how the keys are pressed</param>
         /// <param name="orderReq">The requirements for what order the keys are pressed</param>
         /// <param name="method">The method to bind</param>
-        public static void CreateBind(Keys[] bind, MBindPressReq pressReq, MBindOrderReq orderReq, MethodInfo method)
+        public static MInputBinding CreateBind(Keys[] bind, MBindPressReq pressReq, MBindOrderReq orderReq, MethodInfo method)
         {
             var binding = new MInputBinding(bind, pressReq, orderReq, method);
             Bindings.Add(binding);
             binding.Activate();
+            return binding;
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace MClient.InputSystem
         /// Deactivates and removes all bindings attached to the given method
         /// </summary>
         /// <param name="actionMethod">The method</param>
-        public static void Destroy(MethodInfo actionMethod)
+        public static void DestroyBind(MethodInfo actionMethod)
         {
             List<MInputBinding> temp = Bindings.Where(bind => bind.Method == actionMethod).ToList();
             temp.ForEach(bind => bind.Deactivate());
@@ -66,7 +72,7 @@ namespace MClient.InputSystem
         /// Deactivates and removes a specific binding
         /// </summary>
         /// <param name="binding">The binding</param>
-        public static void Destroy(MInputBinding binding)
+        public static void DestroyBind(MInputBinding binding)
         {
             binding.Deactivate();
             Bindings.Remove(binding);

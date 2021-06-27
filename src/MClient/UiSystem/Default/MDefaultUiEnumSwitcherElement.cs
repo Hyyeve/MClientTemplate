@@ -18,9 +18,7 @@ namespace MClient.UiSystem.Default
         {
             
         }
-
-
-        /// <inheritdoc />
+        
         public override void Draw()
         {
             _box.color = BaseColor;

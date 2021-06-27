@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using MClient.ExposerSystem;
 
-namespace MClient.Utils.Exposer
+namespace MClient.ExposerSystem
 {
 
 //-------------------------------------------DISCLAIMER-------------------------------------------------------------------------
@@ -14,7 +13,7 @@ namespace MClient.Utils.Exposer
     /// <summary>
     /// A DynamicObject class that allows you to expose any classes private methods and variables easily.
     /// </summary>
-    /// <remarks>MExposedObject is for instance methods and variables. Use MExposedClass for statics</remarks>
+    /// <remarks>MExposedObject is for instance methods and variables. Use <see cref="MExposedClass"/> for statics</remarks>
     public class MExposedObject : DynamicObject
     {
         private readonly Type _mType;

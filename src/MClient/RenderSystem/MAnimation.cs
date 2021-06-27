@@ -195,7 +195,6 @@ namespace MClient.RenderSystem
                     return Math.Round(progress);
                 case MTransition.Linear:
                     return progress;
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

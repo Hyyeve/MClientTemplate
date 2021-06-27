@@ -23,15 +23,11 @@ namespace MClient.Core.EventSystem.Events.Input
             return temp;
         }
 
-        public bool IsClickAction()
-        {
-            return (Action == MMouseAction.LeftPressed || Action == MMouseAction.MiddlePressed || Action == MMouseAction.RightPressed);
-        }
+        public bool IsClickAction => Action == MMouseAction.LeftPressed || Action == MMouseAction.MiddlePressed || Action == MMouseAction.RightPressed;
 
-        public bool IsReleaseAction()
-        {
-            return (Action == MMouseAction.LeftReleased || Action == MMouseAction.MiddleReleased || Action == MMouseAction.RightReleased);
-        }
+        public bool IsReleaseAction => Action == MMouseAction.LeftReleased || Action == MMouseAction.MiddleReleased || Action == MMouseAction.RightReleased;
+
+        public bool IsScrollAction => Action == MMouseAction.Scrolled;
     }
 
     public enum MMouseAction

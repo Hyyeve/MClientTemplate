@@ -13,7 +13,7 @@ namespace MClient.ExposerSystem
     /// <summary>
     /// A DynamicObject class that allows you to expose any classes private methods and variables easily.
     /// </summary>
-    /// <remarks>MExposedClass is for static methods and variables. Use MExposedObject for instances</remarks>
+    /// <remarks>MExposedClass is for static methods and variables. Use <see cref="MExposedObject"/> for instances</remarks>
     public class MExposedClass : DynamicObject
     {
         private readonly Type _mType;

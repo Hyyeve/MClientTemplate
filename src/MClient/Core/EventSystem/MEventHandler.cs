@@ -24,7 +24,7 @@ namespace MClient.Core.EventSystem
         /// <summary>
         /// Registers all event methods within a class.
         /// </summary>
-        /// <param name="type">The <c>Type</c> to register</param>
+        /// <param name="type">The type to register</param>
         /// <param name="instance">The instance of that type to register. If null, only static event methods will be registered.</param>
         public static void Register(Type type, object instance = null)
         {
@@ -64,7 +64,7 @@ namespace MClient.Core.EventSystem
         /// <summary>
         /// De-Registers all event methods within a class.
         /// </summary>
-        /// <param name="type">The <c>Type</c> to de-register</param>
+        /// <param name="type">The type to de-register</param>
         /// <param name="instance">The instance of that type to de-register. If null, only static event methods will be de-registered.</param>
         public static void DeRegister(Type type, object instance = null)
         {

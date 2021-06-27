@@ -19,14 +19,12 @@ namespace MClient.UiSystem.Default
         private Color _mmCol;
         private Color _reCol;
         private Color _cCol;
-
-        /// <inheritdoc />
+        
         public MDefaultUiColorPickerElement(Vec2 pos, FieldInfo field) : base(pos, new Vec2(64), field)
         {
             
         }
-
-        /// <inheritdoc />
+        
         public override void Draw()
         {
             _box.color = BaseColor;

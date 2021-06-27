@@ -28,7 +28,7 @@ namespace MClient.Core.Utils
         /// </summary>
         /// <param name="start">The start position for the line, in Game/World space</param>
         /// <param name="end">The end position for the line, in Game/World space</param>
-        /// <param name="thing">The <c>DuckGame.Thing</c> to check a hit against</param>
+        /// <param name="thing">The <see cref="Thing"/> to check a hit against</param>
         /// <returns></returns>
         public static Vec2 CalcHitPoint(Vec2 start, Vec2 end, Thing thing)
         {
@@ -137,9 +137,9 @@ namespace MClient.Core.Utils
         /// <param name="pointA">The first position</param>
         /// <param name="pointB">The second position</param>
         /// <returns>The squared distance between the two points</returns>
-        public static float DistSqr(Vec2 s, Vec2 e)
+        public static float DistSqr(Vec2 pointA, Vec2 pointB)
         {
-            return (s - e).LengthSquared();
+            return (pointA - pointB).LengthSquared();
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace MClient.Core.Utils
         /// An optional parameter to help with the way Duck Game handles flipping objects.
         /// It will flip the vector across the Y axis if set to -1.
         /// </param>
-        /// <returns></returns>
+        /// <returns>A vector with the direction and length as specified by the angle and magnitude given</returns>
         public static Vec2 CalcVec(float degrees, float magnitude, int offDir = 0)
         {
             if (offDir == -1)

@@ -13,13 +13,10 @@ namespace MClient.UiSystem.Default
     {
         private readonly SpriteMap _box = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiElementBox"), 8, 8);
         
-        /// <inheritdoc />
         public MDefaultUiTextDisplayBoxElement(Vec2 pos, Vec2 size, FieldInfo field) : base(pos, size, field)
         {
         }
-
-
-        /// <inheritdoc />
+        
         public override void Draw()
         {
             _box.color = BaseColor;

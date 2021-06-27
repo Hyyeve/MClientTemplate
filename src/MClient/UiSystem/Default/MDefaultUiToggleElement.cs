@@ -15,13 +15,10 @@ namespace MClient.UiSystem.Default
         private readonly SpriteMap _box = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiElementBox"), 8, 8);
         private readonly SpriteMap _button = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiToggleButton"), 12, 12);
         
-        /// <inheritdoc />
         public MDefaultUiToggleElement(Vec2 pos, FieldInfo field) : base(pos, new Vec2(16f), field, 2f)
         {
         }
         
-
-        /// <inheritdoc />
         public override void Draw()
         {
             _box.color = BaseColor;

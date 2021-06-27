@@ -15,7 +15,7 @@ namespace MClient.Core.PatchSystem.AutoPatcher
         /// <summary>
         /// This is a Auto-Attribute that allows you to automatically and easily patch methods with Harmony
         /// </summary>
-        /// <param name="type">The <c>type</c> of the class that contains the method to patch</param>
+        /// <param name="type">The type of the class that contains the method to patch</param>
         /// <param name="method">The name of the method to patch</param>
         /// <param name="patchType">The type of patch to do</param>
         public MAutoPatchAttribute(Type type, string method, MPatchType patchType)

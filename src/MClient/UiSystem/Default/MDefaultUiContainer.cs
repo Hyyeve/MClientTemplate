@@ -14,24 +14,11 @@ namespace MClient.UiSystem.Default
     {
 
         private readonly SpriteMap _texture = new SpriteMap(Mod.GetPath<MModClass>("Ui/UiContainerBackground"), 8, 8);
-
-        /// <inheritdoc />
+        
         public MDefaultUiContainer(Vec2 position, Vec2 size) : base(position, size)
         {
         }
-
-        /// <inheritdoc />
-        public MDefaultUiContainer(Vec2 position, Vec2 size, Vec2 elementOffset) : base(position, size, elementOffset)
-        {
-        }
-
-        /// <inheritdoc />
-        public MDefaultUiContainer(Vec2 position, Vec2 size, Vec2 elementOffset, List<MAmUi> elements) : base(position,
-            size, elementOffset, elements)
-        {
-        }
-
-        /// <inheritdoc />
+        
         public override void Draw()
         {
             _texture.color = BaseColor;

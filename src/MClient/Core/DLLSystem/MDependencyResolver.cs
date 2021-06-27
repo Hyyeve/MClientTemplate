@@ -56,7 +56,7 @@ namespace MClient.Core.DLLSystem
                     return assembly;
                 }
             }
-            catch(InvalidOperationException exe)
+            catch(InvalidOperationException)
             {
                 //Oh well we don't care
             }
@@ -86,7 +86,7 @@ namespace MClient.Core.DLLSystem
                 //Attempt #1 - LoadFrom()
                 loadedAssembly = Assembly.LoadFrom(path);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Attempt #1 didn't work. Try again!
                 try
@@ -94,7 +94,7 @@ namespace MClient.Core.DLLSystem
                     //Attempt #2 - Load(bytes[])
                     loadedAssembly = Assembly.Load(File.ReadAllBytes(path));
                 }
-                catch (Exception f)
+                catch (Exception)
                 {
                     //Attempt #2 didn't work. Weird.
                     MLogger.Log("Failed to load assembly " + assemblyShortName, MLogger.MLogType.Warning, MLogger.MLogSection.Asmb);
