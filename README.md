@@ -1,7 +1,7 @@
 # MClientTemplate
 A Duck Game Client-side mod template with many useful systems
 
-This is a fairly large project, intended to remove all of the small, annoying systems 
+This is a fairly large project, intended to cover all of the small, annoying systems 
 that people often have to implement themselves when creating mods for Duck Game.
 
 Specifically, this project currently contains:
