@@ -16,4 +16,4 @@ Specifically, this project currently contains:
 - Easy-to-use input system.
 
 I have attempted to document the code and provide examples for how to use things
-in most cases, and I'm also planning to create documentation here on Github.
+in most cases, and I've also included a overview document here on github.
