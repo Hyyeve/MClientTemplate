@@ -12,7 +12,8 @@ namespace MClient.Core
 
         private static string _modName;
         private static bool _initialised;
-        
+        private static string _prevMessage;
+
         /// <summary>
         /// Initialises the logger.
         /// </summary>
@@ -42,6 +43,10 @@ namespace MClient.Core
                 Initialise();
                 return;
             }
+            
+            if (message == _prevMessage) return;
+
+            _prevMessage = message;
 
             string sect = logSection == MLogSection.None ? string.Empty : "." + logSection.ToString().ToUpper();
             DevConsole.Log(DCSection.General,  FormatColor(MDuckGameColours.MenuOrange) + _modName + sect + ": " + LogTypeToColor(logType) + message);
@@ -91,7 +96,7 @@ namespace MClient.Core
 
         public enum MLogSection
         {
-            None, Excp, Asmb, Evnt, Ptch, Core, Rndr, Save, Ui
+            None, Excp, Asmb, Evnt, Ptch, Core, Rndr, Save, UsrI
         }
 
         /// <summary>

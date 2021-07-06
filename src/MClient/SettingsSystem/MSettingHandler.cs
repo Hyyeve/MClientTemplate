@@ -68,21 +68,27 @@ namespace MClient.SettingsSystem
                         continue;
                     }
 
+                    if (field.FieldType == typeof(int))
+                    {
+                        field.SetValue(null, int.Parse(splitData[2]));
+                        continue;
+                    }
+
                     if (field.FieldType == typeof(float))
                     {
                         field.SetValue(null, float.Parse(splitData[2]));
                         continue;
                     }
 
-                    if (field.FieldType == typeof(bool))
-                    {
-                        field.SetValue(null, bool.Parse(splitData[2]));
-                        continue;
-                    }
-
                     if (field.FieldType == typeof(double))
                     {
                         field.SetValue(null, double.Parse(splitData[2]));
+                        continue;
+                    }
+
+                    if (field.FieldType == typeof(bool))
+                    {
+                        field.SetValue(null, bool.Parse(splitData[2]));
                         continue;
                     }
 
@@ -138,9 +144,23 @@ namespace MClient.SettingsSystem
                     continue;
                 }
 
+                if (field.FieldType == typeof(int))
+                {
+                    data += (int) field.GetValue(null);
+                    saveData.Add(data);
+                    continue;
+                }
+
                 if (field.FieldType == typeof(float))
                 {
                     data +=  (float) field.GetValue(null);
+                    saveData.Add(data);
+                    continue;
+                }
+
+                if (field.FieldType == typeof(double))
+                {
+                    data += (double) field.GetValue(null);
                     saveData.Add(data);
                     continue;
                 }
@@ -151,14 +171,6 @@ namespace MClient.SettingsSystem
                     saveData.Add(data);
                     continue;
                 }
-
-                if (field.FieldType == typeof(double))
-                {
-                    data +=  (double) field.GetValue(null);
-                    saveData.Add(data);
-                    continue;
-                }
-                
 
                 if (field.FieldType == typeof(Color))
                 {

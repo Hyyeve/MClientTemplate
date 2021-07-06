@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using MClient.Core.EventSystem.Events;
 using MClient.Core.EventSystem.Events.Helper;
+using MoreLinq;
 
 namespace MClient.Core.EventSystem
 {
@@ -19,7 +20,9 @@ namespace MClient.Core.EventSystem
         //Dictionaries for storing registered types & methods, as well as ones that need to be de-registered.
         private static readonly Dictionary<object, Dictionary<Type, MethodInfo>> Registered = new Dictionary<object, Dictionary<Type, MethodInfo>>();
         private static readonly Dictionary<Type, object> ToRemove = new Dictionary<Type, object>();
+        private static readonly List<MEvent> ToCall = new List<MEvent>();
         private static bool _inCallLoop = false;
+        private static Type _prevCallType;
         
         /// <summary>
         /// Registers all event methods within a class.
@@ -50,9 +53,9 @@ namespace MClient.Core.EventSystem
 
             foreach (var methodInfo in memberInfo)
             {
-                var clientEvent = (MEvent) Attribute.GetCustomAttribute(methodInfo, typeof(MEvent));
-                if (clientEvent == null) continue;
-                toAdd.Add(clientEvent.GetType(), methodInfo);
+                var clientEvents = (MEvent[]) Attribute.GetCustomAttributes(methodInfo, typeof(MEvent));
+                if (clientEvents.Length == 0) continue;
+                clientEvents.ForEach(e => toAdd.Add(e.GetType(), methodInfo));
                 MLogger.Log("Registering method " + type.Name + "." + methodInfo.Name, logSection: MLogger.MLogSection
                     .Evnt);
             }
@@ -92,8 +95,16 @@ namespace MClient.Core.EventSystem
         /// <param name="clientEvent">The event to call</param>
         public static void Call(MEvent clientEvent)
         {
-            CleanRegisteredClasses();
+            if (_inCallLoop && clientEvent.GetType() == _prevCallType)
+            {
+                MLogger.Log("Recursive event of type: " + clientEvent.GetType().Name + " detected, skipping!", MLogger.MLogType.Warning, MLogger.MLogSection.Evnt);
+                return;
+            }
+
+            _prevCallType = clientEvent.GetType();
             
+            CleanRegisteredClasses();
+
             _inCallLoop = true;
             
             foreach (var obj in Registered.Keys)
@@ -124,6 +135,8 @@ namespace MClient.Core.EventSystem
             
             _inCallLoop = false;
         }
+
+
 
         /// <summary>
         /// Handles auto-event attributes - Auto-Registering and Init Events. Not intended for custom use!
@@ -159,8 +172,9 @@ namespace MClient.Core.EventSystem
             {
                 DeRegister(pair.Key, pair.Value);
             }
+            ToRemove.Clear();
         }
-        
+
         /// <summary>
         /// Invokes all methods with a given attribute.
         /// </summary>

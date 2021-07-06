@@ -305,9 +305,9 @@ namespace MClient.RenderSystem
         {
             DrawSprite(sprite,pos,new Vec2(scale), Layer.HUD, adjustPosition);
         }
-        public static void DrawSprite(SpriteMap sprite, Vec2 pos, Layer drawLayer, float scale = 1f, bool adjustPosition = false)
+        public static void DrawSprite(SpriteMap sprite, Vec2 pos, Layer drawLayer, float scale = 1f)
         {
-            DrawSprite(sprite, pos, new Vec2(scale),drawLayer, adjustPosition);
+            DrawSprite(sprite, pos, new Vec2(scale),drawLayer, true);
         }
         public static void DrawSprite(SpriteMap sprite, Vec2 pos, Vec2 scale, bool adjustPosition = false)
         {

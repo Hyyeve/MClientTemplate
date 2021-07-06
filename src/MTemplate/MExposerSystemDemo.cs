@@ -1,6 +1,6 @@
 ﻿using MClient.ExposerSystem;
 
-namespace MClient.MTemplate.ExposerSystemDemo
+namespace MClient.MTemplate
 {
     /// <summary>
     /// Demonstration class for the exposer system!

@@ -2,8 +2,9 @@
 using Harmony;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
+using MClient.UiSystem.Internal;
 
-namespace MClient.MTemplate.InputSystemDemo
+namespace MClient.MTemplate
 {
     /// <summary>
     /// Demonstration class for the input system!
@@ -178,12 +179,20 @@ namespace MClient.MTemplate.InputSystemDemo
             var binding = MInputBindingHandler.GetBind(typeof(MInputSystemDemo), nameof(BoundToKeys));
 
             /*
-            And then to enable/disable it:
+            And then to disable/enable it:
             */
+
+            binding.Deactivate();
             
             binding.Activate();
             
-            binding.Deactivate();
+            /*
+            To demonstrate this & the UI system functioning,
+            we will also open the UI that was created in the
+            MUiSystemDemo here. Feel free to try it out! 
+            */
+            
+            MUiHandler.Open("DemoPanel");
         }
         
         public static void ManualBoundToKeys()

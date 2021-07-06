@@ -1,7 +1,7 @@
 ﻿using Harmony;
 using MClient.Core.PatchSystem.AutoPatcher;
 
-namespace MClient.MTemplate.PatchSystemDemo
+namespace MClient.MTemplate
 {
     /// <summary>
     /// Demonstration class for the patch system!

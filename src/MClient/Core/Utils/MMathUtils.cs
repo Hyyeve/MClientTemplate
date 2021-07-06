@@ -29,9 +29,14 @@ namespace MClient.Core.Utils
         /// <param name="start">The start position for the line, in Game/World space</param>
         /// <param name="end">The end position for the line, in Game/World space</param>
         /// <param name="thing">The <see cref="Thing"/> to check a hit against</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The point at which the line would hit the object,
+        /// or the end point of the line if it does not intersect the object.
+        /// </returns>
         public static Vec2 CalcHitPoint(Vec2 start, Vec2 end, Thing thing)
         {
+            if (thing is null) return end;
+            
             Vec2[] intersects = new Vec2[] {
             CalcIntersection(start, end, thing.topLeft, thing.bottomLeft),
             CalcIntersection(start, end, thing.topLeft, thing.topRight),
@@ -66,12 +71,12 @@ namespace MClient.Core.Utils
         /// <param name="endA">End position of the first line.</param>
         /// <param name="startB">Start position of the second line.</param>
         /// <param name="endB">End position of the second line.</param>
-        /// <param name="zeroIfFail">
+        /// <param name="zeroIfNone">
         /// Whether to return zero if there isn't an intersection.
         /// If false, the method may return NaN or a incorrect value if the lines do not intersect.
         /// </param>
         /// <returns>The intersection point between the two lines</returns>
-        public static Vec2 CalcIntersection(Vec2 startA, Vec2 endA, Vec2 startB, Vec2 endB, bool zeroIfFail = true)
+        public static Vec2 CalcIntersection(Vec2 startA, Vec2 endA, Vec2 startB, Vec2 endB, bool zeroIfNone = true)
         {
             float a1 = endA.y - startA.y;
             float b1 = startA.x - endA.x;
@@ -90,7 +95,7 @@ namespace MClient.Core.Utils
 
             var intersect = new Vec2((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta);
 
-            if (!zeroIfFail)
+            if (!zeroIfNone)
             {
                 return intersect;
             }

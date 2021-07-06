@@ -61,15 +61,16 @@ namespace MClient.MTemplate.EventSystemDemo
         }
 
         /*
-        The event system does not currently support
-        a single method taking multiple events, 
-        though I may add this functionality later.
+        The event system also supports multiple attributes on
+        a method! However, the method will be unable to take
+        any of the events as parameters, so it's generally
+        more useful to have separate methods.
         */
         [MEventScreenDrawBackground]
         [MEventScreenDrawBlocks]
         public static void OnDrawMultiple()
         {
-            //This will cause a crash.
+            //This will be called for both Background and Blocks layer draw events.
         }
 
 
@@ -101,14 +102,13 @@ namespace MClient.MTemplate.EventSystemDemo
             object receives events or not.
             
             Here, we're de-registering this class, meaning that none of the event
-            methods will actually be called, which is why the OnDrawMultiple method
-            doesn't actually cause a crash. Init events are called just after
-            auto-registering, but before any events are actually called, so we
-            can de-register everything here before anything is called.
+            methods will actually be called when running the mod. Init events 
+            are called just after auto-registering, but before any events are 
+            actually called, so we can de-register everything here before anything is called.
             
             The first parameter is the type of the class you want to de-register,
             and the second parameter - which we're setting to null here, for demonstration
-            purposes - is the instance that you want to register. Since this is all
+            purposes - is the instance that you want to de-register. Since this is all
             static, there isn't an instance, and we just pass null (though you can
             also just leave out the parameter entirely).
             

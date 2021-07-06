@@ -210,15 +210,15 @@ namespace MClient.UiSystem.Internal
                             null);
             foreach (var t in types)
             {
-                MLogger.Log("Attempting to auto-generate UI panel from class " + t.Name, logSection: MLogger.MLogSection.Ui);
+                MLogger.Log("Attempting to auto-generate UI panel from class " + t.Name, logSection: MLogger.MLogSection.UsrI);
                 bool panel = TryGeneratePanel(t, (MAutoUiAttribute) Attribute.GetCustomAttribute(t, typeof(MAutoUiAttribute)));
                 if (panel)
                 {
-                    MLogger.Log("Generated UI panel for " + t.Name, logSection: MLogger.MLogSection.Ui);
+                    MLogger.Log("Generated UI panel for " + t.Name, logSection: MLogger.MLogSection.UsrI);
                     return;
                 }
 
-                MLogger.Log("Failed to generate UI panel for " + t.Name, MLogger.MLogType.Warning, MLogger.MLogSection.Ui);
+                MLogger.Log("Failed to generate UI panel for " + t.Name, MLogger.MLogType.Warning, MLogger.MLogSection.UsrI);
             }
         }
 
@@ -230,7 +230,7 @@ namespace MClient.UiSystem.Internal
             
             if (!type.IsClass)
             {
-                MLogger.Log("Type is not a class!", MLogger.MLogType.Warning, MLogger.MLogSection.Ui);
+                MLogger.Log("Type is not a class!", MLogger.MLogType.Warning, MLogger.MLogSection.UsrI);
                 return false;
             }
             
@@ -243,10 +243,10 @@ namespace MClient.UiSystem.Internal
                 switch (info.MemberType)
                 {
                     case MemberTypes.Field when !((FieldInfo) info).IsStatic:
-                        MLogger.Log("Field " + info.Name + " was not static, skipping!", MLogger.MLogType.Warning, MLogger.MLogSection.Ui);
+                        MLogger.Log("Field " + info.Name + " was not static, skipping!", MLogger.MLogType.Warning, MLogger.MLogSection.UsrI);
                         continue;
                     case MemberTypes.Method when !((MethodInfo) info).IsStatic:
-                        MLogger.Log("Method " + info.Name + " was not static, skipping!", MLogger.MLogType.Warning, MLogger.MLogSection.Ui);
+                        MLogger.Log("Method " + info.Name + " was not static, skipping!", MLogger.MLogType.Warning, MLogger.MLogSection.UsrI);
                         continue;
                 }
 

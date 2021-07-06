@@ -24,25 +24,34 @@ namespace MClient.Core.DLLSystem
         {
             
             string assemblyFullName = args.Name;
-            string assemblyShortName = assemblyFullName.Substring(0, assemblyFullName.IndexOf(",", StringComparison.Ordinal));
+            string assemblyShortName = assemblyFullName;
+
+            try
+            {
+                assemblyShortName = assemblyFullName.Substring(0, assemblyFullName.IndexOf(",", StringComparison.Ordinal));
+            }
+            catch(Exception e)
+            {
+                MLogger.Log("Assembly resolve name was not in the expected format, using full name!", MLogger.MLogType.Warning, MLogger.MLogSection.Asmb);
+            }
             
-            bool external;
             
             /*
-            Checks if the dependency is part of this mod.
-            We don't need to do this - we could ignore events from outside the assembly,
-            but I decided to make the mod play nice and try and help out other mods if it can.
+            Checks if the dependency is part of this mod. If it's not, we don't attempt to
+            resolve it. This is to prevent multiple mods using the resolver from all attempting
+            to resolve the same dependencies, and also to prevent any situations where a mod that
+            does not have the dependency resolver seems to be functional, but only because another
+            mod is resolving its dependencies for it, which would be a nightmare to debug on their
+            end.
             */
             if (Assembly.GetCallingAssembly() != Assembly.GetExecutingAssembly())
             {
-                MLogger.Log("Attempting to resolve external dependency", logSection: MLogger.MLogSection.Asmb);
-                external = true;
+                MLogger.Log("Skipping external dependency: " + assemblyShortName, logSection: MLogger.MLogSection.Asmb);
+                return null;
             }
-            else
-            {
-                MLogger.Log("Attempting to resolve " + assemblyShortName, logSection: MLogger.MLogSection.Asmb);
-                external = false;
-            }
+            
+            
+            MLogger.Log("Attempting to resolve " + assemblyShortName, logSection: MLogger.MLogSection.Asmb);
 
             //Checks if the assembly is already loaded in the program, and just returns it if it is.
             try
@@ -66,14 +75,7 @@ namespace MClient.Core.DLLSystem
             
             if (!File.Exists(path))
             {
-                //We don't have it :(
-                if (external)
-                {
-                    //It's not part of our mod so we don't bother logging it.
-                    return null;
-                }
-                
-                //It IS part of our mod and we're probably about to crash D:
+                //We don't have it and we're probably about to crash D:
                 MLogger.Log("Unable to resolve assembly " + assemblyShortName, MLogger.MLogType.Warning, MLogger.MLogSection.Asmb);
                 return null;
             }
