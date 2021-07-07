@@ -4,6 +4,7 @@ using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
 using MClient.InputSystem;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
@@ -38,9 +39,9 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = 1f * UiScale;
             Title = GetName(field);
             size *= UiScale;
-            TitleSize.x = Graphics.GetStringWidth(Title) * UiScale;
-            TitleSize.y = Graphics.GetStringHeight(Title) * UiScale;
-            size.x = Math.Max(TitleSize.x + Padding * 2f, size.y * 1.35f - Padding * 8f);
+            TitleSize.x = MRenderer.GetStringWidth(Title) * UiScale;
+            TitleSize.y = MRenderer.GetStringHeight(Title) * UiScale;
+            size.x = Math.Max(TitleSize.x + Padding * 4f, size.y * 1.35f - Padding * 8f);
             SetSize(size, true);
         }
         
@@ -48,9 +49,9 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             Padding = padding * UiScale;
             Title = GetName(field);
-            TitleSize.x = Graphics.GetStringWidth(Title) * UiScale;
-            TitleSize.y = Graphics.GetStringHeight(Title) * UiScale;
-            size.x = Math.Max(TitleSize.x + Padding * 2f, size.y * 1.35f - Padding * 8f);
+            TitleSize.x = MRenderer.GetStringWidth(Title) * UiScale;
+            TitleSize.y = MRenderer.GetStringHeight(Title) * UiScale;
+            size.x = Math.Max(TitleSize.x + Padding * 4f, size.y * 1.35f - Padding * 8f);
             SetSize(size, true);
         }
         

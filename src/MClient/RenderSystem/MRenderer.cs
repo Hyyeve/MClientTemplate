@@ -316,6 +316,16 @@ namespace MClient.RenderSystem
 
         #endregion
 
+        /// <summary>
+        /// Method that wraps Graphics.GetStringWidth, intended for adding custom font support.
+        /// </summary>
+        public static float GetStringWidth(string s) => Graphics.GetStringWidth(s);
+
+        /// <summary>
+        /// Method that wraps Graphics.GetStringHeight, intended for adding custom font support.
+        /// </summary>
+        public static float GetStringHeight(string s) => Graphics.GetStringHeight(s);
+
     }
 
 

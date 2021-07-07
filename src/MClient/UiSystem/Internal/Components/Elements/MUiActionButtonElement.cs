@@ -2,6 +2,7 @@
 using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
@@ -21,7 +22,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = 1f * UiScale;
             Title = GetName(method);
             size *= UiScale;
-            size.x = Graphics.GetStringWidth(Title) * UiScale + Padding * 4f;
+            size.x = MRenderer.GetStringWidth(Title) * UiScale + Padding * 4f;
             SetSize(size, true);
         }
 
@@ -30,7 +31,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = padding * UiScale;
             Title = GetName(method);
             size *= UiScale;
-            size.x = Graphics.GetStringWidth(Title) * UiScale + Padding * 4f;
+            size.x = MRenderer.GetStringWidth(Title) * UiScale + Padding * 4f;
             SetSize(size, true);
         }
 

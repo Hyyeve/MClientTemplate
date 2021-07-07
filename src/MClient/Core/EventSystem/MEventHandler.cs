@@ -17,10 +17,8 @@ namespace MClient.Core.EventSystem
     public static class MEventHandler
     {
         
-        //Dictionaries for storing registered types & methods, as well as ones that need to be de-registered.
+        //Dictionary for storing registered types & methods.
         private static readonly Dictionary<object, Dictionary<Type, MethodInfo>> Registered = new Dictionary<object, Dictionary<Type, MethodInfo>>();
-        private static readonly Dictionary<Type, object> ToRemove = new Dictionary<Type, object>();
-        private static readonly List<MEvent> ToCall = new List<MEvent>();
         private static bool _inCallLoop = false;
         private static Type _prevCallType;
         
@@ -31,6 +29,7 @@ namespace MClient.Core.EventSystem
         /// <param name="instance">The instance of that type to register. If null, only static event methods will be registered.</param>
         public static void Register(Type type, object instance = null)
         {
+            
             Dictionary<Type, MethodInfo> toAdd = null;
             
             bool registeredAlready = false;
@@ -71,12 +70,6 @@ namespace MClient.Core.EventSystem
         /// <param name="instance">The instance of that type to de-register. If null, only static event methods will be de-registered.</param>
         public static void DeRegister(Type type, object instance = null)
         {
-            if (_inCallLoop)
-            {
-                if (ToRemove.ContainsKey(type)) return;
-                ToRemove.Add(type, instance);
-                return;
-            }
             if (instance != null && Registered.ContainsKey(instance))
             {
                 Registered.Remove(instance);
@@ -102,12 +95,12 @@ namespace MClient.Core.EventSystem
             }
 
             _prevCallType = clientEvent.GetType();
-            
-            CleanRegisteredClasses();
 
             _inCallLoop = true;
+
+            object[] tempKeys = Registered.Keys.ToArray();
             
-            foreach (var obj in Registered.Keys)
+            foreach (var obj in tempKeys)
             {
                 Registered.TryGetValue(obj, out var eventDictionary);
                 
@@ -154,25 +147,6 @@ namespace MClient.Core.EventSystem
             InvokeAttributeMethods(typeof(MEventLateInit), "Invoking LateInitEvent on: ");
             
             _inCallLoop = false;
-
-            CleanRegisteredClasses();
-        }
-
-        /// <summary>
-        /// De-Registers all classes that are currently waiting to be de-registered. Not intended for custom use!
-        /// </summary>
-        /// <remarks>
-        /// This is used so that classes attempting to de-register themselves during event calls does not cause a crash.
-        /// Instead, when that happens, the de-registering info is stored, and then the classes are actually
-        /// de-registered once the event call is finished.
-        /// </remarks>
-        public static void CleanRegisteredClasses()
-        {
-            foreach (KeyValuePair<Type, object> pair in ToRemove)
-            {
-                DeRegister(pair.Key, pair.Value);
-            }
-            ToRemove.Clear();
         }
 
         /// <summary>

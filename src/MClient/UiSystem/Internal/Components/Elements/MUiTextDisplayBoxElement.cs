@@ -5,6 +5,7 @@ using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.Core.Utils;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
@@ -32,7 +33,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             var attribute = (MUiTextDisplayBoxAttribute) GetAttribute(field);
             Title = attribute.TitleOverride == "" ? field.Name : attribute.TitleOverride;
             Size = attribute.Size;
-            Size.x = MMathUtils.Max(Size.x, Graphics.GetStringWidth(Title) * UiScale + Padding * 8f);
+            Size.x = MMathUtils.Max(Size.x, MRenderer.GetStringWidth(Title) * UiScale + Padding * 8f);
             LinePrefix = attribute.LinePrefix;
         }
 
@@ -42,7 +43,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             var attribute = (MUiTextDisplayBoxAttribute) GetAttribute(field);
             Title = attribute.TitleOverride == "" ? field.Name : attribute.TitleOverride;
             Size = attribute.Size;
-            Size.x = MMathUtils.Max(Size.x, Graphics.GetStringWidth(Title) * UiScale + Padding * 8f);
+            Size.x = MMathUtils.Max(Size.x, MRenderer.GetStringWidth(Title) * UiScale + Padding * 8f);
             LinePrefix = attribute.LinePrefix;
         }
 
@@ -78,8 +79,8 @@ namespace MClient.UiSystem.Internal.Components.Elements
         {
             if (!NeedsArranging) return;
             TitlePos = Position + Vec2.One * Padding * 4f;
-            TextStartPos = TitlePos + Vec2.Unity * Graphics.GetStringHeight(Title) * UiScale + Padding * 4f * Vec2.Unity;
-            _textStartOffset = Graphics.GetStringHeight(Title) * UiScale + Padding * 4f;
+            TextStartPos = TitlePos + Vec2.Unity * MRenderer.GetStringHeight(Title) * UiScale + Padding * 4f * Vec2.Unity;
+            _textStartOffset = MRenderer.GetStringHeight(Title) * UiScale + Padding * 4f;
             NeedsArranging = false;
         }
 
@@ -116,13 +117,13 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
                     strings[0] = strings[0].Insert(0, LinePrefix);
                     DrawList.AddRange(strings);
-                    y += (Graphics.GetStringHeight(s) * UiScale * TextScale) * strings.Count;
+                    y += (MRenderer.GetStringHeight(s) * UiScale * TextScale) * strings.Count;
                 }
                 else
                 {
                     string toAdd = s.Insert(0, LinePrefix);
                     DrawList.Add(toAdd);
-                    y += Graphics.GetStringHeight(toAdd) * UiScale * TextScale;
+                    y += MRenderer.GetStringHeight(toAdd) * UiScale * TextScale;
                 }
                 if(y > Size.y) DrawList.RemoveAt(0);
             }
@@ -130,7 +131,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
 
         private bool CheckStringLength(string s)
         {
-            return Graphics.GetStringWidth(s + LinePrefix) * UiScale * TextScale > Size.x - Padding * UiScale * 8f;
+            return MRenderer.GetStringWidth(s + LinePrefix) * UiScale * TextScale > Size.x - Padding * UiScale * 8f;
         }
     }
 }

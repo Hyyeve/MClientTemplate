@@ -1,4 +1,5 @@
-﻿using MClient.ExposerSystem;
+﻿using DuckGame;
+using MClient.ExposerSystem;
 
 namespace MClient.MTemplate
 {
@@ -63,7 +64,7 @@ namespace MClient.MTemplate
             instead of instance ones.
             */
 
-            var exposedClass = MExposedClass.From(typeof(DuckGame.Duck));
+            var exposedClass = MExposedClass.From(typeof(MonoMain));
             
             /*
             In this case, the MonoMain class has a private static method called

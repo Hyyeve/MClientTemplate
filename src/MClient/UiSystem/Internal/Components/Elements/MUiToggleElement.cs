@@ -2,6 +2,7 @@
 using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
@@ -24,7 +25,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = 1f * UiScale;
             Title = GetName(field);
             size *= UiScale;
-            size.x = Graphics.GetStringWidth(Title) * UiScale + size.y + Padding;
+            size.x = MRenderer.GetStringWidth(Title) * UiScale + size.y + Padding;
             SetSize(size, true);
             Toggled = (bool) AttatchedField.GetValue(null);
         }
@@ -35,7 +36,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = toggleBoxPadding * UiScale;
             Title = GetName(field);
             size *= UiScale;
-            size.x = Graphics.GetStringWidth(Title) * UiScale + size.y + Padding;
+            size.x = MRenderer.GetStringWidth(Title) * UiScale + size.y + Padding;
             SetSize(size, true);
             Toggled = (bool) AttatchedField.GetValue(null);
         }

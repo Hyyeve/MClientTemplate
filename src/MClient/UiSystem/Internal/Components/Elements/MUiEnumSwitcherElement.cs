@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Attributes;
 using MoreLinq;
 
@@ -26,7 +27,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = 1f * UiScale;
             Title = GetName(field);
             size *= UiScale;
-            size.x = Graphics.GetStringWidth(Title + LongestEnumMember(field) + " ") * UiScale + Padding * 4f;
+            size.x = MRenderer.GetStringWidth(Title + LongestEnumMember(field) + " ") * UiScale + Padding * 4f;
             SetSize(size, true);
         }
 
@@ -42,7 +43,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Padding = padding * UiScale;
             Title = GetName(field);
             size = size * UiScale;
-            size.x = Graphics.GetStringWidth(Title + LongestEnumMember(field) + " ") * UiScale + Padding * 4f;
+            size.x = MRenderer.GetStringWidth(Title + LongestEnumMember(field) + " ") * UiScale + Padding * 4f;
             SetSize(size, true);
         }
 

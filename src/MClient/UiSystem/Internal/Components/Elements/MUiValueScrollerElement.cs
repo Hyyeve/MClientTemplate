@@ -3,6 +3,7 @@ using System.Reflection;
 using DuckGame;
 using MClient.Core.EventSystem.Events.Input;
 using MClient.InputSystem;
+using MClient.RenderSystem;
 using MClient.UiSystem.Internal.Attributes;
 
 namespace MClient.UiSystem.Internal.Components.Elements
@@ -29,7 +30,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             Title = GetName(field);
             size *= UiScale;
             Value = GetValue();
-            size.x = Graphics.GetStringWidth(Title + "  " + $"{Value:0.0}") * UiScale;
+            size.x = MRenderer.GetStringWidth(Title + "  " + $"{Value:0.0}") * UiScale;
             SetSize(size, true);
         }
 
@@ -44,7 +45,7 @@ namespace MClient.UiSystem.Internal.Components.Elements
             string newValueString = $"{Value:0.0}";
             if (ValueString is null || newValueString.Length != ValueString.Length)
             {
-                SetSize(new Vec2(Graphics.GetStringWidth(Title + "  " + $"{Value:0.0}") * UiScale, Size.y), true);
+                SetSize(new Vec2(MRenderer.GetStringWidth(Title + "  " + $"{Value:0.0}") * UiScale, Size.y), true);
             }
 
             ValueString = $"{Value:0.0}";

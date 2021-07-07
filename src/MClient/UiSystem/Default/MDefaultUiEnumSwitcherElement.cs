@@ -43,7 +43,7 @@ namespace MClient.UiSystem.Default
             MRenderer.DrawSprite(_box, Position + Size - texSize, UiScale);
 
             MRenderer.DrawText(Title, Position + new Vec2(2f, 4f) * UiScale, TextColor, UiScale);
-            MRenderer.DrawText(EnumMember, Position + new Vec2(2f + Graphics.GetStringWidth(Title + " "), 4f) * UiScale,
+            MRenderer.DrawText(EnumMember, Position + new Vec2(2f + MRenderer.GetStringWidth(Title + " "), 4f) * UiScale,
                 TextAccentColor, UiScale);
         }
     }

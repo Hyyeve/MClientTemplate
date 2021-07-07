@@ -164,6 +164,9 @@ namespace MClient.MTemplate
         
         Keybinds are auto-attributes, so the methods must be public and static,
         and the keybinds will be applied on load.
+        
+        One important note - keybindings do not currently support mouse clicks as
+        part of the bind, however, mouse clicks will interrupt keyboard bindings.
         */
         [MInputBinding(new []{Keys.LeftShift, Keys.A}, MBindPressReq.AllPressed, MBindOrderReq.InOrder)]
         public static void BoundToKeys()

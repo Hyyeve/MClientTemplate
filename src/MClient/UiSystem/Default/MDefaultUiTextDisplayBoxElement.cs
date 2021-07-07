@@ -58,14 +58,14 @@ namespace MClient.UiSystem.Default
                 if (text.StartsWith(LinePrefix))
                 {
                     MRenderer.DrawText(LinePrefix, textPos, TextAccentColor, UiScale * TextScale);
-                    MRenderer.DrawText(text.Substring(LinePrefix.Length), textPos + new Vec2(Graphics.GetStringWidth(LinePrefix) * UiScale * TextScale,0f), TextColor, UiScale * TextScale);
+                    MRenderer.DrawText(text.Substring(LinePrefix.Length), textPos + new Vec2(MRenderer.GetStringWidth(LinePrefix) * UiScale * TextScale,0f), TextColor, UiScale * TextScale);
                 }
                 else
                 {
                     MRenderer.DrawText(text, textPos, TextColor, UiScale * TextScale);
                 }
                 
-                textPos.y += Graphics.GetStringHeight(text) * UiScale * TextScale + Padding;
+                textPos.y += MRenderer.GetStringHeight(text) * UiScale * TextScale + Padding;
             }
         }
     }

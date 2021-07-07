@@ -17,6 +17,7 @@ namespace MClient.InputSystem
         private readonly List<Keys> _current;
         private int _currentIndex;
         private bool _hasInvoked;
+        private bool _active;
         public readonly MBindOrderReq OrderReq;
         public readonly MBindPressReq PressReq;
         public readonly MethodInfo Method;
@@ -30,24 +31,19 @@ namespace MClient.InputSystem
             Method = action;
             _current = new List<Keys>();
             _currentIndex = 0;
+            MEventHandler.Register(typeof(MInputBinding), this);
         }
 
         /// <summary>
         /// "Enables" this binding, by registering it with the event handler
         /// </summary>
-        public void Activate()
-        {
-            MEventHandler.Register(typeof(MInputBinding), this);
-        }
+        public void Activate() => _active = true;
 
         /// <summary>
         /// "Disables" this binding, by de-registering it from the event handler
         /// </summary>
-        public void Deactivate()
-        {
-            MEventHandler.DeRegister(typeof(MInputBinding), this);
-        }
-        
+        public void Deactivate() => _active = false;
+
         /// <summary>
         /// Updates the state of the binding, given a key press. Primarily an internal call, but can be used for custom purposes.
         /// </summary>
@@ -179,9 +175,19 @@ namespace MClient.InputSystem
         [MEventKeyPressed]
         public void OnKeyPressed(MEventKeyPressed e)
         {
+            if (!_active) return;
             UpdateBind(e.Key);
         }
 
+        /// <summary>
+        /// Internal event call
+        /// </summary>
+        [MEventMouseAction]
+        public void OnMouseClick(MEventMouseAction e)
+        {
+            if(e.IsClickAction) Reset();
+        }
+        
         private void Invoke()
         {
             Method.Invoke(null, null);

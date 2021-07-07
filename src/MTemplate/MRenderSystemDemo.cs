@@ -147,6 +147,8 @@ namespace MClient.MTemplate
             will actually be B->C->D, and then a third one will be done C->D->E! This lets you draw lots of connected
             triangles with less vertices, and can be used for really complex shapes. For lines, it's the same, but
             A->B, B->C, C->D and so on for each line.
+            
+            Here though, I'm just drawing a single triangle using the TriangleList option, for demonstration purposes.
             */
             
             MRenderer.DrawArray(new []{Vec2.Zero, Vec2.One, Vec2.Unitx}, Color.Aqua, PrimitiveType.TriangleList);
