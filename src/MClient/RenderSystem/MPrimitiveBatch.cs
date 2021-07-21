@@ -28,7 +28,8 @@ namespace MClient.RenderSystem
         private static readonly RasterizerState RasterState = new RasterizerState()
         {
             CullMode = CullMode.None,
-            ScissorTestEnable = true
+            //I want to implement proper scissor regions at some point but it will break things at the moment
+            //ScissorTestEnable = true
         };
 
         public MPrimitiveBatch(GraphicsDevice graphicsDevice, int bufferSize = 500)

@@ -28,7 +28,7 @@ namespace MClient.Core.PatchSystem.AutoPatcher
 
                 foreach (var attribute in attributes)
                 {
-                    var mPatch = AccessTools.DeclaredMethod(attribute.Type, attribute.Method);
+                    var mPatch = AccessTools.DeclaredMethod(attribute.Type, attribute.Method, attribute.Params);
 
                     if (mPatch is null)
                     {
