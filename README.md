@@ -16,4 +16,5 @@ Specifically, this project currently contains:
 - Easy-to-use input system.
 
 I have attempted to document the code and provide examples for how to use things,
-located in src/MTemplate, and I have also created [Overview Documentation](https://github.com/Drakeyn/MClientTemplate/wiki) on Github.
+located in src/MTemplate, and I have also created [Overview Documentation](https://github.com/Drakeyn/MClientTemplate/wiki) on Github,
+which includes the setup instructions.
