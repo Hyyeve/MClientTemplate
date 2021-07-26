@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DuckGame;
 using MClient.Core;
+using MClient.Core.EventSystem.Events.Drawing.Screen;
 using MClient.Core.EventSystem.Events.Drawing.World;
 using MClient.Core.EventSystem.Events.Helper;
 using MClient.Core.EventSystem.Events.Input;
@@ -146,7 +147,7 @@ namespace MClient.UiSystem.Internal
         /// <summary>
         /// Internal update call for Ui
         /// </summary>
-        [MEventWorldDrawHud]
+        [MEventScreenDrawHud]
         public static void UpdateUi()
         {
             if (!_handlingUi) return;

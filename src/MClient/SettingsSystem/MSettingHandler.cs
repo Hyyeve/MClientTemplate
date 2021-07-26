@@ -52,9 +52,10 @@ namespace MClient.SettingsSystem
             foreach (string data in saveData)
             {
                 string[] splitData = data.Split(':');
+                
                 var type = Type.GetType(splitData[0]);
-                if (type is null) continue;
-                var field = type.GetField(splitData[1]);
+                var field = type?.GetField(splitData[1]);
+                if (field is null) continue;
                 
                 try
                 {
