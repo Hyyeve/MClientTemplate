@@ -5,17 +5,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Color = DuckGame.Color;
 using Matrix = DuckGame.Matrix;
 
-//-------------------------------------------DISCLAIMER-------------------------------------------------------------------------
-//This class was taken from a freely distributed helper library and modified to work for this mod. Most of this code is not mine.
-
-namespace MClient.RenderSystem
+namespace MClient.RenderSystemV2.Internal
 {
     /// <summary>
     /// This class is the core of the custom rendering, and is what actually handles drawing the polygons.
     /// </summary>
-    public sealed class MPrimitiveBatch : IDisposable
+    public sealed class MBatcher : IDisposable
     {
         private readonly VertexPositionColor[] _vertices = new VertexPositionColor[1000];
+        
         private int _positionInBuffer;
         private readonly BasicEffect _basicEffect;
         private readonly GraphicsDevice _device;
@@ -23,37 +21,19 @@ namespace MClient.RenderSystem
         private int _numVertsPerPrimitive;
         private bool _hasBegun;
         private bool _isDisposed;
-        private Layer _currentLayer;
 
         private static readonly RasterizerState RasterState = new RasterizerState()
         {
             CullMode = CullMode.None,
-            //I want to implement proper scissor regions at some point but it will break things at the moment
-            //ScissorTestEnable = true
+            //TODO - Scissor regions
         };
 
-        public MPrimitiveBatch(GraphicsDevice graphicsDevice, int bufferSize = 500)
+        public MBatcher(GraphicsDevice graphicsDevice, int bufferSize = 1000)
         {
             if (graphicsDevice == null) return;
             _device = graphicsDevice;
             _basicEffect = new BasicEffect(graphicsDevice) {VertexColorEnabled = true, LightingEnabled = false};
         }
-
-        public void UpdateState(Layer current)
-        {
-            _currentLayer = current;
-            Graphics.screen.End();
-            var cam = current.camera?.getMatrix() ?? Matrix.Identity;
-            Graphics.screen.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterState, null, cam);
-            _basicEffect.View = Level.activeLevel.camera.getMatrix();
-            _basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0f, Graphics.viewport.Width, Graphics.viewport.Height, 0f, 0.0f, -1f);
-        }
-
-        public void ResetState()
-        {
-            _basicEffect.View = Matrix.Identity;
-        }
-        
 
         public void Dispose()
         {
@@ -107,8 +87,6 @@ namespace MClient.RenderSystem
                 throw new InvalidOperationException("Begin must be called before End can be called.");
             Flush();
             _hasBegun = false;
-            if (_currentLayer is null) return;
-            UpdateState(_currentLayer);
         }
 
         private void Flush()
@@ -160,7 +138,7 @@ namespace MClient.RenderSystem
             return _device;
         }
 
-        public Effect GetEffect()
+        public BasicEffect GetEffect()
         {
             return _basicEffect;
         }

@@ -44,7 +44,7 @@ namespace MClient.Core
                 return;
             }
             
-            if (message == _prevMessage) return;
+            //if (message == _prevMessage) return;
 
             _prevMessage = message;
 

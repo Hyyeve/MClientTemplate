@@ -8,13 +8,13 @@ namespace MClient.Core.EventSystem.Events.Drawing
     /// you should use the more specific draw events provided with it.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class MEventGameDraw : MEvent
+    public class MEventLayerDraw : MEvent
     {
         public Layer Layer;
         
-        public static MEventGameDraw Get(Layer layer)
+        public static MEventLayerDraw Get(Layer layer)
         {
-            var temp = new MEventGameDraw {Layer = layer};
+            var temp = new MEventLayerDraw {Layer = layer};
             return temp;
         }
     }

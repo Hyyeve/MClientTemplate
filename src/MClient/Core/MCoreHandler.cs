@@ -35,7 +35,7 @@ namespace MClient.Core
     {
         private static void GameDraw(Layer layer)
         {
-            MEventHandler.Call(MEventGameDraw.Get(layer));
+            MEventHandler.Call(MEventLayerDraw.Get(layer));
         }
 
         private static void PreGameDraw()

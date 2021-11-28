@@ -52,8 +52,8 @@ namespace MClient.RenderSystem
         /// <summary>
         /// Internal draw call that updates rendering state and calls render events
         /// </summary>
-        [MEventGameDraw]
-        public static void Draw(MEventGameDraw e)
+        [MEventLayerDraw]
+        public static void Draw(MEventLayerDraw e)
         {
             UpdateState(e.Layer);
 

@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\MClient\Core\DLLSystem\MDependencyResolver.cs" />
-    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventGameDraw.cs" />
+    <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventLayerDraw.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventPostDraw.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Drawing\MEventPreDraw.cs" />
     <Compile Include="src\MClient\Core\EventSystem\Events\Game\MEventGameExit.cs" />
@@ -116,6 +116,11 @@
     <Compile Include="src\MClient\InputSystem\MInputBindingAttribute.cs" />
     <Compile Include="src\MClient\InputSystem\MInputBindingHandler.cs" />
     <Compile Include="src\MClient\InputSystem\MInputHandler.cs" />
+    <Compile Include="src\MClient\RenderSystemV2\Events\MEventRenderLayer.cs" />
+    <Compile Include="src\MClient\RenderSystemV2\Internal\MBatcher.cs" />
+    <Compile Include="src\MClient\RenderSystemV2\Internal\MRenderEventHelper.cs" />
+    <Compile Include="src\MClient\RenderSystemV2\MRender.cs" />
+    <Compile Include="src\MClient\RenderSystemV2\Test.cs" />
     <Compile Include="src\MClient\RenderSystem\Events\Screen\MEventScreenDrawBackground.cs" />
     <Compile Include="src\MClient\RenderSystem\Events\Screen\MEventScreenDrawBlocks.cs" />
     <Compile Include="src\MClient\RenderSystem\Events\Screen\MEventScreenDrawConsole.cs" />
