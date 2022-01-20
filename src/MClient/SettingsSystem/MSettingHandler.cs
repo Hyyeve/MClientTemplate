@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -111,6 +111,29 @@ namespace MClient.SettingsSystem
                         field.SetValue(null, new Vec2(x, y));
                     }
 
+                    if (field.FieldType == typeof(Sprite))
+                    {
+                        string dataValue = splitData[2];
+
+                        Sprite outputImage;
+
+                        string[] splitDataValue = dataValue.Split('[');
+                        int[] widthHeight = splitDataValue[0].Split(']').Select(x => int.Parse(x)).ToArray();
+                        string colorData = splitDataValue[1];
+
+                        Tex2D texture = new(widthHeight[0], widthHeight[1]);
+                        texture.SetData(colorData.Split(']').Select(new Func<string, Color>((pixel) =>
+                        {
+                            byte[] colData = pixel.Split(',').Select(x => byte.Parse(x)).ToArray();
+                            return new Color(colData[0], colData[1], colData[2], colData[3]);
+                        })).ToArray());
+
+                        outputImage = new Sprite(texture);
+
+                        field.SetValue(null, outputImage);
+                        continue;
+                    }
+
                     //------------------------------------------------------------------------------------------
                 }
                 catch
@@ -185,6 +208,15 @@ namespace MClient.SettingsSystem
                 {
                     var vec = (Vec2) field.GetValue(null);
                     data += vec.x + "." + vec.y;
+                    saveData.Add(data);
+                    continue;
+                }
+
+                if (field.FieldType == typeof(Sprite))
+                {
+                    var spr = (Sprite)field.GetValue(null);
+                    data += $"{spr.width}]{spr.height}[";
+                    data += string.Join("]", spr.texture.GetData().Select(col => $"{col.r},{col.g},{col.b},{col.a}"));
                     saveData.Add(data);
                     continue;
                 }
